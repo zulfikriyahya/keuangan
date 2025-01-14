@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\InstansiResource\Pages;
 
-use App\Filament\Resources\InstansiResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\InstansiResource;
 
 class EditInstansi extends EditRecord
 {
@@ -13,7 +13,7 @@ class EditInstansi extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
 }

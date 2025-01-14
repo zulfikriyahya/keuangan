@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KelasResource\Pages;
-use App\Filament\Resources\KelasResource\RelationManagers;
-use App\Models\Kelas;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Kelas;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\KelasResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\KelasResource\RelationManagers;
 
 class KelasResource extends Resource
 {
@@ -23,15 +24,23 @@ class KelasResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
-                    ->required(),
-                Forms\Components\TextInput::make('tingkat')
-                    ->required(),
-                Forms\Components\TextInput::make('jenjang')
-                    ->required(),
-                Forms\Components\Select::make('jurusan_id')
-                    ->relationship('jurusan', 'id')
-                    ->required(),
+                Section::make('Informasi Pengguna')
+                    ->schema([
+                        Forms\Components\TextInput::make('nama')
+                            ->required(),
+                        Forms\Components\TextInput::make('tingkat')
+                            ->required(),
+                        Forms\Components\TextInput::make('jenjang')
+                            ->required(),
+                        Forms\Components\Select::make('jurusan_id')
+                            ->relationship('jurusan', 'id')
+                            ->required(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ])
             ]);
     }
 
@@ -45,7 +54,7 @@ class KelasResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('jenjang')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('jurusan.id')
+                Tables\Columns\TextColumn::make('jurusan.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -61,7 +70,10 @@ class KelasResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

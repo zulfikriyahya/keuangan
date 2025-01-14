@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\JenisPemasukanResource\Pages;
-use App\Filament\Resources\JenisPemasukanResource\RelationManagers;
-use App\Models\JenisPemasukan;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\JenisPemasukan;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\JenisPemasukanResource\Pages;
+use App\Filament\Resources\JenisPemasukanResource\RelationManagers;
 
 class JenisPemasukanResource extends Resource
 {
@@ -23,14 +24,22 @@ class JenisPemasukanResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
-                    ->required(),
-                Forms\Components\Select::make('akun_id')
-                    ->relationship('akun', 'id')
-                    ->required(),
-                Forms\Components\TextInput::make('kode')
-                    ->required(),
-                Forms\Components\TextInput::make('deskripsi'),
+                Section::make('Informasi Pengguna')
+                    ->schema([
+                        Forms\Components\TextInput::make('nama')
+                            ->required(),
+                        Forms\Components\Select::make('akun_id')
+                            ->relationship('akun', 'id')
+                            ->required(),
+                        Forms\Components\TextInput::make('kode')
+                            ->required(),
+                        Forms\Components\TextInput::make('deskripsi'),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ])
             ]);
     }
 
@@ -40,7 +49,7 @@ class JenisPemasukanResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('akun.id')
+                Tables\Columns\TextColumn::make('akun.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kode')
@@ -60,7 +69,10 @@ class JenisPemasukanResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

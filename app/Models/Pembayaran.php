@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pembayaran extends Model
 {
@@ -17,8 +17,6 @@ class Pembayaran extends Model
      * @var array
      */
     protected $fillable = [
-        'nama',
-        'kode',
         'tanggal',
         'jenis_pembayaran_id',
         'deskripsi',

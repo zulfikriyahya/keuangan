@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KelasTahunResource\Pages;
-use App\Filament\Resources\KelasTahunResource\RelationManagers;
-use App\Models\KelasTahun;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\KelasTahun;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\KelasTahunResource\Pages;
+use App\Filament\Resources\KelasTahunResource\RelationManagers;
 
 class KelasTahunResource extends Resource
 {
@@ -23,12 +24,20 @@ class KelasTahunResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('tahun_id')
-                    ->relationship('tahun', 'id')
-                    ->required(),
-                Forms\Components\Select::make('kelas_id')
-                    ->relationship('kelas', 'id')
-                    ->required(),
+                Section::make('Informasi Pengguna')
+                    ->schema([
+                        Forms\Components\Select::make('tahun_id')
+                            ->relationship('tahun', 'id')
+                            ->required(),
+                        Forms\Components\Select::make('kelas_id')
+                            ->relationship('kelas', 'id')
+                            ->required(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ])
             ]);
     }
 
@@ -36,11 +45,9 @@ class KelasTahunResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tahun.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('tahun.nama')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('kelas.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('kelas.nama')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -55,7 +62,10 @@ class KelasTahunResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

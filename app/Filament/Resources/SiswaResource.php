@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SiswaResource\Pages;
-use App\Filament\Resources\SiswaResource\RelationManagers;
-use App\Models\Siswa;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Siswa;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\SiswaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\SiswaResource\RelationManagers;
 
 class SiswaResource extends Resource
 {
@@ -23,27 +24,32 @@ class SiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
-                    ->required(),
-                Forms\Components\DatePicker::make('diterima_tanggal')
-                    ->required(),
-                Forms\Components\TextInput::make('diterima_dikelas')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Select::make('kelas_tahun_id')
-                    ->relationship('kelasTahun', 'id')
-                    ->required(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\TextInput::make('foto'),
-                Forms\Components\TextInput::make('alamat'),
-                Forms\Components\TextInput::make('nama_ibu'),
-                Forms\Components\TextInput::make('nama_ayah'),
-                Forms\Components\TextInput::make('telepon')
-                    ->tel(),
-                Forms\Components\TextInput::make('kelas_id')
-                    ->required()
-                    ->numeric(),
+                Section::make('Informasi Siswa')
+                    ->schema([
+                        Forms\Components\TextInput::make('nama')
+                            ->required(),
+                        Forms\Components\TextInput::make('foto'),
+                        Forms\Components\DatePicker::make('diterima_tanggal')
+                            ->required(),
+                        Forms\Components\TextInput::make('diterima_dikelas')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\Select::make('kelas_tahun_id')
+                            ->relationship('kelasTahun', 'id')
+                            ->required(),
+                        Forms\Components\TextInput::make('status')
+                            ->required(),
+                        Forms\Components\TextInput::make('alamat'),
+                        Forms\Components\TextInput::make('nama_ibu'),
+                        Forms\Components\TextInput::make('nama_ayah'),
+                        Forms\Components\TextInput::make('telepon')
+                            ->tel(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ])
             ]);
     }
 
@@ -59,7 +65,7 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('diterima_dikelas')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('kelasTahun.id')
+                Tables\Columns\TextColumn::make('kelasTahun.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
@@ -74,9 +80,6 @@ class SiswaResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('telepon')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kelas_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -90,7 +93,10 @@ class SiswaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

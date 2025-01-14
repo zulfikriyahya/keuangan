@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\PengeluaranResource\Pages;
 
-use App\Filament\Resources\PengeluaranResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\PengeluaranResource;
 
 class EditPengeluaran extends EditRecord
 {
@@ -13,7 +13,7 @@ class EditPengeluaran extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
 }

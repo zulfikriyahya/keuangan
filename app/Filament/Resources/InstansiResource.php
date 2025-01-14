@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\InstansiResource\Pages;
-use App\Filament\Resources\InstansiResource\RelationManagers;
-use App\Models\Instansi;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Instansi;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\InstansiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\InstansiResource\RelationManagers;
 
 class InstansiResource extends Resource
 {
@@ -23,27 +24,63 @@ class InstansiResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
-                    ->required(),
-                Forms\Components\TextInput::make('npsn'),
-                Forms\Components\TextInput::make('nss'),
-                Forms\Components\TextInput::make('logo'),
-                Forms\Components\TextInput::make('email')
-                    ->email(),
-                Forms\Components\TextInput::make('telepon')
-                    ->tel(),
-                Forms\Components\TextInput::make('website'),
-                Forms\Components\TextInput::make('alamat'),
-                Forms\Components\TextInput::make('kode_pos'),
-                Forms\Components\Select::make('pimpinan_id')
-                    ->relationship('pimpinan', 'id')
-                    ->required(),
-                Forms\Components\Select::make('bendahara_id')
-                    ->relationship('bendahara', 'id')
-                    ->required(),
-                Forms\Components\TextInput::make('nama_bank'),
-                Forms\Components\TextInput::make('nama_rekening'),
-                Forms\Components\TextInput::make('nomor_rekening'),
+                Section::make('Informasi Instansi')
+                    ->schema([
+                        Forms\Components\TextInput::make('nama')
+                            ->required(),
+                        Forms\Components\TextInput::make('npsn'),
+                        Forms\Components\TextInput::make('nss'),
+                        Forms\Components\TextInput::make('logo'),
+                        Forms\Components\TextInput::make('alamat'),
+                        Forms\Components\TextInput::make('kode_pos'),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ]),
+                Section::make('Informasi Kontak')
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\TextInput::make('email')
+                            ->email(),
+                        Forms\Components\TextInput::make('telepon')
+                            ->tel(),
+                        Forms\Components\TextInput::make('website'),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ]),
+                Section::make('Informasi Pejabat')
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\Select::make('pimpinan_id')
+                            ->relationship('pimpinan', 'nama')
+                            ->required(),
+                        Forms\Components\Select::make('bendahara_id')
+                            ->relationship('bendahara', 'nama')
+                            ->required(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ]),
+                Section::make('Informasi Rekening')
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\TextInput::make('nama_bank'),
+                        Forms\Components\TextInput::make('nama_rekening'),
+                        Forms\Components\TextInput::make('nomor_rekening'),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ]),
+
             ]);
     }
 
@@ -69,10 +106,10 @@ class InstansiResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kode_pos')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('pimpinan.id')
+                Tables\Columns\TextColumn::make('pimpinan.nama')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bendahara.id')
+                Tables\Columns\TextColumn::make('bendahara.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nama_bank')
@@ -94,7 +131,10 @@ class InstansiResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

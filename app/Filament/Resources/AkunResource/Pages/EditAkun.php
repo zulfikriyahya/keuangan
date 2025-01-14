@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\AkunResource\Pages;
 
-use App\Filament\Resources\AkunResource;
 use Filament\Actions;
+use App\Filament\Resources\AkunResource;
 use Filament\Resources\Pages\EditRecord;
 
 class EditAkun extends EditRecord
@@ -13,7 +13,7 @@ class EditAkun extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
 }

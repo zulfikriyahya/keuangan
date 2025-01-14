@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\PembayaranResource\Pages;
 
-use App\Filament\Resources\PembayaranResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\PembayaranResource;
 
 class EditPembayaran extends EditRecord
 {
@@ -13,7 +13,7 @@ class EditPembayaran extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
 }

@@ -2,16 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PembayaranResource\Pages;
-use App\Filament\Resources\PembayaranResource\RelationManagers;
-use App\Models\Pembayaran;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Bulan;
+use Filament\Forms\Form;
+use App\Models\Pembayaran;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PembayaranResource\Pages;
+use App\Filament\Resources\PembayaranResource\RelationManagers;
 
 class PembayaranResource extends Resource
 {
@@ -23,28 +26,60 @@ class PembayaranResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
-                    ->required(),
-                Forms\Components\TextInput::make('kode')
-                    ->required(),
-                Forms\Components\DatePicker::make('tanggal')
-                    ->required(),
-                Forms\Components\Select::make('jenis_pembayaran_id')
-                    ->relationship('jenisPembayaran', 'id')
-                    ->required(),
-                Forms\Components\TextInput::make('deskripsi'),
-                Forms\Components\Select::make('periode_id')
-                    ->relationship('periode', 'id')
-                    ->required(),
-                Forms\Components\TextInput::make('nominal')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('kwitansi'),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\Select::make('siswa_id')
-                    ->relationship('siswa', 'id')
-                    ->required(),
+                Section::make('Informasi Pembayaran')
+                    ->schema([
+                        Forms\Components\DatePicker::make('tanggal')
+                            ->required(),
+                        Forms\Components\Select::make('jenis_pembayaran_id')
+                            ->relationship('jenisPembayaran', 'nama')
+                            ->required(),
+                        Forms\Components\TextInput::make('deskripsi'),
+
+
+
+
+
+
+
+
+
+                        // seharusnya Periode dihilangkan, diganti dengan bulan dan tahun
+                        Forms\Components\Select::make('periode_id')
+                            ->relationship('periode', 'bulan_id')
+                            ->required(),
+
+
+
+
+
+
+
+
+                        Forms\Components\TextInput::make('nominal')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\FileUpload::make('kwitansi')
+                            ->image()
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                null,
+                                '1:1' => '1:1',
+                                '4:3' => '4:3',
+                                '3:4' => '3:4',
+                                '9:16' => '9:16',
+                                '16:9' => '16:9',
+                            ]),
+                        Forms\Components\TextInput::make('status')
+                            ->required(),
+                        Forms\Components\Select::make('siswa_id')
+                            ->relationship('siswa', 'nama')
+                            ->required(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ])
             ]);
     }
 
@@ -52,30 +87,23 @@ class PembayaranResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kode')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jenisPembayaran.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('jenisPembayaran.nama')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('periode.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('periode.nama')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nominal')
                     ->numeric()
+                    ->prefix('Rp.')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('kwitansi')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('kwitansi'),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('siswa.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('siswa.nama')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -90,7 +118,10 @@ class PembayaranResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

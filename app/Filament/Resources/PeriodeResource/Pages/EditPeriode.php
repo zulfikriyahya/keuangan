@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\PeriodeResource\Pages;
 
-use App\Filament\Resources\PeriodeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\PeriodeResource;
 
 class EditPeriode extends EditRecord
 {
@@ -13,7 +13,7 @@ class EditPeriode extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
 }

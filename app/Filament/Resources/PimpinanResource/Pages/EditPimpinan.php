@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\PimpinanResource\Pages;
 
-use App\Filament\Resources\PimpinanResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\PimpinanResource;
 
 class EditPimpinan extends EditRecord
 {
@@ -13,7 +13,7 @@ class EditPimpinan extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\KelasTahunResource\Pages;
 
-use App\Filament\Resources\KelasTahunResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\KelasTahunResource;
 
 class EditKelasTahun extends EditRecord
 {
@@ -13,7 +13,7 @@ class EditKelasTahun extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
 }

@@ -15,8 +15,6 @@ return new class extends Migration
 
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('kode');
             $table->date('tanggal');
             $table->foreignId('jenis_pembayaran_id')->constrained('jenis_pembayarans')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('deskripsi')->nullable();
@@ -24,7 +22,7 @@ return new class extends Migration
             $table->integer('nominal');
             $table->string('kwitansi')->nullable();
             $table->enum('status', ["Lunas", "Terhutang"]);
-            $table->foreignId('siswa_id');
+            $table->foreignId('siswa_id')->constrained('siswas')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
 

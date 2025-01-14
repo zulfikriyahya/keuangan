@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PengeluaranResource\Pages;
-use App\Filament\Resources\PengeluaranResource\RelationManagers;
-use App\Models\Pengeluaran;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Pengeluaran;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PengeluaranResource\Pages;
+use App\Filament\Resources\PengeluaranResource\RelationManagers;
 
 class PengeluaranResource extends Resource
 {
@@ -23,23 +24,31 @@ class PengeluaranResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
-                    ->required(),
-                Forms\Components\TextInput::make('kode')
-                    ->required(),
-                Forms\Components\DatePicker::make('tanggal')
-                    ->required(),
-                Forms\Components\Select::make('periode_id')
-                    ->relationship('periode', 'id')
-                    ->required(),
-                Forms\Components\TextInput::make('nominal')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('kwitansi'),
-                Forms\Components\Select::make('jenis_pengeluaran_id')
-                    ->relationship('jenisPengeluaran', 'id')
-                    ->required(),
-                Forms\Components\TextInput::make('deskripsi'),
+                Section::make('Informasi Pengguna')
+                    ->schema([
+                        Forms\Components\TextInput::make('nama')
+                            ->required(),
+                        Forms\Components\TextInput::make('kode')
+                            ->required(),
+                        Forms\Components\DatePicker::make('tanggal')
+                            ->required(),
+                        Forms\Components\Select::make('periode_id')
+                            ->relationship('periode', 'id')
+                            ->required(),
+                        Forms\Components\TextInput::make('nominal')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('kwitansi'),
+                        Forms\Components\Select::make('jenis_pengeluaran_id')
+                            ->relationship('jenisPengeluaran', 'id')
+                            ->required(),
+                        Forms\Components\TextInput::make('deskripsi'),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ])
             ]);
     }
 
@@ -54,7 +63,7 @@ class PengeluaranResource extends Resource
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('periode.id')
+                Tables\Columns\TextColumn::make('periode.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nominal')
@@ -62,7 +71,7 @@ class PengeluaranResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kwitansi')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('jenisPengeluaran.id')
+                Tables\Columns\TextColumn::make('jenisPengeluaran.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi')
@@ -80,7 +89,10 @@ class PengeluaranResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

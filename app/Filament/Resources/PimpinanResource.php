@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use App\Models\Bendahara;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PimpinanResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -24,18 +25,27 @@ class PimpinanResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
-                    ->required(),
-                Forms\Components\TextInput::make('foto'),
-                Forms\Components\TextInput::make('nip'),
-                Forms\Components\DatePicker::make('periode_awal'),
-                Forms\Components\DatePicker::make('periode_akhir'),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\TextInput::make('tte'),
-                Forms\Components\TextInput::make('telepon')
-                    ->tel()
-                    ->required(),
+                Section::make('Informasi Pengguna')
+                    ->schema([
+                        Forms\Components\TextInput::make('nama')
+                            ->required(),
+                        Forms\Components\TextInput::make('foto'),
+                        Forms\Components\TextInput::make('nip'),
+                        Forms\Components\DatePicker::make('periode_awal'),
+                        Forms\Components\DatePicker::make('periode_akhir'),
+                        Forms\Components\TextInput::make('status')
+                            ->required(),
+                        Forms\Components\TextInput::make('tte'),
+                        Forms\Components\TextInput::make('telepon')
+                            ->tel()
+                            ->required(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ])
+
             ]);
     }
 
@@ -74,7 +84,10 @@ class PimpinanResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

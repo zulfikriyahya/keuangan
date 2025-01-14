@@ -9,10 +9,16 @@ use App\Models\Periode;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Section;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PeriodeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 use App\Filament\Resources\PeriodeResource\RelationManagers;
+use App\Filament\Resources\PeriodeResourcesResource\RelationManagers\PemasukansRelationManager;
+
 
 class PeriodeResource extends Resource
 {
@@ -24,12 +30,29 @@ class PeriodeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('tahun_id')
-                    ->relationship('tahun', 'nama')
-                    ->required(),
-                Forms\Components\Select::make('bulan_id')
-                    ->relationship('bulan', 'nama')
-                    ->required(),
+                Section::make('Informasi Pengguna')
+                    ->schema([
+                        Forms\Components\Select::make('tahun_id')
+                            ->relationship('tahun', 'nama')
+                            ->required()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('nama')
+                                    ->label('Tahun')
+                                    ->required()
+                                    ->maxLength(4)
+                                    ->minLength(4),
+                            ]),
+                        Forms\Components\Select::make('bulan_id')
+                            ->relationship('bulan', 'nama')
+                            ->required()
+                            ->preload(3)
+                            ->searchable(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ])
             ]);
     }
 
@@ -38,11 +61,13 @@ class PeriodeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('tahun.nama')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Tahun')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('bulan.nama')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Bulan')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -53,10 +78,16 @@ class PeriodeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('Tahun')
+                    ->relationship('tahun', 'nama'),
+                SelectFilter::make('Bulan')
+                    ->relationship('bulan', 'nama'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
