@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\JenisPembayaranResource\Pages;
-use App\Models\JenisPembayaran;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\JenisPembayaran;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\JenisPembayaranResource\Pages;
 
 class JenisPembayaranResource extends Resource
 {
@@ -21,17 +21,17 @@ class JenisPembayaranResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Informasi Pengguna')
+                Section::make('Informasi Jenis Pembayaran')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required(),
                         Forms\Components\Select::make('akun_id')
-                            ->relationship('akun', 'id')
+                            ->relationship('akun', 'nama')
                             ->required(),
                         Forms\Components\TextInput::make('kode')
                             ->required(),
                         Forms\Components\Select::make('jurusan_id')
-                            ->relationship('jurusan', 'id')
+                            ->relationship('jurusan', 'nama')
                             ->required(),
                         Forms\Components\TextInput::make('deskripsi'),
                     ])
@@ -47,26 +47,11 @@ class JenisPembayaranResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('akun.nama')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('kode')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('jurusan.nama')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deskripsi')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('akun.nama'),
+                Tables\Columns\TextColumn::make('kode'),
+                Tables\Columns\TextColumn::make('jurusan.nama'),
+                Tables\Columns\TextColumn::make('deskripsi'),
             ])
             ->filters([
                 //

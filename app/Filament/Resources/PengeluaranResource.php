@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PengeluaranResource\Pages;
-use App\Models\Pengeluaran;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Pengeluaran;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\PengeluaranResource\Pages;
 
 class PengeluaranResource extends Resource
 {
@@ -21,7 +21,7 @@ class PengeluaranResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Informasi Pengguna')
+                Section::make('Informasi Pengeluaran')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required(),
@@ -29,15 +29,19 @@ class PengeluaranResource extends Resource
                             ->required(),
                         Forms\Components\DatePicker::make('tanggal')
                             ->required(),
-                        Forms\Components\Select::make('periode_id')
-                            ->relationship('periode', 'id')
+                        Forms\Components\Select::make('bulan_id')
+                            ->relationship('bulan', 'nama')
+                            ->required(),
+
+                        Forms\Components\Select::make('tahun_id')
+                            ->relationship('tahun', 'nama')
                             ->required(),
                         Forms\Components\TextInput::make('nominal')
                             ->required()
                             ->numeric(),
                         Forms\Components\TextInput::make('kwitansi'),
                         Forms\Components\Select::make('jenis_pengeluaran_id')
-                            ->relationship('jenisPengeluaran', 'id')
+                            ->relationship('jenis_pengeluarans', 'nama')
                             ->required(),
                         Forms\Components\TextInput::make('deskripsi'),
                     ])

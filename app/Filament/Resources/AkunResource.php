@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AkunResource\Pages;
-use App\Models\Akun;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Akun;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Filament\Resources\AkunResource\Pages;
 
 class AkunResource extends Resource
 {
@@ -43,20 +43,9 @@ class AkunResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
-                    ->label('Nama Akun')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kode')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('deskripsi')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Nama Akun'),
+                Tables\Columns\TextColumn::make('kode'),
+                Tables\Columns\TextColumn::make('deskripsi'),
             ])
             ->filters([
                 //

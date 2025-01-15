@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PemasukanResource\Pages;
-use App\Models\Pemasukan;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Pemasukan;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\PemasukanResource\Pages;
 
 class PemasukanResource extends Resource
 {
@@ -21,7 +21,7 @@ class PemasukanResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Informasi Pengguna')
+                Section::make('Informasi Pemasukan')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required(),
@@ -29,8 +29,12 @@ class PemasukanResource extends Resource
                             ->required(),
                         Forms\Components\DatePicker::make('tanggal')
                             ->required(),
-                        Forms\Components\Select::make('periode_id')
-                            ->relationship('periode', 'nama')
+                        Forms\Components\Select::make('bulan_id')
+                            ->relationship('bulan', 'nama')
+                            ->required(),
+
+                        Forms\Components\Select::make('tahun_id')
+                            ->relationship('tahun', 'nama')
                             ->required(),
                         Forms\Components\TextInput::make('nominal')
                             ->required()
@@ -53,34 +57,20 @@ class PemasukanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kode')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('kode'),
                 Tables\Columns\TextColumn::make('tanggal')
-                    ->date()
+                    ->date('d F Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('periode.nama')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('bulan.nama'),
+                Tables\Columns\TextColumn::make('tahun.nama'),
                 Tables\Columns\TextColumn::make('nominal')
+                    ->prefix('Rp. ')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('kwitansi')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('jenisPemasukan.nama')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deskripsi')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ImageColumn::make('kwitansi'),
+                Tables\Columns\TextColumn::make('jenisPemasukan.nama'),
+                Tables\Columns\TextColumn::make('deskripsi'),
             ])
             ->filters([
                 //

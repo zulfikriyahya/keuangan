@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KelasResource\Pages;
-use App\Models\Kelas;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Kelas;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\KelasResource\Pages;
 
 class KelasResource extends Resource
 {
@@ -21,7 +21,7 @@ class KelasResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Informasi Pengguna')
+                Section::make('Informasi Kelas')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required(),
@@ -30,7 +30,7 @@ class KelasResource extends Resource
                         Forms\Components\TextInput::make('jenjang')
                             ->required(),
                         Forms\Components\Select::make('jurusan_id')
-                            ->relationship('jurusan', 'id')
+                            ->relationship('jurusan', 'nama')
                             ->required(),
                     ])
                     ->columns([
@@ -45,23 +45,10 @@ class KelasResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tingkat')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('jenjang')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('jurusan.nama')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('tingkat'),
+                Tables\Columns\TextColumn::make('jenjang'),
+                Tables\Columns\TextColumn::make('jurusan.nama'),
             ])
             ->filters([
                 //

@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PembayaranResource\Pages;
-use App\Models\Bulan;
-use App\Models\Pembayaran;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Bulan;
+use Filament\Forms\Form;
+use App\Models\Pembayaran;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\PembayaranResource\Pages;
 
 class PembayaranResource extends Resource
 {
@@ -31,9 +31,12 @@ class PembayaranResource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('deskripsi'),
 
-                        // seharusnya Periode dihilangkan, diganti dengan bulan dan tahun
-                        Forms\Components\Select::make('periode_id')
-                            ->relationship('periode', 'bulan_id')
+                        Forms\Components\Select::make('bulan_id')
+                            ->relationship('bulan', 'nama')
+                            ->required(),
+
+                        Forms\Components\Select::make('tahun_id')
+                            ->relationship('tahun', 'nama')
                             ->required(),
 
                         Forms\Components\TextInput::make('nominal')
@@ -75,8 +78,8 @@ class PembayaranResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('periode.nama')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('bulan.nama'),
+                Tables\Columns\TextColumn::make('tahun.nama'),
                 Tables\Columns\TextColumn::make('nominal')
                     ->numeric()
                     ->prefix('Rp.')

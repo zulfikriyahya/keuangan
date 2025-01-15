@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\JurusanResource\Pages;
-use App\Models\Jurusan;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Jurusan;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\JurusanResource\Pages;
 
 class JurusanResource extends Resource
 {
@@ -21,7 +21,7 @@ class JurusanResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Informasi Pengguna')
+                Section::make('Informasi Jurusan')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required(),
@@ -40,18 +40,8 @@ class JurusanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kode')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('kode'),
             ])
             ->filters([
                 //
