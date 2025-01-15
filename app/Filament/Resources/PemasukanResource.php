@@ -2,19 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PemasukanResource\Pages;
-use App\Models\Pemasukan;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Pemasukan;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\PemasukanResource\Pages;
 
 class PemasukanResource extends Resource
 {
     protected static ?string $model = Pemasukan::class;
+    protected static ?string $navigationLabel = 'Pemasukan';
 
+    protected static ?string $label = 'Jurnal Pemasukan';
+
+    protected static ?string $navigationGroup = 'Jurnal Keuangan';
+
+    protected static ?int $navigationSort = 0;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

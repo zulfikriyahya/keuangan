@@ -2,19 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PembayaranResource\Pages;
-use App\Models\Pembayaran;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Pembayaran;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\PembayaranResource\Pages;
 
 class PembayaranResource extends Resource
 {
     protected static ?string $model = Pembayaran::class;
+    protected static ?string $navigationLabel = 'Pembayaran';
 
+    protected static ?string $label = 'Jurnal Pembayaran';
+
+    protected static ?string $navigationGroup = 'Jurnal Keuangan';
+
+    protected static ?int $navigationSort = 1;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -40,7 +46,9 @@ class PembayaranResource extends Resource
 
                         Forms\Components\TextInput::make('nominal')
                             ->required()
+                            ->prefix('Rp. ')
                             ->numeric(),
+
                         Forms\Components\FileUpload::make('kwitansi')
                             ->image()
                             ->imageEditor()
@@ -52,8 +60,10 @@ class PembayaranResource extends Resource
                                 '9:16' => '9:16',
                                 '16:9' => '16:9',
                             ]),
+
                         Forms\Components\TextInput::make('status')
                             ->required(),
+
                         Forms\Components\Select::make('siswa_id')
                             ->relationship('siswa', 'nama')
                             ->required(),
@@ -81,7 +91,7 @@ class PembayaranResource extends Resource
                 Tables\Columns\TextColumn::make('tahun.nama'),
                 Tables\Columns\TextColumn::make('nominal')
                     ->numeric()
-                    ->prefix('Rp.')
+                    ->prefix('Rp. ')
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('kwitansi'),
                 Tables\Columns\TextColumn::make('status')

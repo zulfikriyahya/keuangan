@@ -2,18 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\JenisPembayaranResource\Pages;
-use App\Models\JenisPembayaran;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\JenisPembayaran;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\JenisPembayaranResource\Pages;
 
 class JenisPembayaranResource extends Resource
 {
     protected static ?string $model = JenisPembayaran::class;
+
+    protected static ?string $navigationLabel = 'Jenis Pembayaran';
+
+    protected static ?string $label = 'Jenis Pembayaran';
+
+    protected static ?string $navigationGroup = 'Keuangan';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

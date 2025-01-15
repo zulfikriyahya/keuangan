@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BendaharaResource\Pages;
-use App\Models\Bendahara;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Bendahara;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\FileUpload;
+use App\Filament\Resources\BendaharaResource\Pages;
 
 class BendaharaResource extends Resource
 {
@@ -22,7 +22,7 @@ class BendaharaResource extends Resource
 
     protected static ?string $navigationGroup = 'Referensi';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -102,15 +102,19 @@ class BendaharaResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Lengkap')
-                    ->description(fn (Bendahara $record) => 'NIP '.$record->nip),
+                    ->description(function (Bendahara $record) {
+                        if ($record->nip) {
+                            return 'NIP ' . ($record->nip);
+                        }
+                        return '';
+                    }),
                 Tables\Columns\TextColumn::make('periode_awal')
                     ->label('Periode')
                     ->date('d F Y')
                     ->description(function (Bendahara $record) {
                         if ($record->periode_akhir) {
-                            return 'Hingga: '.date('d F Y', strtotime($record->periode_akhir));
+                            return 'Hingga: ' . date('d F Y', strtotime($record->periode_akhir));
                         }
-
                         return 'Hingga: (Sekarang)';
                     }),
                 Tables\Columns\TextColumn::make('telepon')
@@ -118,7 +122,7 @@ class BendaharaResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray'
                     }),

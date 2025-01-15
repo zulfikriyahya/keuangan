@@ -2,18 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KelasResource\Pages;
-use App\Models\Kelas;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Kelas;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\KelasResource\Pages;
 
 class KelasResource extends Resource
 {
     protected static ?string $model = Kelas::class;
+
+    protected static ?string $navigationLabel = 'Rombel/Kelas';
+
+    protected static ?string $label = 'Rombel/Kelas';
+
+    protected static ?string $navigationGroup = 'Master';
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

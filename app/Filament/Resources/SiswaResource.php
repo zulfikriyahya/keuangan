@@ -2,18 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SiswaResource\Pages;
-use App\Models\Siswa;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Siswa;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\SiswaResource\Pages;
 
 class SiswaResource extends Resource
 {
     protected static ?string $model = Siswa::class;
+
+    protected static ?string $navigationLabel = 'Siswa';
+
+    protected static ?string $label = 'Siswa';
+
+    protected static ?string $navigationGroup = 'Master';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -34,7 +42,7 @@ class SiswaResource extends Resource
                         Forms\Components\Select::make('kelas_id')
                             ->label('Kelas')
                             ->relationship('kelas', 'nama')
-                            ->multiple()
+                            // ->multiple()
                             ->preload(5)
                             ->searchable()
                             ->required(),
@@ -85,7 +93,7 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'grey',
                         'Mutasi' => 'warning',

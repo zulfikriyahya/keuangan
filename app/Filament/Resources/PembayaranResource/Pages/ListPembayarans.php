@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\PembayaranResource\Pages;
 
-use App\Filament\Resources\PembayaranResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\PembayaranResource;
 
 class ListPembayarans extends ListRecords
 {
@@ -13,7 +13,8 @@ class ListPembayarans extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->createAnother(false),
         ];
     }
 }

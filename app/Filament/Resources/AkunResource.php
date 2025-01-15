@@ -2,17 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AkunResource\Pages;
-use App\Models\Akun;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Akun;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Filament\Resources\AkunResource\Pages;
 
 class AkunResource extends Resource
 {
     protected static ?string $model = Akun::class;
+
+    protected static ?string $navigationLabel = 'Akun';
+
+    protected static ?string $label = 'Akun Keuangan';
+
+    protected static ?string $navigationGroup = 'Keuangan';
+
+    protected static ?int $navigationSort = 0;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -28,8 +36,10 @@ class AkunResource extends Resource
                             ->label('Nama Akun')
                             ->required(),
                         Forms\Components\TextInput::make('kode')
+                            ->label('Kode')
                             ->required(),
-                        Forms\Components\TextInput::make('deskripsi'),
+                        Forms\Components\Textarea::make('deskripsi')
+                            ->label('Deskripsi'),
                     ])
                     ->columns([
                         'sm' => '2',
@@ -44,8 +54,11 @@ class AkunResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Akun'),
-                Tables\Columns\TextColumn::make('kode'),
-                Tables\Columns\TextColumn::make('deskripsi'),
+                Tables\Columns\TextColumn::make('kode')
+                    ->label('Kode'),
+                Tables\Columns\TextColumn::make('deskripsi')
+                    ->label('Deskripsi')
+                    ->wrap(),
             ])
             ->filters([
                 //

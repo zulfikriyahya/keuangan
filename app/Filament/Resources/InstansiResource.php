@@ -2,14 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\InstansiResource\Pages;
-use App\Models\Instansi;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Instansi;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\FileUpload;
+use App\Filament\Resources\InstansiResource\Pages;
 
 class InstansiResource extends Resource
 {
@@ -21,7 +22,7 @@ class InstansiResource extends Resource
 
     protected static ?string $navigationGroup = 'Referensi';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -90,13 +91,138 @@ class InstansiResource extends Resource
                             ->label('Nama Pimpinan')
                             ->relationship('pimpinan', 'nama')
                             ->required()
-                            ->native(false),
+                            ->native(false)
+                            ->createOptionForm([
+                                Section::make('Informasi Pimpinan')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('nama')
+                                            ->label('Nama Lengkap')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('nip')
+                                            ->label('NIP')
+                                            ->minLength(18)
+                                            ->maxLength(18),
+                                        Forms\Components\TextInput::make('telepon')
+                                            ->label('Nomor Telepon')
+                                            ->tel()
+                                            ->required(),
+                                        Forms\Components\DatePicker::make('periode_awal')
+                                            ->label('Periode Awal')
+                                            ->maxDate(now()),
+                                        Forms\Components\DatePicker::make('periode_akhir')
+                                            ->label('Periode Akhir')
+                                            ->minDate(now()),
+                                        Forms\Components\Select::make('status')
+                                            ->label('Status')
+                                            ->options([
+                                                'Aktif' => 'Aktif',
+                                                'Nonaktif' => 'Nonaktif',
+                                            ])
+                                            ->default('Aktif')
+                                            ->required(),
+                                        FileUpload::make('foto')
+                                            ->label('Foto')
+                                            ->image()
+                                            ->imageEditor()
+                                            ->imageEditorAspectRatios([
+                                                null,
+                                                '1:1' => '1:1',
+                                                '3:4' => '3:4',
+                                                '4:3' => '4:3',
+                                            ])
+                                            ->minSize(10)
+                                            ->maxSize(1024)
+                                            ->directory('img/foto')
+                                            ->fetchFileInformation(false),
+                                        FileUpload::make('tte')
+                                            ->label('Tanda Tangan Elektronik')
+                                            ->image()
+                                            ->imageEditor()
+                                            ->imageEditorAspectRatios([
+                                                null,
+                                                '1:1' => '1:1',
+                                                '3:4' => '3:4',
+                                                '4:3' => '4:3',
+                                            ])
+                                            ->minSize(10)
+                                            ->maxSize(1024)
+                                            ->directory('img/tte')
+                                            ->fetchFileInformation(false),
+                                    ])
+                                    ->columns([
+                                        'sm' => 1,
+                                        'lg' => 2,
+                                        'xl' => 3,
+                                    ]),
+                            ]),
                         Forms\Components\Select::make('bendahara_id')
                             ->label('Nama Bendahara')
                             ->relationship('bendahara', 'nama')
                             ->required()
-                            ->native(false),
+                            ->native(false)
+                            ->createOptionForm([
+                                Section::make('Informasi Bendahara')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('nama')
+                                            ->label('Nama Lengkap')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('nip')
+                                            ->label('NIP')
+                                            ->minLength(18)
+                                            ->maxLength(18),
+                                        Forms\Components\TextInput::make('telepon')
+                                            ->label('Nomor Telepon')
+                                            ->tel()
+                                            ->required(),
+                                        Forms\Components\DatePicker::make('periode_awal')
+                                            ->label('Periode Awal'),
+                                        Forms\Components\DatePicker::make('periode_akhir')
+                                            ->label('Periode Akhir'),
+                                        Forms\Components\Select::make('status')
+                                            ->label('Status')
+                                            ->options([
+                                                'Aktif' => 'Aktif',
+                                                'Nonaktif' => 'Nonaktif',
+                                            ])
+                                            ->default('Aktif')
+                                            ->required(),
+                                        FileUpload::make('foto')
+                                            ->label('Foto')
+                                            ->image()
+                                            ->imageEditor()
+                                            ->imageEditorAspectRatios([
+                                                null,
+                                                '1:1' => '1:1',
+                                                '3:4' => '3:4',
+                                                '4:3' => '4:3',
+                                            ])
+                                            ->minSize(10)
+                                            ->maxSize(1024)
+                                            ->directory('img/foto')
+                                            ->fetchFileInformation(false),
+                                        FileUpload::make('tte')
+                                            ->label('Tanda Tangan Elektronik')
+                                            ->image()
+                                            ->imageEditor()
+                                            ->imageEditorAspectRatios([
+                                                null,
+                                                '1:1' => '1:1',
+                                                '3:4' => '3:4',
+                                                '4:3' => '4:3',
+                                            ])
+                                            ->minSize(10)
+                                            ->maxSize(1024)
+                                            ->directory('img/tte')
+                                            ->fetchFileInformation(false),
+                                    ])
+                                    ->columns([
+                                        'sm' => 1,
+                                        'lg' => 2,
+                                        'xl' => 3,
+                                    ]),
+                            ]),
                     ])
+                    ->disabledOn('edit')
                     ->columns([
                         'sm' => 1,
                         'lg' => 2,
