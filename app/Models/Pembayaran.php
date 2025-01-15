@@ -20,7 +20,9 @@ class Pembayaran extends Model
         'tanggal',
         'jenis_pembayaran_id',
         'deskripsi',
-        'periode_id',
+        // 'periode_id',
+        'tahun_id',
+        'bulan_id',
         'nominal',
         'kwitansi',
         'status',
@@ -50,9 +52,17 @@ class Pembayaran extends Model
         return $this->belongsTo(JenisPembayaran::class);
     }
 
-    public function periode(): BelongsTo
+    // public function periode(): BelongsTo
+    // {
+    //     return $this->belongsTo(Periode::class);
+    // }
+    public function tahun(): BelongsTo
     {
-        return $this->belongsTo(Periode::class);
+        return $this->belongsTo(Tahun::class);
+    }
+    public function bulan(): BelongsTo
+    {
+        return $this->belongsTo(Bulan::class);
     }
 
     public function siswa(): BelongsTo

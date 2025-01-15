@@ -27,22 +27,39 @@ class SiswaResource extends Resource
                 Section::make('Informasi Siswa')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
+                            ->label('Nama Siswa')
                             ->required(),
-                        Forms\Components\TextInput::make('foto'),
+                        Forms\Components\TextInput::make('foto')
+                            ->label('Foto'),
                         Forms\Components\DatePicker::make('diterima_tanggal')
+                            ->label('Tanggal Diterima')
                             ->required(),
-                        Forms\Components\TextInput::make('diterima_dikelas')
+                        Forms\Components\Select::make('kelas_id')
+                            ->label('Kelas')
+                            ->relationship('kelas', 'nama')
+                            ->multiple()
+                            ->preload(5)
+                            ->searchable()
+                            ->required(),
+                        Forms\Components\Select::make('status')
+                            ->label('Status')
                             ->required()
-                            ->numeric(),
-                        Forms\Components\Select::make('kelas_tahun_id')
-                            ->relationship('kelasTahun', 'id')
-                            ->required(),
-                        Forms\Components\TextInput::make('status')
-                            ->required(),
-                        Forms\Components\TextInput::make('alamat'),
-                        Forms\Components\TextInput::make('nama_ibu'),
-                        Forms\Components\TextInput::make('nama_ayah'),
+                            ->options([
+                                'Aktif' => 'Aktif',
+                                'Nonaktif' => 'Nonaktif',
+                                'Mutasi' => 'Mutasi',
+                                'Alumni' => 'Alumni',
+                                'Drop Out' => 'Drop Out',
+                            ])
+                            ->default('Aktif'),
+                        Forms\Components\TextInput::make('alamat')
+                            ->label('Alamat'),
+                        Forms\Components\TextInput::make('nama_ibu')
+                            ->label('Nama Ibu'),
+                        Forms\Components\TextInput::make('nama_ayah')
+                            ->label('Nama Ayah'),
                         Forms\Components\TextInput::make('telepon')
+                            ->label('Nomor Telepon')
                             ->tel(),
                     ])
                     ->columns([
@@ -57,36 +74,35 @@ class SiswaResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('foto')
+                    ->label('Foto')
+                    ->circular()
+                    ->defaultImageUrl('/default/foto.png'),
                 Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
+                    ->label('Nama Siswa'),
                 Tables\Columns\TextColumn::make('diterima_tanggal')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('diterima_dikelas')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('kelasTahun.nama')
-                    ->numeric()
-                    ->sortable(),
+                    ->date('d F Y')
+                    ->label('Tanggal Diterima'),
+                Tables\Columns\TextColumn::make('kelas.nama')
+                    ->label('Kelas'),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('foto')
-                    ->searchable(),
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn(String $state): String => match ($state) {
+                        'Aktif' => 'success',
+                        'Nonaktif' => 'grey',
+                        'Mutasi' => 'warning',
+                        'Alumni' => 'violet',
+                        'Drop Out' => 'danger',
+                    }),
                 Tables\Columns\TextColumn::make('alamat')
-                    ->searchable(),
+                    ->label('Alamat'),
                 Tables\Columns\TextColumn::make('nama_ibu')
-                    ->searchable(),
+                    ->label('Nama Ibu'),
                 Tables\Columns\TextColumn::make('nama_ayah')
-                    ->searchable(),
+                    ->label('Nama Ayah'),
                 Tables\Columns\TextColumn::make('telepon')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
+                    ->label('Nomor Telepon')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

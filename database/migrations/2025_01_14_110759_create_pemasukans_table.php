@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('nama');
             $table->string('kode');
             $table->date('tanggal');
-            $table->foreignId('periode_id')->constrained('periodes')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('tahun_id')->constrained('tahuns')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('bulan_id')->constrained('bulans')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('nominal');
             $table->string('kwitansi')->nullable();
             $table->foreignId('jenis_pemasukan_id')->constrained('jenis_pemasukans')->cascadeOnDelete()->cascadeOnUpdate();

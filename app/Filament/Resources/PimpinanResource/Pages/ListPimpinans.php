@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\PimpinanResource\Pages;
 
-use App\Filament\Resources\PimpinanResource;
 use Filament\Actions;
+use App\Models\Pimpinan;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\PimpinanResource;
 
 class ListPimpinans extends ListRecords
 {
@@ -12,6 +13,9 @@ class ListPimpinans extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        if (Pimpinan::count() > 0) {
+            return [];
+        }
         return [
             Actions\CreateAction::make(),
         ];

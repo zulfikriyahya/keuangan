@@ -18,6 +18,11 @@ class InstansiResource extends Resource
 {
     protected static ?string $model = Instansi::class;
 
+    protected static ?string $navigationLabel = 'Instansi';
+    protected static ?string $label = 'Instansi';
+    protected static ?string $navigationGroup = 'Referensi';
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -27,12 +32,34 @@ class InstansiResource extends Resource
                 Section::make('Informasi Instansi')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
+                            ->label('Nama Instansi')
                             ->required(),
-                        Forms\Components\TextInput::make('npsn'),
-                        Forms\Components\TextInput::make('nss'),
-                        Forms\Components\TextInput::make('logo'),
-                        Forms\Components\TextInput::make('alamat'),
-                        Forms\Components\TextInput::make('kode_pos'),
+                        Forms\Components\TextInput::make('npsn')
+                            ->label('NPSN')
+                            ->placeholder('Nomor Pokok Sekolah Nasional'),
+                        Forms\Components\TextInput::make('nss')
+                            ->label('NSS/NSM')
+                            ->placeholder('Nomor Statistik Sekolah/Madrasah'),
+                        Forms\Components\FileUpload::make('logo')
+                            ->label('Logo')
+                            ->image()
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                null,
+                                '1:1' => '1:1',
+                                '3:4' => '3:4',
+                                '4:3' => '4:3',
+                            ])
+                            ->minSize(10)
+                            ->maxSize(1024)
+                            ->directory('img/logo')
+                            ->fetchFileInformation(false),
+                        Forms\Components\TextInput::make('alamat')
+                            ->label('Alamat'),
+                        Forms\Components\TextInput::make('kode_pos')
+                            ->label('Kode Pos')
+                            ->minLength(5)
+                            ->maxLength(5),
                     ])
                     ->columns([
                         'sm' => 1,
@@ -43,10 +70,13 @@ class InstansiResource extends Resource
                     ->collapsed()
                     ->schema([
                         Forms\Components\TextInput::make('email')
+                            ->label('Email')
                             ->email(),
                         Forms\Components\TextInput::make('telepon')
+                            ->label('Nomor Telepon')
                             ->tel(),
-                        Forms\Components\TextInput::make('website'),
+                        Forms\Components\TextInput::make('website')
+                            ->label('Website'),
                     ])
                     ->columns([
                         'sm' => 1,
@@ -57,11 +87,15 @@ class InstansiResource extends Resource
                     ->collapsed()
                     ->schema([
                         Forms\Components\Select::make('pimpinan_id')
+                            ->label('Nama Pimpinan')
                             ->relationship('pimpinan', 'nama')
-                            ->required(),
+                            ->required()
+                            ->native(false),
                         Forms\Components\Select::make('bendahara_id')
+                            ->label('Nama Bendahara')
                             ->relationship('bendahara', 'nama')
-                            ->required(),
+                            ->required()
+                            ->native(false),
                     ])
                     ->columns([
                         'sm' => 1,
@@ -71,9 +105,12 @@ class InstansiResource extends Resource
                 Section::make('Informasi Rekening')
                     ->collapsed()
                     ->schema([
-                        Forms\Components\TextInput::make('nama_bank'),
-                        Forms\Components\TextInput::make('nama_rekening'),
-                        Forms\Components\TextInput::make('nomor_rekening'),
+                        Forms\Components\TextInput::make('nama_bank')
+                            ->label('Nama Bank'),
+                        Forms\Components\TextInput::make('nama_rekening')
+                            ->label('Nama Rekening'),
+                        Forms\Components\TextInput::make('nomor_rekening')
+                            ->label('Nomor Rekening'),
                     ])
                     ->columns([
                         'sm' => 1,
@@ -88,43 +125,44 @@ class InstansiResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('logo')
+                    ->label('Logo')
+                    ->defaultImageUrl('/default/foto.png'),
                 Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
+                    ->label('Nama Instansi'),
                 Tables\Columns\TextColumn::make('npsn')
-                    ->searchable(),
+                    ->label('NPSN'),
                 Tables\Columns\TextColumn::make('nss')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('logo')
-                    ->searchable(),
+                    ->label('NSS/NSM'),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('telepon')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('website')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('alamat')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kode_pos')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('pimpinan.nama')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('bendahara.nama')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('nama_bank')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nama_rekening')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('nomor_rekening')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
+                    ->label('Email')
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
+                Tables\Columns\TextColumn::make('telepon')
+                    ->label('Nomor Telepon')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('website')
+                    ->label('Website')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('alamat')
+                    ->label('Alamat')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('kode_pos')
+                    ->label('Kode Pos')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('pimpinan.nama')
+                    ->label('Nama Pimpinan')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('bendahara.nama')
+                    ->label('Nama Bendahara')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nama_bank')
+                    ->label('Nama Bank')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nama_rekening')
+                    ->label('Nama Rekening')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nomor_rekening')
+                    ->label('Nomor Rekening')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -133,13 +171,10 @@ class InstansiResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\BulkActionGroup::make([]),
             ]);
     }
 
@@ -154,8 +189,6 @@ class InstansiResource extends Resource
     {
         return [
             'index' => Pages\ListInstansis::route('/'),
-            'create' => Pages\CreateInstansi::route('/create'),
-            'edit' => Pages\EditInstansi::route('/{record}/edit'),
         ];
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\BendaharaResource\Pages;
 
-use App\Filament\Resources\BendaharaResource;
 use Filament\Actions;
+use App\Models\Bendahara;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\BendaharaResource;
 
 class ListBendaharas extends ListRecords
 {
@@ -12,6 +13,9 @@ class ListBendaharas extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        if (Bendahara::count() > 0) {
+            return [];
+        }
         return [
             Actions\CreateAction::make(),
         ];

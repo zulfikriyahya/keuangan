@@ -18,7 +18,8 @@ return new class extends Migration
             $table->date('tanggal');
             $table->foreignId('jenis_pembayaran_id')->constrained('jenis_pembayarans')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('deskripsi')->nullable();
-            $table->foreignId('periode_id')->constrained('periodes')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('tahun_id')->constrained('tahuns')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('bulan_id')->constrained('bulans')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('nominal');
             $table->string('kwitansi')->nullable();
             $table->enum('status', ["Lunas", "Terhutang"]);

@@ -19,15 +19,13 @@ class Siswa extends Model
     protected $fillable = [
         'nama',
         'diterima_tanggal',
-        'diterima_dikelas',
-        'kelas_tahun_id',
+        'kelas_id',
         'status',
         'foto',
         'alamat',
         'nama_ibu',
         'nama_ayah',
         'telepon',
-        'kelas_id',
     ];
 
     /**
@@ -38,8 +36,6 @@ class Siswa extends Model
     protected $casts = [
         'id' => 'integer',
         'diterima_tanggal' => 'date',
-        'diterima_dikelas' => 'integer',
-        'kelas_tahun_id' => 'array',
         'kelas_id' => 'integer',
     ];
 
@@ -48,12 +44,7 @@ class Siswa extends Model
         return $this->hasMany(Pembayaran::class);
     }
 
-    public function kelasTahun(): BelongsTo
-    {
-        return $this->belongsTo(KelasTahun::class);
-    }
-
-    public function diterimaDikelas(): BelongsTo
+    public function kelas(): BelongsTo
     {
         return $this->belongsTo(Kelas::class);
     }
