@@ -2,19 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Bulan;
-use Filament\Forms\Form;
-use App\Models\Pembayaran;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PembayaranResource\Pages;
-use App\Filament\Resources\PembayaranResource\RelationManagers;
+use App\Models\Bulan;
+use App\Models\Pembayaran;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class PembayaranResource extends Resource
 {
@@ -35,25 +31,10 @@ class PembayaranResource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('deskripsi'),
 
-
-
-
-
-
-
-
-
                         // seharusnya Periode dihilangkan, diganti dengan bulan dan tahun
                         Forms\Components\Select::make('periode_id')
                             ->relationship('periode', 'bulan_id')
                             ->required(),
-
-
-
-
-
-
-
 
                         Forms\Components\TextInput::make('nominal')
                             ->required()
@@ -79,7 +60,7 @@ class PembayaranResource extends Resource
                         'sm' => 1,
                         'lg' => 2,
                         'xl' => 3,
-                    ])
+                    ]),
             ]);
     }
 
@@ -121,7 +102,7 @@ class PembayaranResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

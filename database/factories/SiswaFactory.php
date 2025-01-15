@@ -2,12 +2,11 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Kela;
 use App\Models\Kelas;
 use App\Models\KelasTahun;
 use App\Models\Siswa;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SiswaFactory extends Factory
 {
@@ -28,7 +27,7 @@ class SiswaFactory extends Factory
             'diterima_tanggal' => $this->faker->date(),
             'diterima_dikelas' => Kela::factory()->create()->diterima_dikelas,
             'kelas_tahun_id' => KelasTahun::factory(),
-            'status' => $this->faker->randomElement(["Aktif","Nonaktif"]),
+            'status' => $this->faker->randomElement(['Aktif', 'Nonaktif']),
             'foto' => $this->faker->word(),
             'alamat' => $this->faker->word(),
             'nama_ibu' => $this->faker->word(),

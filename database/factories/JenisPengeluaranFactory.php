@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Akun;
 use App\Models\JenisPengeluaran;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class JenisPengeluaranFactory extends Factory
 {

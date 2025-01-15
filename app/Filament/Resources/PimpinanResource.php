@@ -2,27 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Pimpinan;
-use Filament\Forms\Form;
-use App\Models\Bendahara;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PimpinanResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\PimpinanResource\RelationManagers;
+use App\Models\Pimpinan;
+use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class PimpinanResource extends Resource
 {
     protected static ?string $model = Pimpinan::class;
 
     protected static ?string $navigationLabel = 'Pimpinan';
+
     protected static ?string $label = 'Pimpinan Instansi';
+
     protected static ?string $navigationGroup = 'Referensi';
+
     protected static ?int $navigationSort = 0;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -105,14 +104,15 @@ class PimpinanResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Lengkap')
-                    ->description(fn(Pimpinan $record) => 'NIP ' . $record->nip),
+                    ->description(fn (Pimpinan $record) => 'NIP '.$record->nip),
                 Tables\Columns\TextColumn::make('periode_awal')
                     ->label('Periode')
                     ->date('d F Y')
                     ->description(function (Pimpinan $record) {
                         if ($record->periode_akhir) {
-                            return 'Hingga: ' . date('d F Y', strtotime($record->periode_akhir));
+                            return 'Hingga: '.date('d F Y', strtotime($record->periode_akhir));
                         }
+
                         return 'Hingga: (Sekarang)';
                     }),
                 Tables\Columns\TextColumn::make('telepon')
@@ -120,7 +120,7 @@ class PimpinanResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray'
                     }),
@@ -133,7 +133,7 @@ class PimpinanResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),

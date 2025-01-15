@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Kas;
 use App\Models\Pemasukan;
 use App\Models\Pembayaran;
 use App\Models\Pengeluaran;
 use App\Models\Periode;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class KasFactory extends Factory
 {

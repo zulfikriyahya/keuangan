@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Bulan extends Model
 {
@@ -27,6 +27,7 @@ class Bulan extends Model
     protected $casts = [
         'id' => 'integer',
     ];
+
     public function pembayarans(): HasMany
     {
         return $this->hasMany(Pembayaran::class);

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\KelasResource\Pages;
 
+use App\Filament\Resources\KelasResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\KelasResource;
 
 class EditKelas extends EditRecord
 {

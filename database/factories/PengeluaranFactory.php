@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\JenisPengeluaran;
 use App\Models\Pengeluaran;
 use App\Models\Periode;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PengeluaranFactory extends Factory
 {

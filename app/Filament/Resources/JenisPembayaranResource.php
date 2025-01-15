@@ -2,17 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\JenisPembayaran;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\JenisPembayaranResource\Pages;
-use App\Filament\Resources\JenisPembayaranResource\RelationManagers;
+use App\Models\JenisPembayaran;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class JenisPembayaranResource extends Resource
 {
@@ -42,7 +39,7 @@ class JenisPembayaranResource extends Resource
                         'sm' => 1,
                         'lg' => 2,
                         'xl' => 3,
-                    ])
+                    ]),
             ]);
     }
 
@@ -78,7 +75,7 @@ class JenisPembayaranResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

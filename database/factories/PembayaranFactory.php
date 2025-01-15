@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Siswa;
-use App\Models\Periode;
-use App\Models\Pembayaran;
-use Illuminate\Support\Str;
 use App\Models\JenisPembayaran;
+use App\Models\Pembayaran;
+use App\Models\Periode;
+use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PembayaranFactory extends Factory
@@ -30,7 +29,7 @@ class PembayaranFactory extends Factory
             'periode_id' => Periode::factory(),
             'nominal' => $this->faker->numberBetween(-10000, 10000),
             'kwitansi' => $this->faker->word(),
-            'status' => $this->faker->randomElement(["Lunas", "Terhutang"]),
+            'status' => $this->faker->randomElement(['Lunas', 'Terhutang']),
             'siswa_id' => Siswa::factory(),
         ];
     }

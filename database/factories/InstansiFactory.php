@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Bendahara;
 use App\Models\Instansi;
 use App\Models\Pimpinan;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InstansiFactory extends Factory
 {

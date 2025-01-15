@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\BendaharaResource\Pages;
 
-use Filament\Actions;
-use App\Models\Bendahara;
-use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\BendaharaResource;
+use App\Models\Bendahara;
+use Filament\Actions;
+use Filament\Resources\Pages\ListRecords;
 
 class ListBendaharas extends ListRecords
 {
@@ -16,6 +16,7 @@ class ListBendaharas extends ListRecords
         if (Bendahara::count() > 0) {
             return [];
         }
+
         return [
             Actions\CreateAction::make(),
         ];

@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Bendahara;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BendaharaFactory extends Factory
 {
@@ -26,7 +25,7 @@ class BendaharaFactory extends Factory
             'nip' => $this->faker->word(),
             'periode_awal' => $this->faker->date(),
             'periode_akhir' => $this->faker->date(),
-            'status' => $this->faker->randomElement(["Aktif","Nonaktif"]),
+            'status' => $this->faker->randomElement(['Aktif', 'Nonaktif']),
             'tte' => $this->faker->word(),
             'telepon' => $this->faker->word(),
         ];

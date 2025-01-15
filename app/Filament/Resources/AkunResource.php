@@ -2,16 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use App\Models\Akun;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\AkunResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\AkunResource\RelationManagers;
+use App\Models\Akun;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class AkunResource extends Resource
 {
@@ -37,7 +34,7 @@ class AkunResource extends Resource
                     ->columns([
                         'sm' => '2',
                         'lg' => '3',
-                    ])
+                    ]),
             ]);
     }
 
@@ -68,7 +65,7 @@ class AkunResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

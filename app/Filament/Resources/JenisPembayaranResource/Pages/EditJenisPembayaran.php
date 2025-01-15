@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\JenisPembayaranResource\Pages;
 
+use App\Filament\Resources\JenisPembayaranResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\JenisPembayaranResource;
 
 class EditJenisPembayaran extends EditRecord
 {

@@ -2,28 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use App\Models\Bendahara;
-use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\BendaharaResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\BendaharaResource\RelationManagers;
+use App\Models\Bendahara;
+use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class BendaharaResource extends Resource
 {
     protected static ?string $model = Bendahara::class;
 
     protected static ?string $navigationLabel = 'Bendahara';
+
     protected static ?string $label = 'Bendahara Instansi';
+
     protected static ?string $navigationGroup = 'Referensi';
+
     protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -104,14 +102,15 @@ class BendaharaResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Lengkap')
-                    ->description(fn(Bendahara $record) => 'NIP ' . $record->nip),
+                    ->description(fn (Bendahara $record) => 'NIP '.$record->nip),
                 Tables\Columns\TextColumn::make('periode_awal')
                     ->label('Periode')
                     ->date('d F Y')
                     ->description(function (Bendahara $record) {
                         if ($record->periode_akhir) {
-                            return 'Hingga: ' . date('d F Y', strtotime($record->periode_akhir));
+                            return 'Hingga: '.date('d F Y', strtotime($record->periode_akhir));
                         }
+
                         return 'Hingga: (Sekarang)';
                     }),
                 Tables\Columns\TextColumn::make('telepon')
@@ -119,7 +118,7 @@ class BendaharaResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray'
                     }),
@@ -132,7 +131,7 @@ class BendaharaResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),

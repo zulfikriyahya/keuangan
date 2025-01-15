@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nama');
             $table->date('diterima_tanggal');
             $table->foreignId('kelas_id')->constrained('kelas')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum('status', ["Aktif", "Nonaktif", "Alumni", "Mutasi", "Drop Out"]);
+            $table->enum('status', ['Aktif', 'Nonaktif', 'Alumni', 'Mutasi', 'Drop Out']);
             $table->string('foto')->nullable();
             $table->string('alamat')->nullable();
             $table->string('nama_ibu')->nullable();

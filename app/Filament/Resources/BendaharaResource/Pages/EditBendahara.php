@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\BendaharaResource\Pages;
 
+use App\Filament\Resources\BendaharaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\BendaharaResource;
 
 class EditBendahara extends EditRecord
 {

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nip')->nullable();
             $table->date('periode_awal')->nullable();
             $table->date('periode_akhir')->nullable();
-            $table->enum('status', ["Aktif","Nonaktif"]);
+            $table->enum('status', ['Aktif', 'Nonaktif']);
             $table->string('tte')->nullable();
             $table->string('telepon');
             $table->timestamps();
