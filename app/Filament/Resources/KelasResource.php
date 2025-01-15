@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Kelas;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
 use App\Filament\Resources\KelasResource\Pages;
+use App\Models\Kelas;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class KelasResource extends Resource
 {

@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Siswa;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
 use App\Filament\Resources\SiswaResource\Pages;
+use App\Models\Siswa;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class SiswaResource extends Resource
 {
@@ -85,7 +85,7 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'grey',
                         'Mutasi' => 'warning',
