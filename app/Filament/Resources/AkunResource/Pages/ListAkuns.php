@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\AkunResource\Pages;
 
-use App\Filament\Resources\AkunResource;
 use Filament\Actions;
+use App\Filament\Resources\AkunResource;
+use Illuminate\Support\Facades\Redirect;
 use Filament\Resources\Pages\ListRecords;
+
 
 class ListAkuns extends ListRecords
 {
@@ -15,5 +17,9 @@ class ListAkuns extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+    protected function afterCreate()
+    {
+        $this->redirect($this->getResource()::getUrl('index'));
     }
 }

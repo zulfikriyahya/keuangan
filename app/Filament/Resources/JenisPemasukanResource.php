@@ -45,9 +45,8 @@ class JenisPemasukanResource extends Resource
                             ->label('Deskripsi'),
                     ])
                     ->columns([
-                        'sm' => 1,
+                        'sm' => '100%',
                         'lg' => 2,
-                        'xl' => 3,
                     ]),
             ]);
     }

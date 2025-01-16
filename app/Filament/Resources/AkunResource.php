@@ -32,18 +32,22 @@ class AkunResource extends Resource
                     ->label('Akun')
                     ->description('Informasi Akun Keuangan')
                     ->schema([
-                        Forms\Components\TextInput::make('nama')
-                            ->label('Nama Akun')
-                            ->required(),
                         Forms\Components\TextInput::make('kode')
                             ->label('Kode')
                             ->required(),
+                        Forms\Components\TextInput::make('nama')
+                            ->label('Nama Akun')
+                            ->required(),
                         Forms\Components\Textarea::make('deskripsi')
-                            ->label('Deskripsi'),
+                            ->label('Deskripsi')
+                            ->columnSpan([
+                                'sm' => '100%',
+                                'lg' => 2,
+                            ]),
                     ])
                     ->columns([
-                        'sm' => '2',
-                        'lg' => '3',
+                        'sm' => '100%',
+                        'lg' => 2,
                     ]),
             ]);
     }
@@ -52,10 +56,10 @@ class AkunResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')
-                    ->label('Nama Akun'),
                 Tables\Columns\TextColumn::make('kode')
                     ->label('Kode'),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama Akun'),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
                     ->wrap(),

@@ -29,19 +29,22 @@ class JenisPengeluaranResource extends Resource
             ->schema([
                 Section::make('Informasi Jenis Pengeluaran')
                     ->schema([
+                        Forms\Components\TextInput::make('kode')
+                            ->label('Kode')
+                            ->required(),
                         Forms\Components\TextInput::make('nama')
+                            ->label('Nama')
                             ->required(),
                         Forms\Components\Select::make('akun_id')
+                            ->label('Referensi Akun')
                             ->relationship('akun', 'nama')
                             ->required(),
-                        Forms\Components\TextInput::make('kode')
-                            ->required(),
-                        Forms\Components\TextInput::make('deskripsi'),
+                        Forms\Components\Textarea::make('deskripsi')
+                            ->label('Deskripsi'),
                     ])
                     ->columns([
-                        'sm' => 1,
+                        'sm' => '100%',
                         'lg' => 2,
-                        'xl' => 3,
                     ]),
             ]);
     }
@@ -50,10 +53,15 @@ class JenisPengeluaranResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama'),
-                Tables\Columns\TextColumn::make('akun.nama'),
-                Tables\Columns\TextColumn::make('kode'),
-                Tables\Columns\TextColumn::make('deskripsi'),
+                Tables\Columns\TextColumn::make('kode')
+                    ->label('Kode'),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama'),
+                Tables\Columns\TextColumn::make('akun.nama')
+                    ->label('Referensi Akun'),
+                Tables\Columns\TextColumn::make('deskripsi')
+                    ->label('Deskripsi')
+                    ->wrap(),
             ])
             ->filters([
                 //

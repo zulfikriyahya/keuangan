@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\PembayaranResource\Pages;
 
-use App\Filament\Resources\PembayaranResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\PembayaranResource;
 
 class EditPembayaran extends EditRecord
 {
@@ -15,5 +15,9 @@ class EditPembayaran extends EditRecord
         return [
             // Actions\DeleteAction::make(),
         ];
+    }
+    protected function afterSave()
+    {
+        $this->redirect($this->getResource()::getUrl('index'));
     }
 }

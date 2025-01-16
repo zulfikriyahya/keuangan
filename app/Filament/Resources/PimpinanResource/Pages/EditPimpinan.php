@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\PimpinanResource\Pages;
 
-use App\Filament\Resources\PimpinanResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\PimpinanResource;
 
 class EditPimpinan extends EditRecord
 {
@@ -15,5 +15,9 @@ class EditPimpinan extends EditRecord
         return [
             // Actions\DeleteAction::make(),
         ];
+    }
+    protected function afterSave()
+    {
+        $this->redirect($this->getResource()::getUrl('index'));
     }
 }
