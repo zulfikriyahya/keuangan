@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\JenisPemasukanResource\Pages;
 
+use App\Filament\Resources\JenisPemasukanResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\JenisPemasukanResource;
 
 class EditJenisPemasukan extends EditRecord
 {
@@ -16,6 +16,7 @@ class EditJenisPemasukan extends EditRecord
             // Actions\DeleteAction::make(),
         ];
     }
+
     protected function afterSave()
     {
         $this->redirect($this->getResource()::getUrl('index'));

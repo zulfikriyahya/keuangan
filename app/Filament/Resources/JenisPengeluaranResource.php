@@ -2,18 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\JenisPengeluaran;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
 use App\Filament\Resources\JenisPengeluaranResource\Pages;
+use App\Models\JenisPengeluaran;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class JenisPengeluaranResource extends Resource
 {
     protected static ?string $model = JenisPengeluaran::class;
+
     protected static ?string $navigationLabel = 'Jenis Pengeluaran';
 
     protected static ?string $label = 'Jenis Pengeluaran';
@@ -21,6 +22,7 @@ class JenisPengeluaranResource extends Resource
     protected static ?string $navigationGroup = 'Keuangan';
 
     protected static ?int $navigationSort = 3;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

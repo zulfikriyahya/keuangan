@@ -2,16 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\KelasResource\Pages;
 use App\Models\Kelas;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
-use App\Filament\Resources\KelasResource\Pages;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class KelasResource extends Resource
 {
@@ -42,7 +42,7 @@ class KelasResource extends Resource
                                 'TK' => 'TK',
                                 'SD/MI' => 'SD/MI',
                                 'SMP/MTs' => 'SMP/MTs',
-                                'SMA/SMK/MA' => 'SMA/SMK/MA'
+                                'SMA/SMK/MA' => 'SMA/SMK/MA',
                             ])
                             ->live()
                             ->preload()

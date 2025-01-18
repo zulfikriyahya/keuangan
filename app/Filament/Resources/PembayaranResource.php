@@ -2,31 +2,28 @@
 
 namespace App\Filament\Resources;
 
-use DateTime;
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\PembayaranResource\Pages;
 use App\Models\Bulan;
-use Filament\Forms\Form;
 use App\Models\Pembayaran;
-use Filament\Tables\Table;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
 // use Filament\Forms\Components\Section;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Tables\Actions\ExportAction;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Infolists\Components\Section;
+use Filament\Tables;
 use Filament\Tables\Enums\ActionsPosition;
-use App\Filament\Exports\PembayaranExporter;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\ImageEntry;
-use App\Filament\Resources\PembayaranResource\Pages;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Blade;
 
 class PembayaranResource extends Resource
 {
     protected static ?string $model = Pembayaran::class;
+
     protected static ?string $navigationLabel = 'Pembayaran';
 
     protected static ?string $label = 'Jurnal Pembayaran';
@@ -34,7 +31,9 @@ class PembayaranResource extends Resource
     protected static ?string $navigationGroup = 'Jurnal Keuangan';
 
     protected static ?int $navigationSort = 1;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $recordTitleAttribute = 'name';
     // public static function form(Form $form): Form
     // {
@@ -116,15 +115,15 @@ class PembayaranResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                    ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                    ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                    ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
             ])
             ->filters([
                 SelectFilter::make('Status')
                     ->label('Status')
                     ->options([
                         'Lunas' => 'Lunas',
-                        'Terhutang' => 'Terhutang'
+                        'Terhutang' => 'Terhutang',
                     ]),
                 SelectFilter::make('Tahun')
                     ->label('Tahun')
@@ -138,7 +137,7 @@ class PembayaranResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make()
+                    Tables\Actions\ViewAction::make(),
                 ]),
                 Tables\Actions\Action::make('Cetak')
                     ->color('success')
@@ -147,18 +146,16 @@ class PembayaranResource extends Resource
                     ->hiddenLabel()
                     ->action(function (Pembayaran $record) {
                         return response()->streamDownload(function () use ($record) {
-                            echo
-                            Pdf::loadHtml(Blade::render('pembayaran', ['record' => $record]))->stream();
-                        }, $record->siswa->nama . ' - ' . $record->jenisPembayaran->nama . ' - ' . $record->bulan->nama . ' ' . $record->tahun->nama . '.pdf');
+                            echo Pdf::loadHtml(Blade::render('pembayaran', ['record' => $record]))->stream();
+                        }, $record->siswa->nama.' - '.$record->jenisPembayaran->nama.' - '.$record->bulan->nama.' '.$record->tahun->nama.'.pdf');
                     }),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([])
-            ])
-            // ->headerActions([
+                Tables\Actions\BulkActionGroup::make([]),
+            ]);
+        // ->headerActions([
 
-            // ])
-        ;
+        // ])
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -194,8 +191,8 @@ class PembayaranResource extends Resource
                             ->prefix('Rp. '),
                         TextEntry::make('status')
                             ->badge()
-                            ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                            ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                            ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                            ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
                     ])
                     ->columnSpan(1)
                     ->columns(2),

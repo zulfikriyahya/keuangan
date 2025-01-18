@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\AkunResource\Pages;
 
-use Filament\Actions;
 use App\Filament\Resources\AkunResource;
-use Illuminate\Support\Facades\Redirect;
+use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-
 
 class ListAkuns extends ListRecords
 {

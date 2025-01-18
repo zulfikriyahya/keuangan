@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\InstansiResource\Pages;
 
+use App\Filament\Resources\InstansiResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\InstansiResource;
 
 class EditInstansi extends EditRecord
 {
@@ -16,6 +16,7 @@ class EditInstansi extends EditRecord
             // Actions\DeleteAction::make(),
         ];
     }
+
     protected function afterSave()
     {
         $this->redirect($this->getResource()::getUrl('index'));

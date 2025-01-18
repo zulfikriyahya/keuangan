@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\JenisPembayaran;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
-use Filament\Notifications\Notification;
 use App\Filament\Resources\JenisPembayaranResource\Pages;
+use App\Models\JenisPembayaran;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class JenisPembayaranResource extends Resource
 {
@@ -132,8 +132,9 @@ class JenisPembayaranResource extends Resource
                                     ->danger()
                                     ->send();
                                 $action->cancel();
+
                                 return;
-                            };
+                            }
                         })
                         // Cara Kedua (Lebih aku sukai.)
                         ->hidden(function ($record) {

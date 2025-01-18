@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Pimpinan;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\FileUpload;
 use App\Filament\Resources\PimpinanResource\Pages;
+use App\Models\Pimpinan;
+use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class PimpinanResource extends Resource
 {
@@ -106,8 +106,9 @@ class PimpinanResource extends Resource
                     ->label('Nama Lengkap')
                     ->description(function (Pimpinan $record) {
                         if ($record->nip) {
-                            return 'NIP ' . ($record->nip);
+                            return 'NIP '.($record->nip);
                         }
+
                         return '';
                     }),
                 Tables\Columns\TextColumn::make('periode_awal')
@@ -115,7 +116,7 @@ class PimpinanResource extends Resource
                     ->date('d F Y')
                     ->description(function (Pimpinan $record) {
                         if ($record->periode_akhir) {
-                            return 'Hingga: ' . date('d F Y', strtotime($record->periode_akhir));
+                            return 'Hingga: '.date('d F Y', strtotime($record->periode_akhir));
                         }
 
                         return 'Hingga: (Sekarang)';
@@ -125,7 +126,7 @@ class PimpinanResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray'
                     }),

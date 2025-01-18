@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Jurusan extends Model
 {
@@ -33,10 +33,12 @@ class Jurusan extends Model
     {
         return $this->hasMany(Kelas::class);
     }
+
     public function pembayaran(): HasMany
     {
         return $this->hasMany(Pembayaran::class);
     }
+
     public function jenisPembayaran(): HasMany
     {
         return $this->hasMany(JenisPembayaran::class);

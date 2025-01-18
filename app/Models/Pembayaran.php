@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pembayaran extends Model
 {
@@ -60,6 +60,7 @@ class Pembayaran extends Model
     {
         return $this->belongsTo(Siswa::class);
     }
+
     public function jurusan(): BelongsTo
     {
         return $this->belongsTo(Jurusan::class);

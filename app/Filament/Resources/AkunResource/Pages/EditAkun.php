@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\AkunResource\Pages;
 
-use Filament\Actions;
 use App\Filament\Resources\AkunResource;
+use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Support\Facades\Redirect;
 
 class EditAkun extends EditRecord
 {
@@ -17,6 +16,7 @@ class EditAkun extends EditRecord
             // Actions\DeleteAction::make(),
         ];
     }
+
     protected function afterSave()
     {
         $this->redirect($this->getResource()::getUrl('index'));
