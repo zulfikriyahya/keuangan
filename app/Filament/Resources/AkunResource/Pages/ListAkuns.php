@@ -18,8 +18,4 @@ class ListAkuns extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-    protected function afterCreate()
-    {
-        $this->redirect($this->getResource()::getUrl('index'));
-    }
 }

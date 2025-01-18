@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->enum('tingkat', ['PAUD', 'TK', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
-            $table->enum('jenjang', ['PAUD', 'TK', 'SD', 'SMP', 'SMA']);
+            $table->enum('jenjang', ['PAUD', 'TK', 'SD/MI', 'SMP/MTs', 'SMA/SMK/MA']);
             $table->foreignId('jurusan_id')->constrained('jurusans')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

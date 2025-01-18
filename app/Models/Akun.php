@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Akun extends Model
 {
@@ -30,17 +30,17 @@ class Akun extends Model
         'id' => 'integer',
     ];
 
-    public function jenisPembayarans(): HasMany
+    public function jenisPembayaran(): HasMany
     {
         return $this->hasMany(JenisPembayaran::class);
     }
 
-    public function jenisPemasukans(): HasMany
+    public function jenisPemasukan(): HasMany
     {
         return $this->hasMany(JenisPemasukan::class);
     }
 
-    public function jenisPengeluarans(): HasMany
+    public function jenisPengeluaran(): HasMany
     {
         return $this->hasMany(JenisPengeluaran::class);
     }

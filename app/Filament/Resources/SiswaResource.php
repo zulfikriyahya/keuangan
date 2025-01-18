@@ -12,6 +12,7 @@ use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SiswaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\SiswaResource\RelationManagers\PembayaransRelationManager;
 
 class SiswaResource extends Resource
 {
@@ -97,10 +98,17 @@ class SiswaResource extends Resource
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'Aktif' => 'success',
-                        'Nonaktif' => 'grey',
+                        'Nonaktif' => 'gray',
                         'Mutasi' => 'warning',
-                        'Alumni' => 'violet',
+                        'Alumni' => 'info',
                         'Drop Out' => 'danger',
+                    })
+                    ->icon(fn(string $state): string => match ($state) {
+                        'Aktif' => 'heroicon-m-check-circle',
+                        'Nonaktif' => 'heroicon-m-x-circle',
+                        'Mutasi' => 'heroicon-m-arrows-right-left',
+                        'Alumni' => 'heroicon-m-academic-cap',
+                        'Drop Out' => 'heroicon-m-arrow-right-start-on-rectangle',
                     }),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat'),
@@ -129,7 +137,7 @@ class SiswaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PembayaransRelationManager::class,
         ];
     }
 

@@ -57,7 +57,12 @@ class JurusanResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->hidden(function ($record) {
+                            if ($record->kelas()->count() > 0) {
+                                return $record;
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([

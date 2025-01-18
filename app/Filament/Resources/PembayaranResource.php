@@ -2,13 +2,26 @@
 
 namespace App\Filament\Resources;
 
+use DateTime;
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Bulan;
 use Filament\Forms\Form;
 use App\Models\Pembayaran;
 use Filament\Tables\Table;
+use Barryvdh\DomPDF\Facade\Pdf;
+// use Filament\Forms\Components\Section;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Infolists\Components\Section;
+use Filament\Tables\Enums\ActionsPosition;
+use App\Filament\Exports\PembayaranExporter;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
 use App\Filament\Resources\PembayaranResource\Pages;
 
 class PembayaranResource extends Resource
@@ -22,102 +35,170 @@ class PembayaranResource extends Resource
 
     protected static ?int $navigationSort = 1;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $recordTitleAttribute = 'name';
+    // public static function form(Form $form): Form
+    // {
+    //     return $form
+    //         ->schema([
+    //             Section::make('Informasi Pembayaran')
+    //                 ->schema([
+    //                     Forms\Components\DatePicker::make('tanggal')
+    //                         ->required()
+    //                         ->date('d F Y'),
+    //                     Forms\Components\Select::make('jenis_pembayaran_id')
+    //                         ->relationship('jenisPembayaran', 'nama')
+    //                         ->required(),
+    //                     Forms\Components\TextInput::make('deskripsi'),
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Section::make('Informasi Pembayaran')
-                    ->schema([
-                        Forms\Components\DatePicker::make('tanggal')
-                            ->required(),
-                        Forms\Components\Select::make('jenis_pembayaran_id')
-                            ->relationship('jenisPembayaran', 'nama')
-                            ->required(),
-                        Forms\Components\TextInput::make('deskripsi'),
+    //                     Forms\Components\Select::make('bulan_id')
+    //                         ->relationship('bulan', 'nama')
+    //                         ->required(),
 
-                        Forms\Components\Select::make('bulan_id')
-                            ->relationship('bulan', 'nama')
-                            ->required(),
+    //                     Forms\Components\Select::make('tahun_id')
+    //                         ->relationship('tahun', 'nama')
+    //                         ->required(),
 
-                        Forms\Components\Select::make('tahun_id')
-                            ->relationship('tahun', 'nama')
-                            ->required(),
+    //                     Forms\Components\TextInput::make('nominal')
+    //                         ->required()
+    //                         ->prefix('Rp. ')
+    //                         ->numeric(),
 
-                        Forms\Components\TextInput::make('nominal')
-                            ->required()
-                            ->prefix('Rp. ')
-                            ->numeric(),
+    //                     Forms\Components\FileUpload::make('kwitansi')
+    //                         ->image()
+    //                         ->imageEditor()
+    //                         ->imageEditorAspectRatios([
+    //                             null,
+    //                             '1:1' => '1:1',
+    //                             '4:3' => '4:3',
+    //                             '3:4' => '3:4',
+    //                             '9:16' => '9:16',
+    //                             '16:9' => '16:9',
+    //                         ]),
 
-                        Forms\Components\FileUpload::make('kwitansi')
-                            ->image()
-                            ->imageEditor()
-                            ->imageEditorAspectRatios([
-                                null,
-                                '1:1' => '1:1',
-                                '4:3' => '4:3',
-                                '3:4' => '3:4',
-                                '9:16' => '9:16',
-                                '16:9' => '16:9',
-                            ]),
+    //                     Forms\Components\TextInput::make('status')
+    //                         ->required(),
 
-                        Forms\Components\TextInput::make('status')
-                            ->required(),
-
-                        Forms\Components\Select::make('siswa_id')
-                            ->relationship('siswa', 'nama')
-                            ->required(),
-                    ])
-                    ->columns([
-                        'sm' => 1,
-                        'lg' => 2,
-                        'xl' => 3,
-                    ]),
-            ]);
-    }
+    //                     Forms\Components\Select::make('siswa_id')
+    //                         ->relationship('siswa', 'nama')
+    //                         ->required(),
+    //                 ])
+    //                 ->columns([
+    //                     'sm' => 1,
+    //                     'lg' => 2,
+    //                     'xl' => 3,
+    //                 ]),
+    //         ]);
+    // }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('siswa.nama')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('siswa.kelas.nama')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal')
-                    ->date()
+                    ->date('d F Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenisPembayaran.nama')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi')
-                    ->searchable(),
+                    ->wrap()
+                    ->limit(50)
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('bulan.nama'),
                 Tables\Columns\TextColumn::make('tahun.nama'),
                 Tables\Columns\TextColumn::make('nominal')
                     ->numeric()
-                    ->prefix('Rp. ')
-                    ->sortable(),
-                Tables\Columns\ImageColumn::make('kwitansi'),
+                    ->prefix('Rp. '),
+                Tables\Columns\ImageColumn::make('kwitansi')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('siswa.nama')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->badge()
+                    ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                    ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
             ])
             ->filters([
-                //
+                SelectFilter::make('Status')
+                    ->label('Status')
+                    ->options([
+                        'Lunas' => 'Lunas',
+                        'Terhutang' => 'Terhutang'
+                    ]),
+                SelectFilter::make('Tahun')
+                    ->label('Tahun')
+                    ->relationship('tahun', 'nama'),
+                SelectFilter::make('Bulan')
+                    ->label('Bulan')
+                    ->relationship('bulan', 'nama'),
+                SelectFilter::make('Jenis Pembayaran')
+                    ->label('Jenis Pembayaran')
+                    ->relationship('jenisPembayaran', 'nama'),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ViewAction::make()
                 ]),
-            ])
+                Tables\Actions\Action::make('Cetak')
+                    ->color('success')
+                    ->icon('heroicon-m-printer')
+                    ->button()
+                    ->hiddenLabel()
+                    ->action(function (Pembayaran $record) {
+                        return response()->streamDownload(function () use ($record) {
+                            echo
+                            Pdf::loadHtml(Blade::render('pembayaran', ['record' => $record]))->stream();
+                        }, $record->siswa->nama . ' - ' . $record->jenisPembayaran->nama . ' - ' . $record->bulan->nama . ' ' . $record->tahun->nama . '.pdf');
+                    }),
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([]),
+                Tables\Actions\BulkActionGroup::make([])
+            ])
+            // ->headerActions([
+
+            // ])
+        ;
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                ImageEntry::make('kwitansi')
+                    ->label('Bukti Pembayaran')
+                    ->maxWidth('100%'),
+                Section::make('Detail Pembayaran')
+                    ->collapsed()
+                    ->schema([
+                        TextEntry::make('id')
+                            ->label('ID Pembayaran')
+                            ->badge()
+                            ->color('gray'),
+                        TextEntry::make('jenisPembayaran.kode')
+                            ->label('Kode Jenis Pembayaran')
+                            ->badge()
+                            ->color('gray'),
+                        TextEntry::make('siswa.nama')
+                            ->label('Nama Siswa'),
+                        TextEntry::make('tanggal')
+                            ->label('Tanggal Pembayaran')
+                            ->date('d F Y'),
+                        TextEntry::make('jenisPembayaran.nama'),
+                        TextEntry::make('deskripsi')
+                            ->label('Catatan Pembayaran'),
+                        TextEntry::make('bulan.nama'),
+                        TextEntry::make('tahun.nama'),
+                        TextEntry::make('nominal')
+                            ->numeric()
+                            ->prefix('Rp. '),
+                        TextEntry::make('status')
+                            ->badge()
+                            ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                            ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                    ])
+                    ->columnSpan(1)
+                    ->columns(2),
             ]);
     }
 
@@ -132,8 +213,8 @@ class PembayaranResource extends Resource
     {
         return [
             'index' => Pages\ListPembayarans::route('/'),
-            'create' => Pages\CreatePembayaran::route('/create'),
-            'edit' => Pages\EditPembayaran::route('/{record}/edit'),
+            // 'create' => Pages\CreatePembayaran::route('/create'),
+            // 'edit' => Pages\EditPembayaran::route('/{record}/edit'),
         ];
     }
 }

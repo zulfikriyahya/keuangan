@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pimpinan extends Model
 {
@@ -37,7 +37,7 @@ class Pimpinan extends Model
         'periode_akhir' => 'date',
     ];
 
-    public function instansis(): HasMany
+    public function instansi(): HasMany
     {
         return $this->hasMany(Instansi::class);
     }

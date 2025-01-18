@@ -40,7 +40,7 @@ class Siswa extends Model
         'kelas_id' => 'integer',
     ];
 
-    public function pembayarans(): HasMany
+    public function pembayaran(): HasMany
     {
         return $this->hasMany(Pembayaran::class);
     }

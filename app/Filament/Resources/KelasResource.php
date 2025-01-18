@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Kelas;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
@@ -33,18 +35,69 @@ class KelasResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required(),
-                        Forms\Components\TextInput::make('tingkat')
-                            ->required(),
-                        Forms\Components\TextInput::make('jenjang')
-                            ->required(),
+                        Forms\Components\Select::make('jenjang')
+                            ->required()
+                            ->options([
+                                'PAUD' => 'PAUD',
+                                'TK' => 'TK',
+                                'SD/MI' => 'SD/MI',
+                                'SMP/MTs' => 'SMP/MTs',
+                                'SMA/SMK/MA' => 'SMA/SMK/MA'
+                            ])
+                            ->live()
+                            ->preload()
+                            ->afterStateUpdated(function (Set $set) {
+                                $set('tingkat', null);
+                                $set('jurusan', 'Non Jurusan');
+                            }),
+                        Forms\Components\Select::make('tingkat')
+                            ->required()
+                            ->live()
+                            ->preload()
+                            ->options(function (Get $get) {
+                                if ('jenjang' == 'PAUD') {
+                                    $get = 'PAUD';
+                                } elseif ('jenjang' == 'TK') {
+                                    $get = 'TK';
+                                }
+                            })
+                        // ->options([
+                        //     'PAUD' => 'PAUD',
+                        //     'TK' => 'TK',
+                        //     '1' => '1',
+                        //     '2' => '2',
+                        //     '3' => '3',
+                        //     '4' => '4',
+                        //     '5' => '5',
+                        //     '6' => '6',
+                        //     '7' => '7',
+                        //     '8' => '8',
+                        //     '9' => '9',
+                        //     '10' => '10',
+                        //     '11' => '11',
+                        //     '12'  => '12'
+                        // ])
+                        ,
                         Forms\Components\Select::make('jurusan_id')
                             ->relationship('jurusan', 'nama')
-                            ->required(),
+                            ->required()
+                            ->createOptionForm([
+                                Section::make('Informasi Jurusan')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('nama')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('kode')
+                                            ->required(),
+                                    ])
+                                    ->columns([
+                                        'sm' => 1,
+                                        'lg' => 2,
+                                    ]),
+                            ]),
                     ])
                     ->columns([
                         'sm' => 1,
                         'lg' => 2,
-                        'xl' => 3,
                     ]),
             ]);
     }
@@ -53,7 +106,8 @@ class KelasResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Kelas'),
                 Tables\Columns\TextColumn::make('tingkat'),
                 Tables\Columns\TextColumn::make('jenjang'),
                 Tables\Columns\TextColumn::make('jurusan.nama'),

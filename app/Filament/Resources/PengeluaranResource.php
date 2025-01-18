@@ -34,11 +34,11 @@ class PengeluaranResource extends Resource
                         Forms\Components\TextInput::make('kode')
                             ->required(),
                         Forms\Components\DatePicker::make('tanggal')
-                            ->required(),
+                            ->required()
+                            ->date('d F Y'),
                         Forms\Components\Select::make('bulan_id')
                             ->relationship('bulan', 'nama')
                             ->required(),
-
                         Forms\Components\Select::make('tahun_id')
                             ->relationship('tahun', 'nama')
                             ->required(),
@@ -47,7 +47,7 @@ class PengeluaranResource extends Resource
                             ->numeric(),
                         Forms\Components\TextInput::make('kwitansi'),
                         Forms\Components\Select::make('jenis_pengeluaran_id')
-                            ->relationship('jenis_pengeluarans', 'nama')
+                            ->relationship('jenisPengeluaran', 'nama')
                             ->required(),
                         Forms\Components\TextInput::make('deskripsi'),
                     ])
@@ -79,7 +79,6 @@ class PengeluaranResource extends Resource
                 Tables\Columns\TextColumn::make('kwitansi')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('jenisPengeluaran.nama')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->searchable(),

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class JenisPembayaran extends Model
 {
@@ -21,6 +21,7 @@ class JenisPembayaran extends Model
         'akun_id',
         'kode',
         'jurusan_id',
+        'nominal',
         'deskripsi',
     ];
 
@@ -33,9 +34,10 @@ class JenisPembayaran extends Model
         'id' => 'integer',
         'akun_id' => 'integer',
         'jurusan_id' => 'integer',
+        'nominal' => 'integer',
     ];
 
-    public function pembayarans(): HasMany
+    public function pembayaran(): HasMany
     {
         return $this->hasMany(Pembayaran::class);
     }

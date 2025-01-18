@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->foreignId('tahun_id')->constrained('tahuns')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('bulan_id')->constrained('bulans')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->integer('nominal');
+            $table->unsignedInteger('nominal');
             $table->string('kwitansi')->nullable();
             $table->foreignId('jenis_pemasukan_id')->constrained('jenis_pemasukans')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('deskripsi')->nullable();

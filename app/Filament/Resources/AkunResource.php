@@ -70,7 +70,12 @@ class AkunResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->hidden(function ($record) {
+                            if ($record->jenisPembayarans()->count() > 0 || $record->jenisPemasukans()->count() > 0 || $record->jenisPengeluarans()->count() > 0) {
+                                return $record;
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([

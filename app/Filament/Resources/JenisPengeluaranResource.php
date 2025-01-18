@@ -38,7 +38,31 @@ class JenisPengeluaranResource extends Resource
                         Forms\Components\Select::make('akun_id')
                             ->label('Referensi Akun')
                             ->relationship('akun', 'nama')
-                            ->required(),
+                            ->required()
+                            ->createOptionForm([
+                                Forms\Components\Section::make('Akun')
+                                    ->label('Akun')
+                                    ->description('Informasi Akun Keuangan')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('kode')
+                                            ->label('Kode')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('nama')
+                                            ->label('Nama Akun')
+                                            ->required(),
+                                        Forms\Components\Textarea::make('deskripsi')
+                                            ->label('Deskripsi')
+                                            ->columnSpan([
+                                                'sm' => '100%',
+                                                'lg' => 2,
+                                            ]),
+                                    ])
+                                    ->columns([
+                                        'sm' => '100%',
+                                        'lg' => 2,
+                                    ])
+                                    ->disabledOn('edit'),
+                            ]),
                         Forms\Components\Textarea::make('deskripsi')
                             ->label('Deskripsi'),
                     ])

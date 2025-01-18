@@ -78,7 +78,12 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    // Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->hidden(function ($record) {
+                            if ($record->id == 1) {
+                                return $record;
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([

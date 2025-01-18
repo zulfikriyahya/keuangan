@@ -9,6 +9,7 @@ use Filament\Tables\Table;
 use App\Models\JenisPembayaran;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Section;
+use Filament\Notifications\Notification;
 use App\Filament\Resources\JenisPembayaranResource\Pages;
 
 class JenisPembayaranResource extends Resource
@@ -40,11 +41,50 @@ class JenisPembayaranResource extends Resource
                         Forms\Components\Select::make('jurusan_id')
                             ->label('Jurusan')
                             ->relationship('jurusan', 'nama')
-                            ->required(),
+                            ->required()
+                            ->createOptionForm([
+                                Section::make('Informasi Jurusan')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('nama')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('kode')
+                                            ->required(),
+                                    ])
+                                    ->columns([
+                                        'sm' => 1,
+                                        'lg' => 2,
+                                        'xl' => 3,
+                                    ]),
+                            ])
+                            ->disabledOn('edit'),
                         Forms\Components\Select::make('akun_id')
                             ->label('Referensi Akun')
                             ->relationship('akun', 'nama')
-                            ->required(),
+                            ->required()
+                            ->createOptionForm([
+                                Forms\Components\Section::make('Akun')
+                                    ->label('Akun')
+                                    ->description('Informasi Akun Keuangan')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('kode')
+                                            ->label('Kode')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('nama')
+                                            ->label('Nama Akun')
+                                            ->required(),
+                                        Forms\Components\Textarea::make('deskripsi')
+                                            ->label('Deskripsi')
+                                            ->columnSpan([
+                                                'sm' => '100%',
+                                                'lg' => 2,
+                                            ]),
+                                    ])
+                                    ->columns([
+                                        'sm' => '100%',
+                                        'lg' => 2,
+                                    ]),
+                            ])
+                            ->disabledOn('edit'),
                         Forms\Components\Textarea::make('deskripsi')
                             ->label('Deskripsi')
                             ->columnSpan([
@@ -82,7 +122,25 @@ class JenisPembayaranResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        // Cara Pertama
+                        ->before(function ($record, $action) {
+                            if ($record->pembayarans()->count() > 0) {
+                                Notification::make()
+                                    ->title('Gagal Menghapus')
+                                    ->body('Tidak dapat menghapus jenis pembayaran yang memiliki pembayaran terkait.')
+                                    ->danger()
+                                    ->send();
+                                $action->cancel();
+                                return;
+                            };
+                        })
+                        // Cara Kedua (Lebih aku sukai.)
+                        ->hidden(function ($record) {
+                            if ($record->pembayarans()->count() > 0) {
+                                return $record;
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([
