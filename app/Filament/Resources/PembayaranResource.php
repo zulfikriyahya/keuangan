@@ -2,23 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PembayaranResource\Pages;
-use App\Models\Bulan;
-use App\Models\Pembayaran;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
+use Filament\Tables;
+use App\Models\Bulan;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\ImageEntry;
+use App\Models\Pembayaran;
+use Filament\Tables\Table;
+use Barryvdh\DomPDF\Facade\Pdf;
 // use Filament\Forms\Components\Section;
-use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Enums\ActionsPosition;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
 use Illuminate\Support\Facades\Blade;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Infolists\Components\Section;
+use Filament\Tables\Enums\ActionsPosition;
+use App\Filament\Exports\PembayaranExporter;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
+use App\Filament\Resources\PembayaranResource\Pages;
 
 class PembayaranResource extends Resource
 {
@@ -94,9 +96,11 @@ class PembayaranResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('siswa.nama')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('siswa.kelas.nama')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date('d F Y')
                     ->sortable(),
@@ -112,11 +116,12 @@ class PembayaranResource extends Resource
                     ->numeric()
                     ->prefix('Rp. '),
                 Tables\Columns\ImageColumn::make('kwitansi')
+                    ->label('Kuitansi')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                    ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                    ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                    ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
             ])
             ->filters([
                 SelectFilter::make('Status')
@@ -147,15 +152,15 @@ class PembayaranResource extends Resource
                     ->action(function (Pembayaran $record) {
                         return response()->streamDownload(function () use ($record) {
                             echo Pdf::loadHtml(Blade::render('pembayaran', ['record' => $record]))->stream();
-                        }, $record->siswa->nama.' - '.$record->jenisPembayaran->nama.' - '.$record->bulan->nama.' '.$record->tahun->nama.'.pdf');
+                        }, $record->siswa->nama . ' - ' . $record->jenisPembayaran->nama . ' - ' . $record->bulan->nama . ' ' . $record->tahun->nama . '.pdf');
                     }),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([]),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\ExportBulkAction::make()
+                        ->exporter(PembayaranExporter::class),
+                ]),
             ]);
-        // ->headerActions([
-
-        // ])
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -191,8 +196,8 @@ class PembayaranResource extends Resource
                             ->prefix('Rp. '),
                         TextEntry::make('status')
                             ->badge()
-                            ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                            ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                            ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                            ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
                     ])
                     ->columnSpan(1)
                     ->columns(2),

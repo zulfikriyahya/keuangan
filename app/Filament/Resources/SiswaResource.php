@@ -80,7 +80,8 @@ class SiswaResource extends Resource
                             ->label('Nama Ayah'),
                         Forms\Components\TextInput::make('telepon')
                             ->label('Nomor Telepon')
-                            ->tel(),
+                            ->tel()
+                            ->required(),
                     ])
                     ->columns([
                         'sm' => 1,

@@ -11,7 +11,11 @@
 <br>
 <div>Nama Siswa: {{ $record->siswa->nama }}</div>
 <br>
-<div>Kelas: {{ $record->siswa->kelas_id }}</div>
+<div>Nomor Telepon: {{ $record->siswa->telepon }}</div>
+<br>
+<div>Jenjang: {{ $record->siswa->kelas->jenjang }}</div>
+<br>
+<div>Kelas: {{ $record->siswa->kelas->nama }}</div>
 <br>
 <div>Kode Pembayaran: {{ $record->jenisPembayaran->kode }}</div>
 <br>
@@ -26,3 +30,9 @@
 <div>Deskripsi: {{ $record->deskripsi }}</div>
 <br>
 <div>Tanggal Pembayaran:  {{ date("d ", strtotime($record->tanggal)) . $record->bulan->nama .' '. $record->tahun->nama }}</div>
+<br>
+@if ($record->kwitansi != null)
+    <div>Kuitansi: <img src={{ './storage/' . ($record->kwitansi) }} alt="Images" style="width: 50%; position: absolute;" ></div>    
+    @else
+    <div>Kuitansi: <img src="#" alt="Images" style="width: 50%; position: absolute;" ></div>    
+@endif

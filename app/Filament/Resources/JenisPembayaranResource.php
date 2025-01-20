@@ -57,6 +57,11 @@ class JenisPembayaranResource extends Resource
                                     ]),
                             ])
                             ->disabledOn('edit'),
+                        Forms\Components\TextInput::make('nominal')
+                            ->label('Nominal')
+                            ->numeric()
+                            ->prefix('Rp. ')
+                            ->required(),
                         Forms\Components\Select::make('akun_id')
                             ->label('Referensi Akun')
                             ->relationship('akun', 'nama')
@@ -85,12 +90,9 @@ class JenisPembayaranResource extends Resource
                                     ]),
                             ])
                             ->disabledOn('edit'),
+
                         Forms\Components\Textarea::make('deskripsi')
-                            ->label('Deskripsi')
-                            ->columnSpan([
-                                'sm' => '100%',
-                                'lg' => 2,
-                            ]),
+                            ->label('Deskripsi'),
                     ])
                     ->columns([
                         'sm' => '100%',
@@ -108,10 +110,15 @@ class JenisPembayaranResource extends Resource
                     ->label('Kode'),
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama'),
+                Tables\Columns\TextColumn::make('nominal')
+                    ->label('Nominal')
+                    ->numeric()
+                    ->prefix('Rp. '),
                 Tables\Columns\TextColumn::make('jurusan.nama')
                     ->label('Jurusan'),
                 Tables\Columns\TextColumn::make('akun.nama')
-                    ->label('Referensi Akun'),
+                    ->label('Referensi Akun')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
                     ->wrap(),

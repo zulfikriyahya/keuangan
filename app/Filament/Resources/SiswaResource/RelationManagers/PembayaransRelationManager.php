@@ -4,6 +4,8 @@ namespace App\Filament\Resources\SiswaResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Pembayaran;
 use Filament\Tables\Table;
@@ -11,6 +13,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\Section;
 use App\Filament\Exports\PembayaranExporter;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 use Filament\Resources\RelationManagers\RelationManager;
 
 class PembayaransRelationManager extends RelationManager
@@ -39,12 +42,34 @@ class PembayaransRelationManager extends RelationManager
                             ->relationship('tahun', 'nama')
                             ->required(),
 
-                        Forms\Components\TextInput::make('nominal')
-                            ->required()
+                        Forms\Components\TextInput::make('nominal')->required()
                             ->prefix('Rp. ')
-                            ->numeric(),
+                            ->numeric()
+                            ->afterStateUpdated(function (callable $set) {
+                                $set('status', 'Terhutang');
+                            })
+                            ->live(),
+                        Forms\Components\Select::make('status')
+                            ->required()
+                            ->options([
+                                'Lunas' => 'Lunas',
+                                'Terhutang' => 'Terhutang'
+                            ])
+                            ->afterStateHydrated(
+                                function (callable $set, callable $get) {
+                                    $nominal = $get('nominal');
+                                    if ($nominal >= 20000) {
+                                        $set('status', 'Lunas');
+                                    } else {
+                                        $set('status', 'Terhutang');
+                                    }
+                                }
+                            )
+                            ->reactive()
+                            ->live(),
 
                         Forms\Components\FileUpload::make('kwitansi')
+                            ->label('Kuitansi')
                             ->image()
                             ->imageEditor()
                             ->imageEditorAspectRatios([
@@ -54,18 +79,16 @@ class PembayaransRelationManager extends RelationManager
                                 '3:4' => '3:4',
                                 '9:16' => '9:16',
                                 '16:9' => '16:9',
-                            ]),
-
-                        Forms\Components\Select::make('status')
-                            ->required()
-                            ->options([
-                                'Lunas' => 'Lunas',
-                                'Terhutang' => 'Terhutang',
+                            ])
+                            ->directory('img/kwitansi')
+                            ->fetchFileInformation(false)
+                            ->columnSpan([
+                                'sm' => '100%',
+                                'xl' => 2,
                             ]),
                     ])
                     ->columns([
-                        'sm' => 1,
-                        'lg' => 2,
+                        'sm' => '100%',
                         'xl' => 3,
                     ]),
             ]);
@@ -93,7 +116,8 @@ class PembayaransRelationManager extends RelationManager
                     ->numeric()
                     ->prefix('Rp. ')
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('kwitansi'),
+                Tables\Columns\ImageColumn::make('kwitansi')
+                    ->label('Kuitansi'),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable()
                     ->sortable()
