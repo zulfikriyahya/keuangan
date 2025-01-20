@@ -51,13 +51,13 @@ Berikut adalah langkah-langkah untuk menginstal aplikasi Keuangan:
 1. **Clone repositori**
 
     ```sh
-    git clone https://github.com/username/aplikasi-keuangan.git
+    git clone https://github.com/zulfikriyahya/keuangan.git
     ```
 
 2. **Masuk ke direktori proyek**
 
     ```sh
-    cd aplikasi-keuangan
+    cd keuangan
     ```
 
 3. **Instal dependensi menggunakan Composer**
@@ -100,4 +100,4 @@ Setelah mengikuti langkah-langkah di atas, aplikasi Keuangan siap digunakan. Pas
 
 ## Lisensi
 
-Aplikasi Keuangan adalah perangkat lunak sumber terbuka yang dilisensikan di bawah [lisensi MIT](https://opensource.org/licenses/MIT).
+Aplikasi Keuangan adalah perangkat lunak sumber terbuka yang dilisensikan di bawah [lisensi MIT](https://github.com/zulfikriyahya/keuangan?tab=MIT-1-ov-file).
