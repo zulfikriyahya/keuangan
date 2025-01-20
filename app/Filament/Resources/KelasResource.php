@@ -43,40 +43,24 @@ class KelasResource extends Resource
                                 'SD/MI' => 'SD/MI',
                                 'SMP/MTs' => 'SMP/MTs',
                                 'SMA/SMK/MA' => 'SMA/SMK/MA',
-                            ])
-                        // ->live()
-                        // ->preload()
-                        // ->afterStateUpdated(function (Set $set) {
-                        //     $set('tingkat', null);
-                        //     $set('jurusan', 'Non Jurusan');
-                        // })
-                        ,
+                            ]),
                         Forms\Components\Select::make('tingkat')
                             ->required()
-                            // ->live()
-                            // ->preload()
-                            // ->options(function (Get $get) {
-                            //     if ('jenjang' == 'PAUD') {
-                            //         $get = 'PAUD';
-                            //     } elseif ('jenjang' == 'TK') {
-                            //         $get = 'TK';
-                            //     }
-                            // })
                             ->options([
                                 'PAUD' => 'PAUD',
                                 'TK' => 'TK',
-                                '1' => '1',
-                                '2' => '2',
-                                '3' => '3',
-                                '4' => '4',
-                                '5' => '5',
-                                '6' => '6',
-                                '7' => '7',
-                                '8' => '8',
-                                '9' => '9',
-                                '10' => '10',
-                                '11' => '11',
-                                '12'  => '12'
+                                '1' => '1 - SD/MI',
+                                '2' => '2 - SD/MI',
+                                '3' => '3 - SD/MI',
+                                '4' => '4 - SD/MI',
+                                '5' => '5 - SD/MI',
+                                '6' => '6 - SD/MI',
+                                '7' => '7 - SMP/MTs',
+                                '8' => '8 - SMP/MTs',
+                                '9' => '9 - SMP/MTs',
+                                '10' => '10 - SMA/SMK/MA',
+                                '11' => '11 - SMA/SMK/MA',
+                                '12'  => '12 - SMA/SMK/MA'
                             ]),
                         Forms\Components\Select::make('jurusan_id')
                             ->relationship('jurusan', 'nama')

@@ -8,8 +8,13 @@ use App\Models\Siswa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Actions\RestoreAction;
+use Tables\Actions\BulkDeleteAction;
 use Filament\Forms\Components\Section;
+use Filament\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\DeleteBulkAction;
 use App\Filament\Resources\SiswaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SiswaResource\RelationManagers\PembayaransRelationManager;
@@ -57,7 +62,6 @@ class SiswaResource extends Resource
                         Forms\Components\Select::make('kelas_id')
                             ->label('Kelas')
                             ->relationship('kelas', 'nama')
-                            // ->multiple()
                             ->preload(5)
                             ->searchable()
                             ->required(),
@@ -143,7 +147,9 @@ class SiswaResource extends Resource
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([]),
+                Tables\Actions\BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 

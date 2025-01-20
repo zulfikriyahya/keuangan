@@ -2,14 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
-use App\Models\Bulan;
-use Filament\Forms\Form;
 use App\Models\Pembayaran;
 use Filament\Tables\Table;
 use Barryvdh\DomPDF\Facade\Pdf;
-// use Filament\Forms\Components\Section;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Blade;
@@ -19,7 +15,6 @@ use Filament\Tables\Enums\ActionsPosition;
 use App\Filament\Exports\PembayaranExporter;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
-use NunoMaduro\Collision\Adapters\Phpunit\State;
 use App\Filament\Resources\PembayaranResource\Pages;
 
 class PembayaranResource extends Resource
@@ -37,59 +32,6 @@ class PembayaranResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $recordTitleAttribute = 'name';
-    // public static function form(Form $form): Form
-    // {
-    //     return $form
-    //         ->schema([
-    //             Section::make('Informasi Pembayaran')
-    //                 ->schema([
-    //                     Forms\Components\DatePicker::make('tanggal')
-    //                         ->required()
-    //                         ->date('d F Y'),
-    //                     Forms\Components\Select::make('jenis_pembayaran_id')
-    //                         ->relationship('jenisPembayaran', 'nama')
-    //                         ->required(),
-    //                     Forms\Components\TextInput::make('deskripsi'),
-
-    //                     Forms\Components\Select::make('bulan_id')
-    //                         ->relationship('bulan', 'nama')
-    //                         ->required(),
-
-    //                     Forms\Components\Select::make('tahun_id')
-    //                         ->relationship('tahun', 'nama')
-    //                         ->required(),
-
-    //                     Forms\Components\TextInput::make('nominal')
-    //                         ->required()
-    //                         ->prefix('Rp. ')
-    //                         ->numeric(),
-
-    //                     Forms\Components\FileUpload::make('kwitansi')
-    //                         ->image()
-    //                         ->imageEditor()
-    //                         ->imageEditorAspectRatios([
-    //                             null,
-    //                             '1:1' => '1:1',
-    //                             '4:3' => '4:3',
-    //                             '3:4' => '3:4',
-    //                             '9:16' => '9:16',
-    //                             '16:9' => '16:9',
-    //                         ]),
-
-    //                     Forms\Components\TextInput::make('status')
-    //                         ->required(),
-
-    //                     Forms\Components\Select::make('siswa_id')
-    //                         ->relationship('siswa', 'nama')
-    //                         ->required(),
-    //                 ])
-    //                 ->columns([
-    //                     'sm' => 1,
-    //                     'lg' => 2,
-    //                     'xl' => 3,
-    //                 ]),
-    //         ]);
-    // }
 
     public static function table(Table $table): Table
     {
