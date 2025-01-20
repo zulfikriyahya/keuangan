@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SiswaResource\Pages;
-use App\Filament\Resources\SiswaResource\RelationManagers\PembayaransRelationManager;
-use App\Models\Siswa;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Siswa;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\SiswaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\SiswaResource\RelationManagers\PembayaransRelationManager;
 
 class SiswaResource extends Resource
 {
@@ -37,8 +37,20 @@ class SiswaResource extends Resource
                         Forms\Components\TextInput::make('nama')
                             ->label('Nama Siswa')
                             ->required(),
-                        Forms\Components\TextInput::make('foto')
-                            ->label('Foto'),
+                        Forms\Components\FileUpload::make('foto')
+                            ->label('Foto')
+                            ->image()
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                null,
+                                '1:1' => '1:1',
+                                '3:4' => '3:4',
+                                '4:3' => '4:3',
+                            ])
+                            ->minSize(10)
+                            ->maxSize(1024)
+                            ->directory('img/foto/siswa')
+                            ->fetchFileInformation(false),
                         Forms\Components\DatePicker::make('diterima_tanggal')
                             ->label('Tanggal Diterima')
                             ->required(),
@@ -96,14 +108,14 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray',
                         'Mutasi' => 'warning',
                         'Alumni' => 'info',
                         'Drop Out' => 'danger',
                     })
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         'Aktif' => 'heroicon-m-check-circle',
                         'Nonaktif' => 'heroicon-m-x-circle',
                         'Mutasi' => 'heroicon-m-arrows-right-left',

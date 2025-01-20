@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\InstansiResource\Pages;
-use App\Models\Instansi;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Instansi;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\FileUpload;
+use App\Filament\Resources\InstansiResource\Pages;
 
 class InstansiResource extends Resource
 {
@@ -81,7 +81,6 @@ class InstansiResource extends Resource
                     ])
                     ->columns([
                         'sm' => 1,
-                        'lg' => 2,
                         'xl' => 3,
                     ]),
                 Section::make('Informasi Pejabat')
@@ -120,6 +119,15 @@ class InstansiResource extends Resource
                                             ])
                                             ->default('Aktif')
                                             ->required(),
+                                    ])
+                                    ->columns([
+                                        'sm' => 1,
+                                        'lg' => 2,
+                                        'xl' => 3,
+                                    ]),
+                                Section::make('Unggah Berkas')
+                                    ->collapsed()
+                                    ->schema([
                                         FileUpload::make('foto')
                                             ->label('Foto')
                                             ->image()
@@ -152,7 +160,6 @@ class InstansiResource extends Resource
                                     ->columns([
                                         'sm' => 1,
                                         'lg' => 2,
-                                        'xl' => 3,
                                     ]),
                             ]),
                         Forms\Components\Select::make('bendahara_id')
@@ -186,6 +193,15 @@ class InstansiResource extends Resource
                                             ])
                                             ->default('Aktif')
                                             ->required(),
+                                    ])
+                                    ->columns([
+                                        'sm' => 1,
+                                        'lg' => 2,
+                                        'xl' => 3,
+                                    ]),
+                                Section::make('Unggah Berkas')
+                                    ->collapsed()
+                                    ->schema([
                                         FileUpload::make('foto')
                                             ->label('Foto')
                                             ->image()
@@ -218,7 +234,6 @@ class InstansiResource extends Resource
                                     ->columns([
                                         'sm' => 1,
                                         'lg' => 2,
-                                        'xl' => 3,
                                     ]),
                             ]),
                     ])
@@ -226,7 +241,6 @@ class InstansiResource extends Resource
                     ->columns([
                         'sm' => 1,
                         'lg' => 2,
-                        'xl' => 3,
                     ]),
                 Section::make('Informasi Rekening')
                     ->collapsed()
@@ -240,7 +254,6 @@ class InstansiResource extends Resource
                     ])
                     ->columns([
                         'sm' => 1,
-                        'lg' => 2,
                         'xl' => 3,
                     ]),
 

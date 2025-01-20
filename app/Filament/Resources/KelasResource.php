@@ -2,16 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KelasResource\Pages;
-use App\Models\Kelas;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
+use Filament\Tables;
+use App\Models\Kelas;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\KelasResource\Pages;
 
 class KelasResource extends Resource
 {
@@ -44,40 +44,40 @@ class KelasResource extends Resource
                                 'SMP/MTs' => 'SMP/MTs',
                                 'SMA/SMK/MA' => 'SMA/SMK/MA',
                             ])
-                            ->live()
-                            ->preload()
-                            ->afterStateUpdated(function (Set $set) {
-                                $set('tingkat', null);
-                                $set('jurusan', 'Non Jurusan');
-                            }),
+                        // ->live()
+                        // ->preload()
+                        // ->afterStateUpdated(function (Set $set) {
+                        //     $set('tingkat', null);
+                        //     $set('jurusan', 'Non Jurusan');
+                        // })
+                        ,
                         Forms\Components\Select::make('tingkat')
                             ->required()
-                            ->live()
-                            ->preload()
-                            ->options(function (Get $get) {
-                                if ('jenjang' == 'PAUD') {
-                                    $get = 'PAUD';
-                                } elseif ('jenjang' == 'TK') {
-                                    $get = 'TK';
-                                }
-                            })
-                        // ->options([
-                        //     'PAUD' => 'PAUD',
-                        //     'TK' => 'TK',
-                        //     '1' => '1',
-                        //     '2' => '2',
-                        //     '3' => '3',
-                        //     '4' => '4',
-                        //     '5' => '5',
-                        //     '6' => '6',
-                        //     '7' => '7',
-                        //     '8' => '8',
-                        //     '9' => '9',
-                        //     '10' => '10',
-                        //     '11' => '11',
-                        //     '12'  => '12'
-                        // ])
-                        ,
+                            // ->live()
+                            // ->preload()
+                            // ->options(function (Get $get) {
+                            //     if ('jenjang' == 'PAUD') {
+                            //         $get = 'PAUD';
+                            //     } elseif ('jenjang' == 'TK') {
+                            //         $get = 'TK';
+                            //     }
+                            // })
+                            ->options([
+                                'PAUD' => 'PAUD',
+                                'TK' => 'TK',
+                                '1' => '1',
+                                '2' => '2',
+                                '3' => '3',
+                                '4' => '4',
+                                '5' => '5',
+                                '6' => '6',
+                                '7' => '7',
+                                '8' => '8',
+                                '9' => '9',
+                                '10' => '10',
+                                '11' => '11',
+                                '12'  => '12'
+                            ]),
                         Forms\Components\Select::make('jurusan_id')
                             ->relationship('jurusan', 'nama')
                             ->required()

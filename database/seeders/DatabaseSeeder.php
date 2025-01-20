@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Bulan;
 use App\Models\Tahun;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\User;
+use App\Models\Jurusan;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -32,9 +33,6 @@ class DatabaseSeeder extends Seeder
         ]);
         Tahun::create([
             'nama' => '2025',
-        ]);
-        Tahun::create([
-            'nama' => '2026',
         ]);
 
         Bulan::create([
@@ -72,6 +70,18 @@ class DatabaseSeeder extends Seeder
         ]);
         Bulan::create([
             'nama' => 'Desember',
+        ]);
+        Jurusan::create([
+            'nama' => 'Non Jurusan',
+            'kode' => 'NON',
+        ]);
+        Jurusan::create([
+            'nama' => 'Ilmu Pengetahuan Alam',
+            'kode' => 'IPA',
+        ]);
+        Jurusan::create([
+            'nama' => 'Ilmu Pengetahuan Sosial',
+            'kode' => 'IPS',
         ]);
     }
 }

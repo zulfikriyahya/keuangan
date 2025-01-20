@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\JenisPembayaranResource\Pages;
-use App\Models\JenisPembayaran;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Notifications\Notification;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\JenisPembayaran;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use Filament\Notifications\Notification;
+use App\Filament\Resources\JenisPembayaranResource\Pages;
 
 class JenisPembayaranResource extends Resource
 {
@@ -125,20 +125,19 @@ class JenisPembayaranResource extends Resource
                     Tables\Actions\DeleteAction::make()
                         // Cara Pertama
                         ->before(function ($record, $action) {
-                            if ($record->pembayarans()->count() > 0) {
+                            if ($record->pembayaran()->count() > 0) {
                                 Notification::make()
                                     ->title('Gagal Menghapus')
                                     ->body('Tidak dapat menghapus jenis pembayaran yang memiliki pembayaran terkait.')
                                     ->danger()
                                     ->send();
                                 $action->cancel();
-
                                 return;
                             }
                         })
                         // Cara Kedua (Lebih aku sukai.)
                         ->hidden(function ($record) {
-                            if ($record->pembayarans()->count() > 0) {
+                            if ($record->pembayaran()->count() > 0) {
                                 return $record;
                             }
                         }),

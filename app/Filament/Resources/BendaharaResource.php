@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BendaharaResource\Pages;
-use App\Models\Bendahara;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Bendahara;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\FileUpload;
+use App\Filament\Resources\BendaharaResource\Pages;
 
 class BendaharaResource extends Resource
 {
@@ -55,6 +55,15 @@ class BendaharaResource extends Resource
                             ])
                             ->default('Aktif')
                             ->required(),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                        'xl' => 3,
+                    ]),
+                Section::make('Unggah Berkas')
+                    ->collapsed()
+                    ->schema([
                         FileUpload::make('foto')
                             ->label('Foto')
                             ->image()
@@ -87,7 +96,6 @@ class BendaharaResource extends Resource
                     ->columns([
                         'sm' => 1,
                         'lg' => 2,
-                        'xl' => 3,
                     ]),
             ]);
     }
@@ -104,7 +112,7 @@ class BendaharaResource extends Resource
                     ->label('Nama Lengkap')
                     ->description(function (Bendahara $record) {
                         if ($record->nip) {
-                            return 'NIP '.($record->nip);
+                            return 'NIP ' . ($record->nip);
                         }
 
                         return '';
@@ -114,7 +122,7 @@ class BendaharaResource extends Resource
                     ->date('d F Y')
                     ->description(function (Bendahara $record) {
                         if ($record->periode_akhir) {
-                            return 'Hingga: '.date('d F Y', strtotime($record->periode_akhir));
+                            return 'Hingga: ' . date('d F Y', strtotime($record->periode_akhir));
                         }
 
                         return 'Hingga: (Sekarang)';
@@ -124,7 +132,7 @@ class BendaharaResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray'
                     }),

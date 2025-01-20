@@ -2,20 +2,20 @@
 
 namespace App\Filament\Resources\SiswaResource\RelationManagers;
 
-use App\Filament\Exports\PembayaranExporter;
-use App\Models\Pembayaran;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Pembayaran;
 use Filament\Tables\Table;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Blade;
+use Filament\Forms\Components\Section;
+use App\Filament\Exports\PembayaranExporter;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class PembayaransRelationManager extends RelationManager
 {
-    protected static string $relationship = 'pembayarans';
+    protected static string $relationship = 'pembayaran';
 
     public function form(Form $form): Form
     {
@@ -98,8 +98,8 @@ class PembayaransRelationManager extends RelationManager
                     ->searchable()
                     ->sortable()
                     ->badge()
-                    ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                    ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                    ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                    ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -134,7 +134,7 @@ class PembayaransRelationManager extends RelationManager
                         ->action(function (Pembayaran $record) {
                             return response()->streamDownload(function () use ($record) {
                                 echo Pdf::loadHtml(Blade::render('pembayaran', ['record' => $record]))->stream();
-                            }, $record->siswa->nama.' - '.$record->jenisPembayaran->nama.' - '.$record->bulan->nama.' '.$record->tahun->nama.'.pdf');
+                            }, $record->siswa->nama . ' - ' . $record->jenisPembayaran->nama . ' - ' . $record->bulan->nama . ' ' . $record->tahun->nama . '.pdf');
                         }),
                     Tables\Actions\DeleteAction::make(),
                 ]),
