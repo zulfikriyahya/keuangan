@@ -14,8 +14,8 @@ class SiswaExporter extends Exporter
     public static function getColumns(): array
     {
         return [
-            ExportColumn::make('id')
-                ->label('ID'),
+            ExportColumn::make('nisn')
+                ->label('NISN'),
             ExportColumn::make('nama'),
             ExportColumn::make('diterima_tanggal'),
             ExportColumn::make('kelas.nama'),

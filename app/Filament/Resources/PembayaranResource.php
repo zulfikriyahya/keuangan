@@ -9,13 +9,16 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Blade;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Infolists\Components\Section;
 use Filament\Tables\Enums\ActionsPosition;
 use App\Filament\Exports\PembayaranExporter;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Pages\Dashboard\Actions\FilterAction;
 use App\Filament\Resources\PembayaranResource\Pages;
+use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 
 class PembayaranResource extends Resource
 {
@@ -41,13 +44,11 @@ class PembayaranResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('siswa.kelas.nama')
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date('d F Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jenisPembayaran.nama')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('jenisPembayaran.nama'),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->wrap()
                     ->limit(50)

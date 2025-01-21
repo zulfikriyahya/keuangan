@@ -14,8 +14,8 @@ class SiswaImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('id')
-                ->label('ID')
+            ImportColumn::make('nisn')
+                ->label('NISN')
                 ->requiredMappingForNewRecordsOnly()
                 ->rules(['required']),
             ImportColumn::make('nama')
@@ -45,7 +45,7 @@ class SiswaImporter extends Importer
     {
         return Siswa::firstOrNew([
             //     // Update existing records, matching them by `$this->data['column_name']`
-            'id' => $this->data['id'],
+            'nisn' => $this->data['nisn'],
         ]);
 
         return new Siswa();

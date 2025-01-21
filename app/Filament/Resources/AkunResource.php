@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AkunResource\Pages;
-use App\Models\Akun;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Akun;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Filament\Resources\AkunResource\Pages;
 
 class AkunResource extends Resource
 {
@@ -72,7 +72,7 @@ class AkunResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()
                         ->hidden(function ($record) {
-                            if ($record->jenisPembayarans()->count() > 0 || $record->jenisPemasukans()->count() > 0 || $record->jenisPengeluarans()->count() > 0) {
+                            if ($record->jenisPembayaran()->count() > 0 || $record->jenisPemasukans()->count() > 0 || $record->jenisPengeluarans()->count() > 0) {
                                 return $record;
                             }
                         }),

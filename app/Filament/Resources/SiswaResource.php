@@ -42,6 +42,55 @@ class SiswaResource extends Resource
                         Forms\Components\TextInput::make('nama')
                             ->label('Nama Siswa')
                             ->required(),
+                        Forms\Components\TextInput::make('nisn')
+                            ->label('NISN')
+                            ->maxLength(10)
+                            ->minLength(10)
+                            ->unique(Siswa::class, 'nisn', ignoreRecord: true)
+                            ->validationMessages([
+                                'unique' => 'NISN ini sudah terdaftar. Silakan masukkan ulang NISN anda.',
+                                'min_digits' => 'Masukkan minimal 10 digit. Silakan masukkan ulang NISN anda.',
+                                'max_digits' => 'Masukkan maksimal 10 digit. Silakan masukkan ulang NISN anda.',
+                            ])
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\DatePicker::make('diterima_tanggal')
+                            ->label('Tanggal Diterima')
+                            ->required(),
+                        Forms\Components\Select::make('kelas_id')
+                            ->label('Kelas')
+                            ->relationship('kelas', 'nama')
+                            ->preload(5)
+                            ->searchable()
+                            ->required(),
+                        Forms\Components\TextInput::make('nama_ibu')
+                            ->label('Nama Ibu'),
+                        Forms\Components\TextInput::make('nama_ayah')
+                            ->label('Nama Ayah'),
+                        Forms\Components\TextInput::make('telepon')
+                            ->label('Nomor Telepon')
+                            ->tel()
+                            ->maxLength(13)
+                            ->minLength(10)
+                            ->validationMessages([
+                                'min_digits' => 'Masukkan minimal 10 digit. Silakan masukkan ulang Nomor Telepon anda.',
+                                'max_digits' => 'Masukkan maksimal 13 digit. Silakan masukkan ulang Nomor Telepon anda.',
+                            ])
+                            ->numeric()
+                            ->required(),
+                        Forms\Components\Select::make('status')
+                            ->label('Status')
+                            ->required()
+                            ->options([
+                                'Aktif' => 'Aktif',
+                                'Nonaktif' => 'Nonaktif',
+                                'Mutasi' => 'Mutasi',
+                                'Alumni' => 'Alumni',
+                                'Drop Out' => 'Drop Out',
+                            ])
+                            ->default('Aktif'),
+                        Forms\Components\Textarea::make('alamat')
+                            ->label('Alamat'),
                         Forms\Components\FileUpload::make('foto')
                             ->label('Foto')
                             ->image()
@@ -55,41 +104,11 @@ class SiswaResource extends Resource
                             ->minSize(10)
                             ->maxSize(1024)
                             ->directory('img/foto/siswa')
-                            ->fetchFileInformation(false),
-                        Forms\Components\DatePicker::make('diterima_tanggal')
-                            ->label('Tanggal Diterima')
-                            ->required(),
-                        Forms\Components\Select::make('kelas_id')
-                            ->label('Kelas')
-                            ->relationship('kelas', 'nama')
-                            ->preload(5)
-                            ->searchable()
-                            ->required(),
-                        Forms\Components\Select::make('status')
-                            ->label('Status')
-                            ->required()
-                            ->options([
-                                'Aktif' => 'Aktif',
-                                'Nonaktif' => 'Nonaktif',
-                                'Mutasi' => 'Mutasi',
-                                'Alumni' => 'Alumni',
-                                'Drop Out' => 'Drop Out',
-                            ])
-                            ->default('Aktif'),
-                        Forms\Components\TextInput::make('alamat')
-                            ->label('Alamat'),
-                        Forms\Components\TextInput::make('nama_ibu')
-                            ->label('Nama Ibu'),
-                        Forms\Components\TextInput::make('nama_ayah')
-                            ->label('Nama Ayah'),
-                        Forms\Components\TextInput::make('telepon')
-                            ->label('Nomor Telepon')
-                            ->tel()
-                            ->required(),
+                            ->fetchFileInformation(false)
+                            ->columnSpanFull(),
                     ])
                     ->columns([
                         'sm' => 1,
-                        'lg' => 2,
                         'xl' => 3,
                     ]),
             ]);
@@ -104,12 +123,22 @@ class SiswaResource extends Resource
                     ->circular()
                     ->defaultImageUrl('/default/foto.png'),
                 Tables\Columns\TextColumn::make('nama')
-                    ->label('Nama Siswa'),
+                    ->label('Nama Siswa')
+                    ->description(
+                        fn(Siswa $record) =>
+                        "NISN: " . $record->nisn ?? null
+                    ),
                 Tables\Columns\TextColumn::make('diterima_tanggal')
                     ->date('d F Y')
                     ->label('Tanggal Diterima'),
                 Tables\Columns\TextColumn::make('kelas.nama')
-                    ->label('Kelas'),
+                    ->label('Kelas')
+                    ->description(function (Siswa $record) {
+                        return implode(" | ", [
+                            $record->kelas->jenjang,
+                            $record->kelas->jurusan->nama,
+                        ]);
+                    }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -128,11 +157,15 @@ class SiswaResource extends Resource
                         'Drop Out' => 'heroicon-m-arrow-right-start-on-rectangle',
                     }),
                 Tables\Columns\TextColumn::make('alamat')
-                    ->label('Alamat'),
+                    ->label('Alamat')
+                    ->wrap()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nama_ibu')
-                    ->label('Nama Ibu'),
+                    ->label('Nama Ibu')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nama_ayah')
-                    ->label('Nama Ayah'),
+                    ->label('Nama Ayah')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('telepon')
                     ->label('Nomor Telepon')
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -143,7 +176,12 @@ class SiswaResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->hidden(function ($record) {
+                            if ($record->pembayaran()->count() > 0) {
+                                return $record;
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([

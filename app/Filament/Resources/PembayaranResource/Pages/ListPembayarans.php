@@ -25,7 +25,8 @@ class ListPembayarans extends ListRecords
                 ->label('Ekspor')
                 ->icon('heroicon-m-cloud-arrow-down')
                 ->color('success')
-                ->exporter(PembayaranExporter::class),
+                ->exporter(PembayaranExporter::class)
+                ->chunkSize(250),
         ];
     }
 }

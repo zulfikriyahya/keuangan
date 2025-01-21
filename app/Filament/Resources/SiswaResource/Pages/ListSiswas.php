@@ -27,7 +27,8 @@ class ListSiswas extends ListRecords
                 ->label('Ekspor')
                 ->icon('heroicon-m-cloud-arrow-down')
                 ->color('success')
-                ->exporter(SiswaExporter::class),
+                ->exporter(SiswaExporter::class)
+                ->chunkSize(250),
         ];
     }
 }

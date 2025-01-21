@@ -4,16 +4,14 @@ namespace App\Filament\Resources\SiswaResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Pembayaran;
 use Filament\Tables\Table;
+use App\Models\JenisPembayaran;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\Section;
 use App\Filament\Exports\PembayaranExporter;
-use NunoMaduro\Collision\Adapters\Phpunit\State;
 use Filament\Resources\RelationManagers\RelationManager;
 
 class PembayaransRelationManager extends RelationManager
@@ -27,22 +25,30 @@ class PembayaransRelationManager extends RelationManager
                 Section::make('Informasi Pembayaran')
                     ->schema([
                         Forms\Components\DatePicker::make('tanggal')
+                            ->label('Tanggal Pembayaran')
                             ->required()
                             ->default(now()),
                         Forms\Components\Select::make('jenis_pembayaran_id')
+                            ->label('Jenis Pembayaran')
                             ->relationship('jenisPembayaran', 'nama')
-                            ->required(),
-                        Forms\Components\TextInput::make('deskripsi'),
+                            ->required()
+                            ->disabledOn('edit'),
+                        Forms\Components\TextInput::make('deskripsi')
+                            ->label('Catatan'),
 
                         Forms\Components\Select::make('bulan_id')
+                            ->label('Bulan')
                             ->relationship('bulan', 'nama')
                             ->required(),
 
                         Forms\Components\Select::make('tahun_id')
+                            ->label('Tahun')
                             ->relationship('tahun', 'nama')
                             ->required(),
 
-                        Forms\Components\TextInput::make('nominal')->required()
+                        Forms\Components\TextInput::make('nominal')
+                            ->label('Nominal')
+                            ->required()
                             ->prefix('Rp. ')
                             ->numeric()
                             ->afterStateUpdated(function (callable $set) {
@@ -50,18 +56,22 @@ class PembayaransRelationManager extends RelationManager
                             })
                             ->live(),
                         Forms\Components\Select::make('status')
+                            ->label('Status')
                             ->required()
                             ->options([
                                 'Lunas' => 'Lunas',
                                 'Terhutang' => 'Terhutang'
                             ])
                             ->afterStateHydrated(
-                                function (callable $set, callable $get) {
+                                function (?Pembayaran $record, callable $get, callable $set) {
+                                    if ($record === null) {
+                                        return $set('status', 'Terhutang');
+                                    }
                                     $nominal = $get('nominal');
-                                    if ($nominal >= 20000) {
-                                        $set('status', 'Lunas');
+                                    if ($nominal != $record->jenisPembayaran->nominal) {
+                                        return $set('status', 'Terhutang');
                                     } else {
-                                        $set('status', 'Terhutang');
+                                        return $set('status', 'Lunas');
                                     }
                                 }
                             )
@@ -103,32 +113,41 @@ class PembayaransRelationManager extends RelationManager
                     ->label('ID')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal')
+                    ->label('Tanggal')
                     ->date('d F Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenisPembayaran.nama')
+                    ->label('Jenis Pembayaran')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi')
+                    ->label('Catatan')
                     ->wrap()
                     ->limit(50),
-                Tables\Columns\TextColumn::make('bulan.nama'),
-                Tables\Columns\TextColumn::make('tahun.nama'),
+                Tables\Columns\TextColumn::make('bulan.nama')
+                    ->label('Bulan'),
+                Tables\Columns\TextColumn::make('tahun.nama')
+                    ->label('Tahun'),
                 Tables\Columns\TextColumn::make('nominal')
+                    ->label('Nominal')
                     ->numeric()
                     ->prefix('Rp. ')
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('kwitansi')
                     ->label('Kuitansi'),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
                     ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
