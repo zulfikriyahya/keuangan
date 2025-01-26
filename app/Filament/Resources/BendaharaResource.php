@@ -44,9 +44,14 @@ class BendaharaResource extends Resource
                             ->tel()
                             ->required(),
                         Forms\Components\DatePicker::make('periode_awal')
-                            ->label('Periode Awal'),
+                            ->label('Periode Awal')
+                            ->required()
+                            ->maxDate(now()),
+
                         Forms\Components\DatePicker::make('periode_akhir')
-                            ->label('Periode Akhir'),
+                            ->label('Periode Akhir')
+                            ->minDate(now()),
+
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->options([

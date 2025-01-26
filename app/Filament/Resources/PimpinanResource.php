@@ -45,6 +45,7 @@ class PimpinanResource extends Resource
                             ->required(),
                         Forms\Components\DatePicker::make('periode_awal')
                             ->label('Periode Awal')
+                            ->required()
                             ->maxDate(now()),
                         Forms\Components\DatePicker::make('periode_akhir')
                             ->label('Periode Akhir')

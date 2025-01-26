@@ -107,7 +107,8 @@ class InstansiResource extends Resource
                                             ->required(),
                                         Forms\Components\DatePicker::make('periode_awal')
                                             ->label('Periode Awal')
-                                            ->maxDate(now()),
+                                            ->maxDate(now())
+                                            ->required(),
                                         Forms\Components\DatePicker::make('periode_akhir')
                                             ->label('Periode Akhir')
                                             ->minDate(now()),
@@ -182,9 +183,12 @@ class InstansiResource extends Resource
                                             ->tel()
                                             ->required(),
                                         Forms\Components\DatePicker::make('periode_awal')
-                                            ->label('Periode Awal'),
+                                            ->label('Periode Awal')
+                                            ->required()
+                                            ->maxDate(now()),
                                         Forms\Components\DatePicker::make('periode_akhir')
-                                            ->label('Periode Akhir'),
+                                            ->label('Periode Akhir')
+                                            ->minDate(now()),
                                         Forms\Components\Select::make('status')
                                             ->label('Status')
                                             ->options([

@@ -72,7 +72,7 @@ class AkunResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()
                         ->hidden(function ($record) {
-                            if ($record->jenisPembayaran()->count() > 0 || $record->jenisPemasukans()->count() > 0 || $record->jenisPengeluarans()->count() > 0) {
+                            if ($record->jenisPembayaran()->count() > 0 || $record->jenisPemasukan()->count() > 0 || $record->jenisPengeluaran()->count() > 0) {
                                 return $record;
                             }
                         }),
