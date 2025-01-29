@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class JenisPembayaran extends Model
 {
@@ -19,6 +19,7 @@ class JenisPembayaran extends Model
     protected $fillable = [
         'nama',
         'akun_id',
+        'tahun_id',
         'kode',
         'jurusan_id',
         'nominal',
@@ -32,6 +33,7 @@ class JenisPembayaran extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'tahun_id' => 'integer',
         'akun_id' => 'integer',
         'jurusan_id' => 'integer',
         'nominal' => 'integer',
@@ -45,6 +47,10 @@ class JenisPembayaran extends Model
     public function akun(): BelongsTo
     {
         return $this->belongsTo(Akun::class);
+    }
+    public function tahun(): BelongsTo
+    {
+        return $this->belongsTo(Tahun::class);
     }
 
     public function jurusan(): BelongsTo

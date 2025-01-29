@@ -1,31 +1,21 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\AkunResource\RelationManagers;
 
-use App\Filament\Resources\JenisPengeluaranResource\Pages;
-use App\Models\JenisPengeluaran;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Forms\Components\Section;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class JenisPengeluaranResource extends Resource
+class JenisPengeluaranRelationManager extends RelationManager
 {
-    protected static ?string $model = JenisPengeluaran::class;
+    protected static string $relationship = 'jenisPengeluaran';
 
-    protected static ?string $navigationLabel = 'Jenis Pengeluaran';
-
-    protected static ?string $label = 'Jenis Pengeluaran';
-
-    protected static ?string $navigationGroup = 'Keuangan';
-
-    protected static ?int $navigationSort = 3;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -75,9 +65,13 @@ class JenisPengeluaranResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('nama')
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('kode')
                     ->label('Kode'),
@@ -101,21 +95,5 @@ class JenisPengeluaranResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListJenisPengeluarans::route('/'),
-            'create' => Pages\CreateJenisPengeluaran::route('/create'),
-            'edit' => Pages\EditJenisPengeluaran::route('/{record}/edit'),
-        ];
     }
 }

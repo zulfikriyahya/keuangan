@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Akun;
 use App\Models\User;
 use App\Models\Bulan;
 use App\Models\Tahun;
@@ -82,6 +83,29 @@ class DatabaseSeeder extends Seeder
         Jurusan::create([
             'nama' => 'Ilmu Pengetahuan Sosial',
             'kode' => 'IPS',
+        ]);
+        Jurusan::create([
+            'nama' => 'Unggulan',
+            'kode' => 'UNG',
+        ]);
+        Jurusan::create([
+            'nama' => 'Reguler',
+            'kode' => 'REG',
+        ]);
+        Akun::create([
+            'nama' => 'Pemasukan',
+            'kode' => 'PMS',
+            'deskripsi' => 'Deskripsi Pemasukan',
+        ]);
+        Akun::create([
+            'nama' => 'Pembayaran',
+            'kode' => 'PMB',
+            'deskripsi' => 'Deskripsi Pembayaran',
+        ]);
+        Akun::create([
+            'nama' => 'Pengeluaran',
+            'kode' => 'PNG',
+            'deskripsi' => 'Deskripsi Pengeluaran',
         ]);
     }
 }

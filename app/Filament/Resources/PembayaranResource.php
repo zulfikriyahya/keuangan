@@ -120,8 +120,8 @@ class PembayaranResource extends Resource
                             ->label('ID Pembayaran')
                             ->badge()
                             ->color('gray'),
-                        TextEntry::make('jenisPembayaran.kode')
-                            ->label('Kode Jenis Pembayaran')
+                        TextEntry::make('jenisPembayaran.nama')
+                            ->label('Jenis Pembayaran')
                             ->badge()
                             ->color('gray'),
                         TextEntry::make('siswa.nama')

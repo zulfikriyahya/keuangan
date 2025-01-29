@@ -1,36 +1,27 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\InstansiResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Pimpinan;
 use Filament\Forms\Form;
+use App\Models\Bendahara;
 use Filament\Tables\Table;
-use Filament\Resources\Resource;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\FileUpload;
-use App\Filament\Resources\PimpinanResource\Pages;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class PimpinanResource extends Resource
+class BendaharaRelationManager extends RelationManager
 {
-    protected static ?string $model = Pimpinan::class;
+    protected static string $relationship = 'bendahara';
 
-    protected static ?string $navigationLabel = 'Pimpinan';
-
-    protected static ?string $label = 'Pimpinan Instansi';
-
-    protected static ?string $navigationGroup = 'Referensi';
-
-    protected static ?int $navigationSort = 2;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make('Informasi Pimpinan')
+                Section::make('Informasi Bendahara')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->label('Nama Lengkap')
@@ -47,9 +38,11 @@ class PimpinanResource extends Resource
                             ->label('Periode Awal')
                             ->required()
                             ->maxDate(now()),
+
                         Forms\Components\DatePicker::make('periode_akhir')
                             ->label('Periode Akhir')
                             ->minDate(now()),
+
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->options([
@@ -103,9 +96,10 @@ class PimpinanResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('nama')
             ->columns([
                 Tables\Columns\ImageColumn::make('foto')
                     ->label('Foto')
@@ -113,7 +107,7 @@ class PimpinanResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Lengkap')
-                    ->description(function (Pimpinan $record) {
+                    ->description(function (Bendahara $record) {
                         if ($record->nip) {
                             return 'NIP ' . ($record->nip);
                         }
@@ -123,7 +117,7 @@ class PimpinanResource extends Resource
                 Tables\Columns\TextColumn::make('periode_awal')
                     ->label('Periode')
                     ->date('d F Y')
-                    ->description(function (Pimpinan $record) {
+                    ->description(function (Bendahara $record) {
                         if ($record->periode_akhir) {
                             return 'Hingga: ' . date('d F Y', strtotime($record->periode_akhir));
                         }
@@ -153,19 +147,5 @@ class PimpinanResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListPimpinans::route('/'),
-        ];
     }
 }

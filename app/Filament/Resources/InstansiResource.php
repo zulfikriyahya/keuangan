@@ -11,6 +11,8 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\FileUpload;
 use App\Filament\Resources\InstansiResource\Pages;
+use App\Filament\Resources\InstansiResource\RelationManagers\PimpinanRelationManager;
+use App\Filament\Resources\InstansiResource\RelationManagers\BendaharaRelationManager;
 
 class InstansiResource extends Resource
 {
@@ -24,7 +26,7 @@ class InstansiResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
 
     public static function form(Form $form): Form
     {
@@ -324,7 +326,8 @@ class InstansiResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PimpinanRelationManager::class,
+            BendaharaRelationManager::class,
         ];
     }
 
@@ -332,6 +335,8 @@ class InstansiResource extends Resource
     {
         return [
             'index' => Pages\ListInstansis::route('/'),
+            'create' => Pages\CreateInstansi::route('/create'),
+            'edit' => Pages\EditInstansi::route('/{record}/edit'),
         ];
     }
 }

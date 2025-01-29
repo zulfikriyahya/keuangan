@@ -32,25 +32,31 @@ class PemasukanResource extends Resource
                 Section::make('Informasi Pemasukan')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
-                            ->required(),
-                        Forms\Components\TextInput::make('kode')
+                            ->label('Nama')
                             ->required(),
                         Forms\Components\DatePicker::make('tanggal')
+                            ->label('Tanggal')
                             ->required(),
                         Forms\Components\Select::make('bulan_id')
+                            ->label('Bulan')
                             ->relationship('bulan', 'nama')
                             ->required(),
                         Forms\Components\Select::make('tahun_id')
+                            ->label('Tahun')
                             ->relationship('tahun', 'nama')
                             ->required(),
                         Forms\Components\TextInput::make('nominal')
+                            ->label('Nominal')
                             ->required()
                             ->numeric(),
-                        Forms\Components\TextInput::make('kwitansi'),
+                        Forms\Components\TextInput::make('kwitansi')
+                            ->label('Kuitansi'),
                         Forms\Components\Select::make('jenis_pemasukan_id')
+                            ->label('Jenis Pemasukan')
                             ->relationship('jenisPemasukan', 'nama')
                             ->required(),
-                        Forms\Components\TextInput::make('deskripsi'),
+                        Forms\Components\TextInput::make('deskripsi')
+                            ->label('Catatan'),
                     ])
                     ->columns([
                         'sm' => 1,
@@ -64,20 +70,29 @@ class PemasukanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama'),
-                Tables\Columns\TextColumn::make('kode'),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama'),
                 Tables\Columns\TextColumn::make('tanggal')
+                    ->label('Tanggal')
                     ->date('d F Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('bulan.nama'),
-                Tables\Columns\TextColumn::make('tahun.nama'),
+                Tables\Columns\TextColumn::make('bulan.nama')
+                    ->label('Bulan'),
+                Tables\Columns\TextColumn::make('tahun.nama')
+                    ->label('Tahun'),
                 Tables\Columns\TextColumn::make('nominal')
+                    ->label('Nominal')
                     ->prefix('Rp. ')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('kwitansi'),
-                Tables\Columns\TextColumn::make('jenisPemasukan.nama'),
-                Tables\Columns\TextColumn::make('deskripsi'),
+                Tables\Columns\ImageColumn::make('kwitansi')
+                    ->label('Kuitansi'),
+                Tables\Columns\TextColumn::make('jenisPemasukan.kode')
+                    ->label('Kode Jenis Pemasukan'),
+                Tables\Columns\TextColumn::make('jenisPemasukan.nama')
+                    ->label('Jenis Pemasukan'),
+                Tables\Columns\TextColumn::make('deskripsi')
+                    ->label('Catatan'),
             ])
             ->filters([
                 //

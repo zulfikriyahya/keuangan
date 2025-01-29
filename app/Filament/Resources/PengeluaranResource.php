@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PengeluaranResource\Pages;
-use App\Models\Pengeluaran;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Pengeluaran;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\PengeluaranResource\Pages;
 
 class PengeluaranResource extends Resource
 {
@@ -33,8 +33,8 @@ class PengeluaranResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required(),
-                        Forms\Components\TextInput::make('kode')
-                            ->required(),
+                        // Forms\Components\TextInput::make('kode')
+                        //     ->required(),
                         Forms\Components\DatePicker::make('tanggal')
                             ->required()
                             ->date('d F Y'),
@@ -67,8 +67,6 @@ class PengeluaranResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kode')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),
@@ -80,6 +78,8 @@ class PengeluaranResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kwitansi')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('jenisPengeluaran.kode')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('jenisPengeluaran.nama')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deskripsi')

@@ -1,42 +1,36 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\AkunResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use App\Models\JenisPembayaran;
-use Filament\Resources\Resource;
 use Filament\Forms\Components\Section;
 use Filament\Notifications\Notification;
-use App\Filament\Resources\JenisPembayaranResource\Pages;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class JenisPembayaranResource extends Resource
+class JenisPembayaranRelationManager extends RelationManager
 {
-    protected static ?string $model = JenisPembayaran::class;
+    protected static string $relationship = 'jenisPembayaran';
 
-    protected static ?string $navigationLabel = 'Jenis Pembayaran';
-
-    protected static ?string $label = 'Jenis Pembayaran';
-
-    protected static ?string $navigationGroup = 'Keuangan';
-
-    protected static ?int $navigationSort = 2;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
                 Section::make('Informasi Jenis Pembayaran')
                     ->schema([
-                        Forms\Components\TextInput::make('kode')
-                            ->label('Kode')
-                            ->required(),
+                        // Forms\Components\TextInput::make('kode')
+                        //     ->label('Kode')
+                        //     ->required(),
                         Forms\Components\TextInput::make('nama')
                             ->label('Nama')
+                            ->required(),
+                        Forms\Components\Select::make('tahun_id')
+                            ->label('Tahun')
+                            ->relationship('tahun', 'nama')
                             ->required(),
                         Forms\Components\Select::make('jurusan_id')
                             ->label('Jurusan')
@@ -102,14 +96,22 @@ class JenisPembayaranResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('nama')
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
             ->columns([
-                Tables\Columns\TextColumn::make('kode')
-                    ->label('Kode'),
+                // Tables\Columns\TextColumn::make('kode')
+                //     ->label('Kode'),
                 Tables\Columns\TextColumn::make('nama')
-                    ->label('Nama'),
+                    ->label('Nama')
+                    ->icon('heroicon-o-banknotes')
+                    ->iconColor('success'),
+                Tables\Columns\TextColumn::make('tahuns.nama')
+                    ->label('Tahun'),
                 Tables\Columns\TextColumn::make('nominal')
                     ->label('Nominal')
                     ->numeric()
@@ -153,21 +155,5 @@ class JenisPembayaranResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListJenisPembayarans::route('/'),
-            'create' => Pages\CreateJenisPembayaran::route('/create'),
-            'edit' => Pages\EditJenisPembayaran::route('/{record}/edit'),
-        ];
     }
 }

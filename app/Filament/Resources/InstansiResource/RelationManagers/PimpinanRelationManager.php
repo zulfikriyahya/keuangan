@@ -1,36 +1,27 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\InstansiResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Pimpinan;
 use Filament\Forms\Form;
-use App\Models\Bendahara;
 use Filament\Tables\Table;
-use Filament\Resources\Resource;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\FileUpload;
-use App\Filament\Resources\BendaharaResource\Pages;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class BendaharaResource extends Resource
+class PimpinanRelationManager extends RelationManager
 {
-    protected static ?string $model = Bendahara::class;
+    protected static string $relationship = 'pimpinan';
 
-    protected static ?string $navigationLabel = 'Bendahara';
-
-    protected static ?string $label = 'Bendahara Instansi';
-
-    protected static ?string $navigationGroup = 'Referensi';
-
-    protected static ?int $navigationSort = 3;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make('Informasi Bendahara')
+                Section::make('Informasi Pimpinan')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->label('Nama Lengkap')
@@ -47,11 +38,9 @@ class BendaharaResource extends Resource
                             ->label('Periode Awal')
                             ->required()
                             ->maxDate(now()),
-
                         Forms\Components\DatePicker::make('periode_akhir')
                             ->label('Periode Akhir')
                             ->minDate(now()),
-
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->options([
@@ -105,9 +94,10 @@ class BendaharaResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('nama')
             ->columns([
                 Tables\Columns\ImageColumn::make('foto')
                     ->label('Foto')
@@ -115,7 +105,7 @@ class BendaharaResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Lengkap')
-                    ->description(function (Bendahara $record) {
+                    ->description(function (Pimpinan $record) {
                         if ($record->nip) {
                             return 'NIP ' . ($record->nip);
                         }
@@ -125,7 +115,7 @@ class BendaharaResource extends Resource
                 Tables\Columns\TextColumn::make('periode_awal')
                     ->label('Periode')
                     ->date('d F Y')
-                    ->description(function (Bendahara $record) {
+                    ->description(function (Pimpinan $record) {
                         if ($record->periode_akhir) {
                             return 'Hingga: ' . date('d F Y', strtotime($record->periode_akhir));
                         }
@@ -155,19 +145,5 @@ class BendaharaResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListBendaharas::route('/'),
-        ];
     }
 }

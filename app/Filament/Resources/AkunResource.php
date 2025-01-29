@@ -7,8 +7,13 @@ use App\Models\Akun;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\JenisPembayaran;
 use Filament\Resources\Resource;
 use App\Filament\Resources\AkunResource\Pages;
+use Filament\Resources\RelationManagers\RelationManager;
+use App\Filament\Resources\AkunResource\RelationManagers\JenisPemasukanRelationManager;
+use App\Filament\Resources\AkunResource\RelationManagers\JenisPembayaranRelationManager;
+use App\Filament\Resources\AkunResource\RelationManagers\JenisPengeluaranRelationManager;
 
 class AkunResource extends Resource
 {
@@ -18,11 +23,11 @@ class AkunResource extends Resource
 
     protected static ?string $label = 'Akun Keuangan';
 
-    protected static ?string $navigationGroup = 'Keuangan';
+    protected static ?string $navigationGroup = 'Referensi';
 
     protected static ?int $navigationSort = 0;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cog';
 
     public static function form(Form $form): Form
     {
@@ -86,7 +91,9 @@ class AkunResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            JenisPembayaranRelationManager::class,
+            JenisPemasukanRelationManager::class,
+            JenisPengeluaranRelationManager::class,
         ];
     }
 
