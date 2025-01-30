@@ -2,25 +2,26 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\UserResource;
+use App\Filament\Widgets\JurnalOverview;
+use App\Filament\Widgets\SaldoOverview;
+use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\AuthenticateSession;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
 use Filament\Support\Enums\MaxWidth;
-use App\Filament\Widgets\SaldoOverview;
-use App\Filament\Resources\UserResource;
-use Filament\Http\Middleware\Authenticate;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Filament\Http\Middleware\AuthenticateSession;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -40,6 +41,8 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->brandLogo(fn () => view('logo'))
+            ->brandLogoHeight('1.25rem')
             ->topNavigation()
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
@@ -50,12 +53,16 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 // AccountWidget::class,
                 SaldoOverview::class,
+                JurnalOverview::class,
+            ])
+            ->plugins([
+                // \TomatoPHP\FilamentPWA\FilamentPWAPlugin::make()
             ])
             ->userMenuItems([
                 MenuItem::make()
                     ->label('Pengguna')
-                    ->url(fn(): string => UserResource::getUrl())
-                    ->icon('heroicon-o-identification')
+                    ->url(fn (): string => UserResource::getUrl())
+                    ->icon('heroicon-o-identification'),
             ])
             ->middleware([
                 EncryptCookies::class,

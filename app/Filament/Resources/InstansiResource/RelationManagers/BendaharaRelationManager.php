@@ -2,16 +2,14 @@
 
 namespace App\Filament\Resources\InstansiResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
 use App\Models\Bendahara;
-use Filament\Tables\Table;
-use Filament\Forms\Components\Section;
+use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class BendaharaRelationManager extends RelationManager
 {
@@ -109,7 +107,7 @@ class BendaharaRelationManager extends RelationManager
                     ->label('Nama Lengkap')
                     ->description(function (Bendahara $record) {
                         if ($record->nip) {
-                            return 'NIP ' . ($record->nip);
+                            return 'NIP '.($record->nip);
                         }
 
                         return '';
@@ -119,7 +117,7 @@ class BendaharaRelationManager extends RelationManager
                     ->date('d F Y')
                     ->description(function (Bendahara $record) {
                         if ($record->periode_akhir) {
-                            return 'Hingga: ' . date('d F Y', strtotime($record->periode_akhir));
+                            return 'Hingga: '.date('d F Y', strtotime($record->periode_akhir));
                         }
 
                         return 'Hingga: (Sekarang)';
@@ -129,7 +127,7 @@ class BendaharaRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray'
                     }),

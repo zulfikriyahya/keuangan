@@ -2,16 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Kelas;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
 use App\Filament\Resources\KelasResource\Pages;
+use App\Models\Kelas;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class KelasResource extends Resource
 {
@@ -60,7 +58,7 @@ class KelasResource extends Resource
                                 '9' => '9 - SMP/MTs',
                                 '10' => '10 - SMA/SMK/MA',
                                 '11' => '11 - SMA/SMK/MA',
-                                '12'  => '12 - SMA/SMK/MA'
+                                '12' => '12 - SMA/SMK/MA',
                             ]),
                         Forms\Components\Select::make('jurusan_id')
                             ->relationship('jurusan', 'nama')

@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Section;
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\User;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class UserResource extends Resource
 {
@@ -40,8 +40,8 @@ class UserResource extends Resource
                             ->label('Email')
                             ->helperText('email harus berdomain @mtsn1pandeglang.sch.id')
                             ->email()
-                            ->rule(fn($record) => $record === null ? 'unique:users,email' : 'unique:users,email,' . $record->id)
-                            ->dehydrateStateUsing(fn($state) => $state ? $state : null)
+                            ->rule(fn ($record) => $record === null ? 'unique:users,email' : 'unique:users,email,'.$record->id)
+                            ->dehydrateStateUsing(fn ($state) => $state ? $state : null)
                             ->disabledOn('edit')
                             ->required(),
                         Forms\Components\DateTimePicker::make('email_verified_at')
@@ -49,8 +49,8 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('password')
                             ->label('Password')
                             ->password()
-                            ->required(fn($record) => $record === null)
-                            ->dehydrateStateUsing(fn($state, $record) => $state ? bcrypt($state) : $record->password),
+                            ->required(fn ($record) => $record === null)
+                            ->dehydrateStateUsing(fn ($state, $record) => $state ? bcrypt($state) : $record->password),
 
                     ])
                     ->columns([

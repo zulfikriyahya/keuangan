@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Akun;
-use App\Models\User;
 use App\Models\Bulan;
+use App\Models\Jurusan;
 use App\Models\Tahun;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Jurusan;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

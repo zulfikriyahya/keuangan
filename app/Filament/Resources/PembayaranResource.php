@@ -2,23 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Tables;
+use App\Filament\Exports\PembayaranExporter;
+use App\Filament\Resources\PembayaranResource\Pages;
 use App\Models\Pembayaran;
-use Filament\Tables\Table;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Blade;
-use Filament\Forms\Components\DatePicker;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Infolists\Components\Section;
+use Filament\Tables;
 use Filament\Tables\Enums\ActionsPosition;
-use App\Filament\Exports\PembayaranExporter;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\ImageEntry;
-use Filament\Pages\Dashboard\Actions\FilterAction;
-use App\Filament\Resources\PembayaranResource\Pages;
-use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Blade;
 
 class PembayaranResource extends Resource
 {
@@ -63,8 +60,8 @@ class PembayaranResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                    ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                    ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                    ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
             ])
             ->filters([
                 SelectFilter::make('Status')
@@ -95,7 +92,7 @@ class PembayaranResource extends Resource
                     ->action(function (Pembayaran $record) {
                         return response()->streamDownload(function () use ($record) {
                             echo Pdf::loadHtml(Blade::render('pembayaran', ['record' => $record]))->stream();
-                        }, $record->siswa->nama . ' - ' . $record->jenisPembayaran->nama . ' - ' . $record->bulan->nama . ' ' . $record->tahun->nama . '.pdf');
+                        }, $record->siswa->nama.' - '.$record->jenisPembayaran->nama.' - '.$record->bulan->nama.' '.$record->tahun->nama.'.pdf');
                     }),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
@@ -139,8 +136,8 @@ class PembayaranResource extends Resource
                             ->prefix('Rp. '),
                         TextEntry::make('status')
                             ->badge()
-                            ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                            ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                            ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                            ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
                     ])
                     ->columnSpan(1)
                     ->columns(2),

@@ -3,14 +3,12 @@
 namespace App\Filament\Resources\AkunResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class JenisPembayaranRelationManager extends RelationManager
 {
@@ -141,6 +139,7 @@ class JenisPembayaranRelationManager extends RelationManager
                                     ->danger()
                                     ->send();
                                 $action->cancel();
+
                                 return;
                             }
                         })

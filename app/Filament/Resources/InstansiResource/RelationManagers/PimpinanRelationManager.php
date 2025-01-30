@@ -2,16 +2,14 @@
 
 namespace App\Filament\Resources\InstansiResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Tables;
 use App\Models\Pimpinan;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Forms\Components\Section;
+use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class PimpinanRelationManager extends RelationManager
 {
@@ -107,7 +105,7 @@ class PimpinanRelationManager extends RelationManager
                     ->label('Nama Lengkap')
                     ->description(function (Pimpinan $record) {
                         if ($record->nip) {
-                            return 'NIP ' . ($record->nip);
+                            return 'NIP '.($record->nip);
                         }
 
                         return '';
@@ -117,7 +115,7 @@ class PimpinanRelationManager extends RelationManager
                     ->date('d F Y')
                     ->description(function (Pimpinan $record) {
                         if ($record->periode_akhir) {
-                            return 'Hingga: ' . date('d F Y', strtotime($record->periode_akhir));
+                            return 'Hingga: '.date('d F Y', strtotime($record->periode_akhir));
                         }
 
                         return 'Hingga: (Sekarang)';
@@ -127,7 +125,7 @@ class PimpinanRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray'
                     }),

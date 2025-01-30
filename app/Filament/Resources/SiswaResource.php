@@ -2,28 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Siswa;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Support\Collection;
-use Filament\Actions\RestoreAction;
-use Tables\Actions\BulkDeleteAction;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
-use Filament\Resources\Components\Tab;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Tables\Actions\BulkAction;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Filters\TrashedFilter;
-
-use Filament\Tables\Actions\DeleteBulkAction;
 use App\Filament\Resources\SiswaResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SiswaResource\RelationManagers\PembayaransRelationManager;
+use App\Models\Siswa;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 
 class SiswaResource extends Resource
 {
@@ -139,8 +133,7 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Siswa')
                     ->description(
-                        fn(Siswa $record) =>
-                        "NISN: " . $record->nisn ?? null
+                        fn (Siswa $record) => 'NISN: '.$record->nisn ?? null
                     )
                     ->searchable(Siswa::count() > 0),
                 Tables\Columns\TextColumn::make('diterima_tanggal')
@@ -149,7 +142,7 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('kelas.nama')
                     ->label('Kelas')
                     ->description(function (Siswa $record) {
-                        return implode(" | ", [
+                        return implode(' | ', [
                             $record->kelas->jenjang,
                             $record->kelas->jurusan->nama,
                         ]);
@@ -160,14 +153,14 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray',
                         'Mutasi' => 'warning',
                         'Alumni' => 'info',
                         'Drop Out' => 'danger',
                     })
-                    ->icon(fn(string $state): string => match ($state) {
+                    ->icon(fn (string $state): string => match ($state) {
                         'Aktif' => 'heroicon-m-check-circle',
                         'Nonaktif' => 'heroicon-m-x-circle',
                         'Mutasi' => 'heroicon-m-arrows-right-left',
@@ -194,7 +187,7 @@ class SiswaResource extends Resource
             ->filters([
                 SelectFilter::make('Kelas')
                     ->label('Kelas')
-                    ->relationship('kelas', 'nama')
+                    ->relationship('kelas', 'nama'),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -228,10 +221,10 @@ class SiswaResource extends Resource
                         ->action(function (Collection $records, array $data) {
                             $records->each(function ($record) use ($data) {
                                 Siswa::where('id', $record->id)->update([
-                                    'status' => $data['Status']
+                                    'status' => $data['Status'],
                                 ]);
                             });
-                        })
+                        }),
                 ]),
             ]);
     }
