@@ -18,14 +18,15 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nisn')->unique();
             $table->date('diterima_tanggal');
+            $table->date('lulus_tanggal')->nullable();
             $table->foreignId('kelas_id')->constrained('kelas')->cascadeOnDelete()->cascadeOnUpdate();
             $table->enum('status', ['Aktif', 'Nonaktif', 'Alumni', 'Mutasi', 'Drop Out']);
             $table->string('foto')->nullable();
+            $table->string('jenis_kelamin')->nullable();
             $table->string('alamat')->nullable();
             $table->string('nama_ibu')->nullable();
             $table->string('nama_ayah')->nullable();
             $table->string('telepon')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
         Schema::enableForeignKeyConstraints();

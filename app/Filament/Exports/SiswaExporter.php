@@ -19,6 +19,7 @@ class SiswaExporter extends Exporter
             ExportColumn::make('nama'),
             ExportColumn::make('diterima_tanggal'),
             ExportColumn::make('kelas.nama'),
+            ExportColumn::make('jenis_kelamin'),
             ExportColumn::make('status'),
             ExportColumn::make('foto'),
             ExportColumn::make('alamat'),

@@ -8,12 +8,18 @@ use App\Models\Siswa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\Collection;
 use Filament\Actions\RestoreAction;
 use Tables\Actions\BulkDeleteAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Filament\Resources\Components\Tab;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TrashedFilter;
+
 use Filament\Tables\Actions\DeleteBulkAction;
 use App\Filament\Resources\SiswaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -27,9 +33,9 @@ class SiswaResource extends Resource
 
     protected static ?string $label = 'Siswa';
 
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'Referensi';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
@@ -63,6 +69,14 @@ class SiswaResource extends Resource
                             ->preload(5)
                             ->searchable()
                             ->required(),
+                        Forms\Components\DatePicker::make('lulus_tanggal')
+                            ->label('Tanggal Kelulusan'),
+                        Forms\Components\Select::make('jenis_kelamin')
+                            ->label('Jenis Kelamin')
+                            ->options([
+                                'Laki-laki' => 'Laki-laki',
+                                'Perempuan' => 'Perempuan',
+                            ]),
                         Forms\Components\TextInput::make('nama_ibu')
                             ->label('Nama Ibu'),
                         Forms\Components\TextInput::make('nama_ayah')
@@ -127,7 +141,8 @@ class SiswaResource extends Resource
                     ->description(
                         fn(Siswa $record) =>
                         "NISN: " . $record->nisn ?? null
-                    ),
+                    )
+                    ->searchable(Siswa::count() > 0),
                 Tables\Columns\TextColumn::make('diterima_tanggal')
                     ->date('d F Y')
                     ->label('Tanggal Diterima'),
@@ -139,6 +154,9 @@ class SiswaResource extends Resource
                             $record->kelas->jurusan->nama,
                         ]);
                     }),
+                Tables\Columns\TextColumn::make('lulus_tanggal')
+                    ->date('Y')
+                    ->label('Tahun Lulus'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -160,6 +178,9 @@ class SiswaResource extends Resource
                     ->label('Alamat')
                     ->wrap()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nama_ibu')
                     ->label('Nama Ibu')
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -171,7 +192,9 @@ class SiswaResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                SelectFilter::make('Kelas')
+                    ->label('Kelas')
+                    ->relationship('kelas', 'nama')
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -187,6 +210,28 @@ class SiswaResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    BulkAction::make('Ubah Status')
+                        ->icon('heroicon-m-check')
+                        ->requiresConfirmation()
+                        ->form([
+                            Select::make('Status')
+                                ->label('Status')
+                                ->options([
+                                    'Aktif' => 'Aktif',
+                                    'Nonaktif' => 'Nonaktif',
+                                    'Alumni' => 'Alumni',
+                                    'Mutasi' => 'Mutasi',
+                                    'Drop Out' => 'Drop Out',
+                                ])
+                                ->required(),
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            $records->each(function ($record) use ($data) {
+                                Siswa::where('id', $record->id)->update([
+                                    'status' => $data['Status']
+                                ]);
+                            });
+                        })
                 ]),
             ]);
     }

@@ -21,6 +21,9 @@ class SiswaImporter extends Importer
             ImportColumn::make('nama')
                 ->requiredMappingForNewRecordsOnly()
                 ->rules(['required']),
+            ImportColumn::make('jenis_kelamin')
+                ->requiredMappingForNewRecordsOnly()
+                ->rules(['required']),
             ImportColumn::make('diterima_tanggal')
                 ->requiredMappingForNewRecordsOnly()
                 ->rules(['required', 'date']),

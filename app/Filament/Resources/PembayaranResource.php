@@ -28,11 +28,11 @@ class PembayaranResource extends Resource
 
     protected static ?string $label = 'Jurnal Pembayaran';
 
-    protected static ?string $navigationGroup = 'Jurnal Keuangan';
+    protected static ?string $navigationGroup = 'Keuangan';
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
     protected static ?string $recordTitleAttribute = 'name';
 

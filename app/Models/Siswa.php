@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Siswa extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -21,12 +21,14 @@ class Siswa extends Model
         'nama',
         'nisn',
         'diterima_tanggal',
+        'lulus_tanggal',
         'kelas_id',
         'status',
         'foto',
         'alamat',
         'nama_ibu',
         'nama_ayah',
+        'jenis_kelamin',
         'telepon',
     ];
 

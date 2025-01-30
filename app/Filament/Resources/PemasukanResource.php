@@ -19,11 +19,11 @@ class PemasukanResource extends Resource
 
     protected static ?string $label = 'Jurnal Pemasukan';
 
-    protected static ?string $navigationGroup = 'Jurnal Keuangan';
+    protected static ?string $navigationGroup = 'Keuangan';
 
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
     public static function form(Form $form): Form
     {

@@ -37,7 +37,7 @@ class SaldoOverview extends BaseWidget
                     '.'
                 )
             )
-                ->icon('heroicon-m-credit-card')
+                ->icon('heroicon-m-wallet')
                 ->color('success'),
             Stat::make(
                 'Total Pembayaran',
@@ -49,7 +49,7 @@ class SaldoOverview extends BaseWidget
                     '.'
                 )
             )
-                ->icon('heroicon-m-credit-card')
+                ->icon('heroicon-o-banknotes')
                 ->color('success'),
             Stat::make(
                 'Total Pemasukan',
@@ -61,7 +61,7 @@ class SaldoOverview extends BaseWidget
                     '.'
                 )
             )
-                ->icon('heroicon-m-credit-card')
+                ->icon('heroicon-o-credit-card')
                 ->color('success'),
             Stat::make(
                 'Total Pengeluaran',
@@ -73,7 +73,7 @@ class SaldoOverview extends BaseWidget
                     '.'
                 )
             )
-                ->icon('heroicon-m-credit-card')
+                ->icon('heroicon-o-credit-card')
                 ->color('success'),
 
         ];
