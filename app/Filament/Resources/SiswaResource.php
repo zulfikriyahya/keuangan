@@ -2,22 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SiswaResource\Pages;
-use App\Filament\Resources\SiswaResource\RelationManagers\PembayaransRelationManager;
-use App\Models\Siswa;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\BulkAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Filters\SelectFilter;
+use App\Models\Kelas;
+use App\Models\Siswa;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\DeleteBulkAction;
+use App\Filament\Resources\SiswaResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\SiswaResource\RelationManagers\PembayaransRelationManager;
 
 class SiswaResource extends Resource
 {
@@ -133,7 +134,7 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama Siswa')
                     ->description(
-                        fn (Siswa $record) => 'NISN: '.$record->nisn ?? null
+                        fn(Siswa $record) => 'NISN: ' . $record->nisn ?? null
                     )
                     ->searchable(Siswa::count() > 0),
                 Tables\Columns\TextColumn::make('diterima_tanggal')
@@ -153,14 +154,14 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'Aktif' => 'success',
                         'Nonaktif' => 'gray',
                         'Mutasi' => 'warning',
                         'Alumni' => 'info',
                         'Drop Out' => 'danger',
                     })
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         'Aktif' => 'heroicon-m-check-circle',
                         'Nonaktif' => 'heroicon-m-x-circle',
                         'Mutasi' => 'heroicon-m-arrows-right-left',
@@ -169,25 +170,31 @@ class SiswaResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
+                    ->visible(fn(): string => Siswa::count() > 0)
                     ->wrap()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('jenis_kelamin')
+                    ->visible(fn(): string => Siswa::count() > 0)
                     ->label('Jenis Kelamin')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nama_ibu')
                     ->label('Nama Ibu')
+                    ->visible(fn(): string => Siswa::count() > 0)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nama_ayah')
+                    ->visible(fn(): string => Siswa::count() > 0)
                     ->label('Nama Ayah')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('telepon')
                     ->label('Nomor Telepon')
+                    ->visible(fn(): string => Siswa::count() > 0)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('Kelas')
                     ->label('Kelas')
-                    ->relationship('kelas', 'nama'),
+                    ->relationship('kelas', 'nama')
+                    ->visible(fn(): string => Siswa::count() > 10),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

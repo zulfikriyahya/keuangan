@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\InstansiResource\Pages;
-use App\Filament\Resources\InstansiResource\RelationManagers\BendaharaRelationManager;
-use App\Filament\Resources\InstansiResource\RelationManagers\PimpinanRelationManager;
-use App\Models\Instansi;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Instansi;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\FileUpload;
+use App\Filament\Resources\InstansiResource\Pages;
+use App\Filament\Resources\InstansiResource\RelationManagers\PimpinanRelationManager;
+use App\Filament\Resources\InstansiResource\RelationManagers\BendaharaRelationManager;
 
 class InstansiResource extends Resource
 {
@@ -280,33 +280,48 @@ class InstansiResource extends Resource
                 Tables\Columns\TextColumn::make('nss')
                     ->label('NSS/NSM'),
                 Tables\Columns\TextColumn::make('email')
+                    ->visible(fn(): string => Instansi::count() != 0)
                     ->label('Email')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('telepon')
+                    ->visible(fn(): string
+                    => Instansi::count() != 0)
                     ->label('Nomor Telepon')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('website')
+                    ->visible(fn(): string => Instansi::count() != 0)
                     ->label('Website')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('alamat')
+                    ->visible(fn(): string => Instansi::count() != 0)
                     ->label('Alamat')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('kode_pos')
+                    ->visible(fn(): string => Instansi::count() != 0)
                     ->label('Kode Pos')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('pimpinan.nama')
+                    ->visible(fn(): string
+                    => Instansi::count() != 0)
                     ->label('Nama Pimpinan')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('bendahara.nama')
+                    ->visible(fn(): string
+                    => Instansi::count() != 0)
                     ->label('Nama Bendahara')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nama_bank')
+                    ->visible(fn(): string => Instansi::count() != 0)
                     ->label('Nama Bank')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nama_rekening')
+                    ->visible(fn(): string
+                    => Instansi::count() != 0)
                     ->label('Nama Rekening')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nomor_rekening')
+                    ->visible(fn(): string
+                    => Instansi::count() != 0)
                     ->label('Nomor Rekening')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

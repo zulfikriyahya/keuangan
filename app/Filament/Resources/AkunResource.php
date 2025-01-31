@@ -102,13 +102,11 @@ class AkunResource extends Resource
 
     public static function getRelations(): array
     {
-        $recordId = request()->route('record'); // Ambil ID dari route parameter
+        $recordId = request()->route('record');
         $record = Akun::find($recordId);
-
         if ($record) {
             return static::getRelationManagersForKategori($record->kategori);
         }
-
         return [];
     }
 
