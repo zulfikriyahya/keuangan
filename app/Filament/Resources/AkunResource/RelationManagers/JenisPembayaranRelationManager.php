@@ -3,12 +3,12 @@
 namespace App\Filament\Resources\AkunResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Components\Section;
+use Filament\Tables;
 use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Forms\Components\Section;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
-use Filament\Tables\Table;
 
 class JenisPembayaranRelationManager extends RelationManager
 {
@@ -20,9 +20,6 @@ class JenisPembayaranRelationManager extends RelationManager
             ->schema([
                 Section::make('Informasi Jenis Pembayaran')
                     ->schema([
-                        // Forms\Components\TextInput::make('kode')
-                        //     ->label('Kode')
-                        //     ->required(),
                         Forms\Components\TextInput::make('nama')
                             ->label('Nama')
                             ->required(),

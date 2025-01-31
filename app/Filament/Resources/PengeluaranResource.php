@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PengeluaranResource\Pages;
-use App\Models\Pengeluaran;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Pengeluaran;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\PengeluaranResource\Pages;
 
 class PengeluaranResource extends Resource
 {
@@ -33,8 +33,6 @@ class PengeluaranResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required(),
-                        // Forms\Components\TextInput::make('kode')
-                        //     ->required(),
                         Forms\Components\DatePicker::make('tanggal')
                             ->required()
                             ->date('d F Y'),
@@ -66,7 +64,7 @@ class PengeluaranResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
+                    ->searchable(Pengeluaran::count() > 10),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),
@@ -76,22 +74,22 @@ class PengeluaranResource extends Resource
                 Tables\Columns\TextColumn::make('nominal')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('kwitansi')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('kwitansi'),
                 Tables\Columns\TextColumn::make('jenisPengeluaran.kode')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenisPengeluaran.nama')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deskripsi')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('deskripsi'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->visible(fn(): string => Pengeluaran::count() > 0),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->visible(fn(): string => Pengeluaran::count() > 0),
             ])
             ->filters([
                 //

@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PemasukanResource\Pages;
-use App\Models\Pemasukan;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Pemasukan;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Section;
+use App\Filament\Resources\PemasukanResource\Pages;
 
 class PemasukanResource extends Resource
 {
@@ -49,8 +49,21 @@ class PemasukanResource extends Resource
                             ->label('Nominal')
                             ->required()
                             ->numeric(),
-                        Forms\Components\TextInput::make('kwitansi')
-                            ->label('Kuitansi'),
+                        Forms\Components\FileUpload::make('kwitansi')
+                            ->label('Bukti/Kuitansi')
+                            ->image()
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                null,
+                                '1:1' => '1:1',
+                                '4:3' => '4:3',
+                                '3:4' => '3:4',
+                                '9:16' => '9:16',
+                                '16:9' => '16:9',
+                            ])
+                            ->directory('img/kwitansi')
+                            ->fetchFileInformation(false)
+                            ->required(),
                         Forms\Components\Select::make('jenis_pemasukan_id')
                             ->label('Jenis Pemasukan')
                             ->relationship('jenisPemasukan', 'nama')

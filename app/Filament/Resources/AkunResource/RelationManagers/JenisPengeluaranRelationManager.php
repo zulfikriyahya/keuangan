@@ -3,11 +3,11 @@
 namespace App\Filament\Resources\AkunResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Forms\Components\Section;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class JenisPengeluaranRelationManager extends RelationManager
 {
@@ -19,40 +19,37 @@ class JenisPengeluaranRelationManager extends RelationManager
             ->schema([
                 Section::make('Informasi Jenis Pengeluaran')
                     ->schema([
-                        Forms\Components\TextInput::make('kode')
-                            ->label('Kode')
-                            ->required(),
                         Forms\Components\TextInput::make('nama')
                             ->label('Nama')
                             ->required(),
-                        Forms\Components\Select::make('akun_id')
-                            ->label('Referensi Akun')
-                            ->relationship('akun', 'nama')
-                            ->required()
-                            ->createOptionForm([
-                                Forms\Components\Section::make('Akun')
-                                    ->label('Akun')
-                                    ->description('Informasi Akun Keuangan')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('kode')
-                                            ->label('Kode')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('nama')
-                                            ->label('Nama Akun')
-                                            ->required(),
-                                        Forms\Components\Textarea::make('deskripsi')
-                                            ->label('Deskripsi')
-                                            ->columnSpan([
-                                                'sm' => '100%',
-                                                'lg' => 2,
-                                            ]),
-                                    ])
-                                    ->columns([
-                                        'sm' => '100%',
-                                        'lg' => 2,
-                                    ])
-                                    ->disabledOn('edit'),
-                            ]),
+                        // Forms\Components\Select::make('akun_id')
+                        //     ->label('Referensi Akun')
+                        //     ->relationship('akun', 'nama')
+                        //     ->required()
+                        //     ->createOptionForm([
+                        //         Forms\Components\Section::make('Akun')
+                        //             ->label('Akun')
+                        //             ->description('Informasi Akun Keuangan')
+                        //             ->schema([
+                        //                 Forms\Components\TextInput::make('kode')
+                        //                     ->label('Kode')
+                        //                     ->required(),
+                        //                 Forms\Components\TextInput::make('nama')
+                        //                     ->label('Nama Akun')
+                        //                     ->required(),
+                        //                 Forms\Components\Textarea::make('deskripsi')
+                        //                     ->label('Deskripsi')
+                        //                     ->columnSpan([
+                        //                         'sm' => '100%',
+                        //                         'lg' => 2,
+                        //                     ]),
+                        //             ])
+                        //             ->columns([
+                        //                 'sm' => '100%',
+                        //                 'lg' => 2,
+                        //             ])
+                        //             ->disabledOn('edit'),
+                        //     ]),
                         Forms\Components\Textarea::make('deskripsi')
                             ->label('Deskripsi'),
                     ])
@@ -71,8 +68,6 @@ class JenisPengeluaranRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->columns([
-                Tables\Columns\TextColumn::make('kode')
-                    ->label('Kode'),
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama'),
                 Tables\Columns\TextColumn::make('akun.nama')

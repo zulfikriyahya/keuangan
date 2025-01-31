@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Akun;
+use App\Models\User;
 use App\Models\Bulan;
-use App\Models\Jurusan;
 use App\Models\Tahun;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\User;
+use App\Models\Jurusan;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -93,18 +93,21 @@ class DatabaseSeeder extends Seeder
             'kode' => 'REG',
         ]);
         Akun::create([
-            'nama' => 'Pemasukan',
-            'kode' => 'PMS',
-            'deskripsi' => 'Deskripsi Pemasukan',
-        ]);
-        Akun::create([
             'nama' => 'Pembayaran',
             'kode' => 'PMB',
+            'kategori' => 'Pembayaran',
             'deskripsi' => 'Deskripsi Pembayaran',
+        ]);
+        Akun::create([
+            'nama' => 'Pemasukan',
+            'kode' => 'PMS',
+            'kategori' => 'Pemasukan',
+            'deskripsi' => 'Deskripsi Pemasukan',
         ]);
         Akun::create([
             'nama' => 'Pengeluaran',
             'kode' => 'PNG',
+            'kategori' => 'Pengeluaran',
             'deskripsi' => 'Deskripsi Pengeluaran',
         ]);
     }

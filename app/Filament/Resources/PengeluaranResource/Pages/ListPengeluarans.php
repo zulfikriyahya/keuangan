@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\PengeluaranResource\Pages;
 
-use App\Filament\Resources\PengeluaranResource;
 use Filament\Actions;
+use App\Models\JenisPengeluaran;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\PengeluaranResource;
 
 class ListPengeluarans extends ListRecords
 {
@@ -12,6 +13,9 @@ class ListPengeluarans extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        if (JenisPengeluaran::count() == 0) {
+            return [];
+        }
         return [
             Actions\CreateAction::make(),
         ];

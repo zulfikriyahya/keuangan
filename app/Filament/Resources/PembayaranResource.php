@@ -2,20 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Exports\PembayaranExporter;
-use App\Filament\Resources\PembayaranResource\Pages;
+use Filament\Tables;
+use App\Models\Siswa;
 use App\Models\Pembayaran;
+use Filament\Tables\Table;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Filament\Infolists\Components\ImageEntry;
-use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Enums\ActionsPosition;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
 use Illuminate\Support\Facades\Blade;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Infolists\Components\Section;
+use Filament\Tables\Enums\ActionsPosition;
+use App\Filament\Exports\PembayaranExporter;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
+use App\Filament\Resources\PembayaranResource\Pages;
 
 class PembayaranResource extends Resource
 {
@@ -39,7 +40,7 @@ class PembayaranResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('siswa.nama')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(Siswa::count() > 10),
                 Tables\Columns\TextColumn::make('siswa.kelas.nama')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal')
@@ -49,7 +50,8 @@ class PembayaranResource extends Resource
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->wrap()
                     ->limit(50)
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->visible(fn(): string => Pembayaran::count() > 0),
                 Tables\Columns\TextColumn::make('bulan.nama'),
                 Tables\Columns\TextColumn::make('tahun.nama'),
                 Tables\Columns\TextColumn::make('nominal')
@@ -57,11 +59,12 @@ class PembayaranResource extends Resource
                     ->prefix('Rp. '),
                 Tables\Columns\ImageColumn::make('kwitansi')
                     ->label('Kuitansi')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->visible(fn(): string => Pembayaran::count() > 0),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                    ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                    ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                    ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
             ])
             ->filters([
                 SelectFilter::make('Status')
@@ -69,16 +72,21 @@ class PembayaranResource extends Resource
                     ->options([
                         'Lunas' => 'Lunas',
                         'Terhutang' => 'Terhutang',
-                    ]),
+                    ])
+                    ->visible(fn(): string => Pembayaran::count() > 5),
                 SelectFilter::make('Tahun')
                     ->label('Tahun')
-                    ->relationship('tahun', 'nama'),
+                    ->relationship('tahun', 'nama')
+                    ->visible(fn(): string => Pembayaran::count() > 5),
                 SelectFilter::make('Bulan')
                     ->label('Bulan')
-                    ->relationship('bulan', 'nama'),
+                    ->relationship('bulan', 'nama')
+                    ->visible(fn(): string => Pembayaran::count() > 5),
                 SelectFilter::make('Jenis Pembayaran')
                     ->label('Jenis Pembayaran')
-                    ->relationship('jenisPembayaran', 'nama'),
+                    ->relationship('jenisPembayaran', 'nama')
+                    ->visible(fn(): string => Pembayaran::count() > 5),
+
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -92,7 +100,7 @@ class PembayaranResource extends Resource
                     ->action(function (Pembayaran $record) {
                         return response()->streamDownload(function () use ($record) {
                             echo Pdf::loadHtml(Blade::render('pembayaran', ['record' => $record]))->stream();
-                        }, $record->siswa->nama.' - '.$record->jenisPembayaran->nama.' - '.$record->bulan->nama.' '.$record->tahun->nama.'.pdf');
+                        }, $record->siswa->nama . ' - ' . $record->jenisPembayaran->nama . ' - ' . $record->bulan->nama . ' ' . $record->tahun->nama . '.pdf');
                     }),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
@@ -136,8 +144,8 @@ class PembayaranResource extends Resource
                             ->prefix('Rp. '),
                         TextEntry::make('status')
                             ->badge()
-                            ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                            ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                            ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                            ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
                     ])
                     ->columnSpan(1)
                     ->columns(2),
