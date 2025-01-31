@@ -8,8 +8,9 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\AkunResource\Pages;
-use NunoMaduro\Collision\Adapters\Phpunit\State;
+use App\Filament\Resources\AkunResource\Pages\CreateAkun;
 use App\Filament\Resources\AkunResource\RelationManagers\JenisPemasukanRelationManager;
 use App\Filament\Resources\AkunResource\RelationManagers\JenisPembayaranRelationManager;
 use App\Filament\Resources\AkunResource\RelationManagers\JenisPengeluaranRelationManager;
@@ -101,20 +102,27 @@ class AkunResource extends Resource
 
     public static function getRelations(): array
     {
-        if (function () {
-            return Akun::find()->kategori === 'Pembayaran';
-        }) {
-            return [JenisPembayaranRelationManager::class,];
-        } else
-        if (function () {
-            return Akun::find()->kategori === 'Pemasukan';
-        }) {
-            return [JenisPemasukanRelationManager::class,];
-        } else
-        if (function () {
-            return Akun::find()->kategori === 'Pengeluaran';
-        }) {
-            return [JenisPengeluaranRelationManager::class,];
+        $recordId = request()->route('record'); // Ambil ID dari route parameter
+        $record = Akun::find($recordId);
+
+        if ($record) {
+            return static::getRelationManagersForKategori($record->kategori);
+        }
+
+        return [];
+    }
+
+    protected static function getRelationManagersForKategori($kategori): array
+    {
+        switch ($kategori) {
+            case 'Pembayaran':
+                return [JenisPembayaranRelationManager::class];
+            case 'Pemasukan':
+                return [JenisPemasukanRelationManager::class];
+            case 'Pengeluaran':
+                return [JenisPengeluaranRelationManager::class];
+            default:
+                return [];
         }
     }
 
