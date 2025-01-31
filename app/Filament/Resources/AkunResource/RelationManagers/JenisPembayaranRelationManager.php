@@ -44,8 +44,7 @@ class JenisPembayaranRelationManager extends RelationManager
                                         'lg' => 2,
                                         'xl' => 3,
                                     ]),
-                            ])
-                            ->disabledOn('edit'),
+                            ]),
                         Forms\Components\TextInput::make('nominal')
                             ->label('Nominal')
                             ->numeric()
@@ -105,7 +104,7 @@ class JenisPembayaranRelationManager extends RelationManager
                     ->label('Nama')
                     ->icon('heroicon-o-banknotes')
                     ->iconColor('success'),
-                Tables\Columns\TextColumn::make('tahuns.nama')
+                Tables\Columns\TextColumn::make('tahun.nama')
                     ->label('Tahun'),
                 Tables\Columns\TextColumn::make('nominal')
                     ->label('Nominal')
