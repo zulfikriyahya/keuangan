@@ -9,7 +9,10 @@ use App\Models\Kelas;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Tahun;
 use App\Models\Jurusan;
+use App\Models\JenisPemasukan;
+use App\Models\JenisPembayaran;
 use Illuminate\Database\Seeder;
+use App\Models\JenisPengeluaran;
 
 class DatabaseSeeder extends Seeder
 {
@@ -99,6 +102,83 @@ class DatabaseSeeder extends Seeder
             'kategori' => 'Pengeluaran',
             'deskripsi' => 'Deskripsi Pengeluaran',
         ]);
+        // SPP 2022
+        JenisPembayaran::create([
+            'nama' => 'SPP Reguler',
+            'akun_id' => 1,
+            'tahun_id' => 1,
+            'kode' => 'SPP-R-2022',
+            'jurusan_id' => 2,
+            'nominal' => 60000,
+            'deskripsi' => '',
+        ]);
+        JenisPembayaran::create([
+            'nama' => 'SPP Unggulan',
+            'akun_id' => 1,
+            'tahun_id' => 1,
+            'kode' => 'SPP-U-2022',
+            'jurusan_id' => 1,
+            'nominal' => 100000,
+            'deskripsi' => '',
+        ]);
+        // SPP 2023
+        JenisPembayaran::create([
+            'nama' => 'SPP Reguler',
+            'akun_id' => 1,
+            'tahun_id' => 2,
+            'kode' => 'SPP-R-2023',
+            'jurusan_id' => 2,
+            'nominal' => 60000,
+            'deskripsi' => '',
+        ]);
+        JenisPembayaran::create([
+            'nama' => 'SPP Unggulan',
+            'akun_id' => 1,
+            'tahun_id' => 2,
+            'kode' => 'SPP-U-2023',
+            'jurusan_id' => 1,
+            'nominal' => 100000,
+            'deskripsi' => '',
+        ]);
+        // SPP 2024
+        JenisPembayaran::create([
+            'nama' => 'SPP Reguler',
+            'akun_id' => 1,
+            'tahun_id' => 3,
+            'kode' => 'SPP-R-2024',
+            'jurusan_id' => 2,
+            'nominal' => 60000,
+            'deskripsi' => '',
+        ]);
+        JenisPembayaran::create([
+            'nama' => 'SPP Unggulan',
+            'akun_id' => 1,
+            'tahun_id' => 3,
+            'kode' => 'SPP-U-2024',
+            'jurusan_id' => 1,
+            'nominal' => 100000,
+            'deskripsi' => '',
+        ]);
+        // SPP 2025
+        JenisPembayaran::create([
+            'nama' => 'SPP Reguler',
+            'akun_id' => 1,
+            'tahun_id' => 4,
+            'kode' => 'SPP-R-2025',
+            'jurusan_id' => 2,
+            'nominal' => 20000,
+            'deskripsi' => '',
+        ]);
+        JenisPembayaran::create([
+            'nama' => 'SPP Unggulan',
+            'akun_id' => 1,
+            'tahun_id' => 4,
+            'kode' => 'SPP-U-2025',
+            'jurusan_id' => 1,
+            'nominal' => 50000,
+            'deskripsi' => '',
+        ]);
+
         Kelas::create([
             'nama' => 'VII A',
             'jenjang' => 'SMP/MTS',
