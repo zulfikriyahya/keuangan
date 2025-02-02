@@ -29,7 +29,7 @@ class PembayaransRelationManager extends RelationManager
                             ->default(now()),
                         Forms\Components\Select::make('jenis_pembayaran_id')
                             ->label('Jenis Pembayaran')
-                            ->relationship('jenisPembayaran', 'nama')
+                            ->relationship('jenisPembayaran', 'kode')
                             ->required()
                             ->disabledOn('edit'),
                         Forms\Components\TextInput::make('deskripsi')

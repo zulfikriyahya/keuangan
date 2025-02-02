@@ -85,8 +85,14 @@ class DatabaseSeeder extends Seeder
             'kode' => 'REG',
         ]);
         Akun::create([
-            'nama' => 'Pembayaran',
-            'kode' => 'PMB',
+            'nama' => 'Pembayaran SPP Bulanan',
+            'kode' => 'PMB-SPP',
+            'kategori' => 'Pembayaran',
+            'deskripsi' => 'Deskripsi Pembayaran',
+        ]);
+        Akun::create([
+            'nama' => 'Pembayaran Lainnya',
+            'kode' => 'PMB-L',
             'kategori' => 'Pembayaran',
             'deskripsi' => 'Deskripsi Pembayaran',
         ]);

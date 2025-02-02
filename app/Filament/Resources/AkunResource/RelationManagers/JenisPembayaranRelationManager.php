@@ -6,6 +6,7 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Section;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -26,7 +27,23 @@ class JenisPembayaranRelationManager extends RelationManager
                         Forms\Components\Select::make('tahun_id')
                             ->label('Tahun')
                             ->relationship('tahun', 'nama')
-                            ->required(),
+                            ->required()
+                            ->createOptionForm([
+                                Forms\Components\Section::make('tahun')
+                                    ->heading('Tahun')
+                                    ->description('Tambahkan Informasi Tahun')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('nama')
+                                            ->label('Tahun')
+                                            ->required()
+                                            ->placeholder('Contoh: 2025')
+                                            ->minLength(4)
+                                            ->maxLength(4)
+                                            ->helperText(new HtmlString('<p style="color:red">Tambahkan tahun hanya ketika dibutuhkan!</p>'))
+                                            ->unique(),
+                                    ]),
+                            ])
+                            ->disabledOn('edit'),
                         Forms\Components\Select::make('jurusan_id')
                             ->label('Jurusan')
                             ->relationship('jurusan', 'nama')
@@ -98,12 +115,13 @@ class JenisPembayaranRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->columns([
-                // Tables\Columns\TextColumn::make('kode')
-                //     ->label('Kode'),
-                Tables\Columns\TextColumn::make('nama')
-                    ->label('Nama')
+                Tables\Columns\TextColumn::make('kode')
+                    ->label('Kode')
+                    ->badge()
                     ->icon('heroicon-o-banknotes')
-                    ->iconColor('success'),
+                    ->color('success'),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama'),
                 Tables\Columns\TextColumn::make('tahun.nama')
                     ->label('Tahun'),
                 Tables\Columns\TextColumn::make('nominal')
