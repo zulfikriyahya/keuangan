@@ -52,6 +52,10 @@ class Siswa extends Model
     {
         return $this->hasMany(Pembayaran::class);
     }
+    public function jenisPembayaran(): HasMany
+    {
+        return $this->hasMany(JenisPembayaran::class);
+    }
 
     public function kelas(): BelongsTo
     {

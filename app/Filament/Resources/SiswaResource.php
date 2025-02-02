@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Kelas;
@@ -237,28 +238,22 @@ class SiswaResource extends Resource
                         // Jumlah pembayaran per siswa
                         $progress = $record->pembayaran()->sum('nominal'); // 100.000
 
-                        // Jumlah pembayaran yang harus dibayar
-                        $bulanDiterima = $record->diterima_tanggal;
-                        $total = 100000; //JenisPembayaran::where('jurusan', 'REG')->sum('nominal') * 2;
+                        // Hitung total bulan antara diterima_tanggal dan lulus_tanggal
+                        $diterima_tanggal = Carbon::parse($record->diterima_tanggal);
+                        $lulus_tanggal = Carbon::parse($record->lulus_tanggal);
+                        $totalBulan = $diterima_tanggal->diffInMonths($lulus_tanggal);
 
+                        // Jumlah pembayaran yang harus dibayar
+                        $nominalPembayaran = $record->pembayaran()->sum('nominal');
+                        $totalYangHarusDibayar = /*$totalBulan*/ 36 * $nominalPembayaran;
 
                         return [
-                            'total' => $total,
+                            'total' => $totalYangHarusDibayar,
                             'progress' => $progress,
                         ];
                     }),
-                // ProgressBar::make('bar')
-                //     ->getStateUsing(function ($record) {
-                //         $total = $record->items()->count();
-                //         $progress = $record->countPaidItems();
-                //         return [
-                //             'total' => $total,
-                //             'progress' => $progress,
-                //         ];
-                //     })
-                //     ->hideProgressValue(),
+                // ->hideProgressValue(),
             ])
-
             ->filters([
                 SelectFilter::make('Kelas')
                     ->label('Kelas')
