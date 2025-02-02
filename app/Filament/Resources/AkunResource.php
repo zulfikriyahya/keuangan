@@ -60,6 +60,7 @@ class AkunResource extends Resource
                                 'lg' => 3,
                             ]),
                     ])
+                    ->disabledOn('edit')
                     ->columns([
                         'sm' => '100%',
                         'lg' => 3,

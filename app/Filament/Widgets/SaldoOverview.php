@@ -5,8 +5,8 @@ namespace App\Filament\Widgets;
 use App\Models\Pemasukan;
 use App\Models\Pembayaran;
 use App\Models\Pengeluaran;
-use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
 class SaldoOverview extends BaseWidget
 {
@@ -27,12 +27,12 @@ class SaldoOverview extends BaseWidget
         return [
             Stat::make(
                 'Saldo',
-                'Rp. '.number_format(
+                'Rp. ' . number_format(
                     Pembayaran::query()
                         ->sum('nominal') +
                         Pemasukan::query()
-                            ->sum('nominal') - Pengeluaran::query()
-                            ->sum('nominal'),
+                        ->sum('nominal') - Pengeluaran::query()
+                        ->sum('nominal'),
                     2,
                     ',',
                     '.'
@@ -42,7 +42,7 @@ class SaldoOverview extends BaseWidget
                 ->color('success'),
             Stat::make(
                 'Total Pembayaran',
-                'Rp. '.number_format(
+                'Rp. ' . number_format(
                     Pembayaran::query()
                         ->sum('nominal'),
                     2,
@@ -54,7 +54,7 @@ class SaldoOverview extends BaseWidget
                 ->color('success'),
             Stat::make(
                 'Total Pemasukan',
-                'Rp. '.number_format(
+                'Rp. ' . number_format(
                     Pemasukan::query()
                         ->sum('nominal'),
                     2,
@@ -66,7 +66,7 @@ class SaldoOverview extends BaseWidget
                 ->color('success'),
             Stat::make(
                 'Total Pengeluaran',
-                'Rp. '.number_format(
+                'Rp. ' . number_format(
                     Pengeluaran::query()
                         ->sum('nominal'),
                     2,

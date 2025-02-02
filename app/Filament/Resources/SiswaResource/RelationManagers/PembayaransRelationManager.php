@@ -2,16 +2,16 @@
 
 namespace App\Filament\Resources\SiswaResource\RelationManagers;
 
-use App\Filament\Exports\PembayaranExporter;
-use App\Models\Pembayaran;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Pembayaran;
 use Filament\Tables\Table;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Blade;
+use Filament\Forms\Components\Section;
+use App\Filament\Exports\PembayaranExporter;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class PembayaransRelationManager extends RelationManager
 {
@@ -50,8 +50,14 @@ class PembayaransRelationManager extends RelationManager
                             ->required()
                             ->prefix('Rp. ')
                             ->numeric()
-                            ->afterStateUpdated(function (callable $set) {
-                                $set('status', 'Terhutang');
+                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                if ($state == $get('jenisPembayaran.nominal')) {
+                                    $set('status', 'Lunas');
+                                } else if ($state > $get('jenisPembayaran.nominal')) {
+                                    $set('status', null);
+                                } else if ($state < $get('jenisPembayaran.nominal')) {
+                                    $set('status', 'Terhutang');
+                                }
                             })
                             ->live(),
                         Forms\Components\Select::make('status')
@@ -64,7 +70,7 @@ class PembayaransRelationManager extends RelationManager
                             ->afterStateHydrated(
                                 function (?Pembayaran $record, callable $get, callable $set) {
                                     if ($record === null) {
-                                        return $set('status', 'Terhutang');
+                                        return $set('status', null);
                                     }
                                     $nominal = $get('nominal');
                                     if ($nominal != $record->jenisPembayaran->nominal) {
@@ -89,7 +95,7 @@ class PembayaransRelationManager extends RelationManager
                                 '9:16' => '9:16',
                                 '16:9' => '16:9',
                             ])
-                            ->directory('img/kwitansi')
+                            ->directory('img/kwitansi/pembayaran')
                             ->fetchFileInformation(false)
                             ->columnSpan([
                                 'sm' => '100%',
@@ -138,8 +144,8 @@ class PembayaransRelationManager extends RelationManager
                     ->searchable()
                     ->sortable()
                     ->badge()
-                    ->color(fn (string $state) => $state === 'Lunas' ? 'success' : 'gray')
-                    ->icon(fn (string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
+                    ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
+                    ->icon(fn(string $state) => $state === 'Lunas' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime()
@@ -176,7 +182,7 @@ class PembayaransRelationManager extends RelationManager
                         ->action(function (Pembayaran $record) {
                             return response()->streamDownload(function () use ($record) {
                                 echo Pdf::loadHtml(Blade::render('pembayaran', ['record' => $record]))->stream();
-                            }, $record->siswa->nama.' - '.$record->jenisPembayaran->nama.' - '.$record->bulan->nama.' '.$record->tahun->nama.'.pdf');
+                            }, $record->siswa->nama . ' - ' . $record->jenisPembayaran->nama . ' - ' . $record->bulan->nama . ' ' . $record->tahun->nama . '.pdf');
                         }),
                     Tables\Actions\DeleteAction::make(),
                 ]),

@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\KelasResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Kelas;
 use App\Models\Siswa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
@@ -16,25 +14,14 @@ use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\DeleteBulkAction;
-use App\Filament\Resources\SiswaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\SiswaResource\RelationManagers\PembayaransRelationManager;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class SiswaResource extends Resource
+class SiswaRelationManager extends RelationManager
 {
-    protected static ?string $model = Siswa::class;
+    protected static string $relationship = 'siswa';
 
-    protected static ?string $navigationLabel = 'Siswa';
-
-    protected static ?string $label = 'Siswa';
-
-    protected static ?string $navigationGroup = 'Referensi';
-
-    protected static ?int $navigationSort = 3;
-
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -123,9 +110,13 @@ class SiswaResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('nama')
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
             ->columns([
                 Tables\Columns\ImageColumn::make('foto')
                     ->label('Foto')
@@ -136,7 +127,7 @@ class SiswaResource extends Resource
                     ->description(
                         fn(Siswa $record) => 'NISN: ' . $record->nisn ?? null
                     )
-                    ->searchable(Siswa::count() > 10),
+                    ->searchable(Siswa::count() > 0),
                 Tables\Columns\TextColumn::make('diterima_tanggal')
                     ->date('d F Y')
                     ->label('Tanggal Diterima'),
@@ -190,7 +181,6 @@ class SiswaResource extends Resource
                     ->visible(fn(): string => Siswa::count() > 0)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-
             ->filters([
                 SelectFilter::make('Kelas')
                     ->label('Kelas')
@@ -249,30 +239,6 @@ class SiswaResource extends Resource
                             });
                         }),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            PembayaransRelationManager::class,
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListSiswas::route('/'),
-            'create' => Pages\CreateSiswa::route('/create'),
-            'edit' => Pages\EditSiswa::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

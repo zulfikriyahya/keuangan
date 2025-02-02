@@ -48,6 +48,7 @@ class PemasukanResource extends Resource
                         Forms\Components\TextInput::make('nominal')
                             ->label('Nominal')
                             ->required()
+                            ->prefix('Rp. ')
                             ->numeric(),
                         Forms\Components\FileUpload::make('kwitansi')
                             ->label('Bukti/Kuitansi')
@@ -61,7 +62,7 @@ class PemasukanResource extends Resource
                                 '9:16' => '9:16',
                                 '16:9' => '16:9',
                             ])
-                            ->directory('img/kwitansi')
+                            ->directory('img/kwitansi/pemasukan')
                             ->fetchFileInformation(false)
                             ->required(),
                         Forms\Components\Select::make('jenis_pemasukan_id')
@@ -100,8 +101,6 @@ class PemasukanResource extends Resource
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('kwitansi')
                     ->label('Kuitansi'),
-                Tables\Columns\TextColumn::make('jenisPemasukan.kode')
-                    ->label('Kode Jenis Pemasukan'),
                 Tables\Columns\TextColumn::make('jenisPemasukan.nama')
                     ->label('Jenis Pemasukan'),
                 Tables\Columns\TextColumn::make('deskripsi')

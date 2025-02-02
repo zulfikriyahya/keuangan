@@ -44,7 +44,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn() => view('logo'))
             ->brandLogoHeight('1.25rem')
             ->topNavigation()
-            // ->topbar(false)
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
             ->unsavedChangesAlerts()
@@ -52,9 +51,7 @@ class AdminPanelProvider extends PanelProvider
 
             // ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                // AccountWidget::class,
                 SaldoOverview::class,
-                JurnalOverview::class,
             ])
             ->plugins([
                 // \TomatoPHP\FilamentPWA\FilamentPWAPlugin::make()
