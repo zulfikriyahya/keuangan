@@ -125,16 +125,20 @@ class PembayaranResource extends Resource
                             ->label('ID Pembayaran')
                             ->badge()
                             ->color('gray'),
-                        TextEntry::make('jenisPembayaran.nama')
-                            ->label('Jenis Pembayaran')
+                        TextEntry::make('jenisPembayaran.akun.kode')
+                            ->label('Akun Pembayaran')
                             ->badge()
                             ->color('gray'),
+                        TextEntry::make('jenisPembayaran.kode')
+                            ->label('Kode Jenis Pembayaran')
+                            ->badge()
+                            ->color('gray'),
+                        TextEntry::make('jenisPembayaran.nama'),
                         TextEntry::make('siswa.nama')
                             ->label('Nama Siswa'),
                         TextEntry::make('tanggal')
                             ->label('Tanggal Pembayaran')
                             ->date('d F Y'),
-                        TextEntry::make('jenisPembayaran.nama'),
                         TextEntry::make('deskripsi')
                             ->label('Catatan Pembayaran'),
                         TextEntry::make('bulan.nama'),

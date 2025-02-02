@@ -38,6 +38,20 @@ class PembayaransRelationManager extends RelationManager
                         Forms\Components\Select::make('bulan_id')
                             ->label('Bulan')
                             ->relationship('bulan', 'nama')
+                            // ->options([
+                            //     'Januari' => 'Januari',
+                            //     'Februari' => 'Februari',
+                            //     'Maret' => 'Maret',
+                            //     'April' => 'April',
+                            //     'Mei' => 'Mei',
+                            //     'Juni' => 'Juni',
+                            //     'Juli' => 'Juli',
+                            //     'Agustus' => 'Agustus',
+                            //     'September' => 'September',
+                            //     'Oktober' => 'Oktober',
+                            //     'November' => 'November',
+                            //     'Desember' => 'Desember',
+                            // ])
                             ->required(),
 
                         Forms\Components\Select::make('tahun_id')
