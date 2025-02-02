@@ -18,6 +18,10 @@ class SiswaImporter extends Importer
                 ->label('NISN')
                 ->requiredMappingForNewRecordsOnly()
                 ->rules(['required']),
+            ImportColumn::make('nik')
+                ->label('NIK')
+                ->requiredMappingForNewRecordsOnly()
+                ->rules(['required']),
             ImportColumn::make('nama')
                 ->requiredMappingForNewRecordsOnly()
                 ->rules(['required']),
@@ -27,9 +31,8 @@ class SiswaImporter extends Importer
             ImportColumn::make('diterima_tanggal')
                 ->requiredMappingForNewRecordsOnly()
                 ->rules(['required', 'date']),
-            ImportColumn::make('lulus_tanggal')
-                ->requiredMappingForNewRecordsOnly()
-                ->rules(['required', 'date']),
+            // ImportColumn::make('mutasi_tanggal'),
+            // ImportColumn::make('lulus_tanggal'),
             ImportColumn::make('kelas')
                 ->requiredMappingForNewRecordsOnly()
                 ->relationship('kelas', 'nama')

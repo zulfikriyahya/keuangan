@@ -5,8 +5,9 @@ namespace Database\Seeders;
 use App\Models\Akun;
 use App\Models\User;
 use App\Models\Bulan;
-use App\Models\Tahun;
+use App\Models\Kelas;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Tahun;
 use App\Models\Jurusan;
 use Illuminate\Database\Seeder;
 
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Administrator',
             'email' => 'admin@admin.com',
+            'role' => 'super_admin',
         ]);
         Tahun::create([
             'nama' => '2022',
@@ -35,7 +37,6 @@ class DatabaseSeeder extends Seeder
         Tahun::create([
             'nama' => '2025',
         ]);
-
         Bulan::create([
             'nama' => 'Januari',
         ]);
@@ -73,18 +74,6 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Desember',
         ]);
         Jurusan::create([
-            'nama' => 'Non Jurusan',
-            'kode' => 'NON',
-        ]);
-        Jurusan::create([
-            'nama' => 'Ilmu Pengetahuan Alam',
-            'kode' => 'IPA',
-        ]);
-        Jurusan::create([
-            'nama' => 'Ilmu Pengetahuan Sosial',
-            'kode' => 'IPS',
-        ]);
-        Jurusan::create([
             'nama' => 'Unggulan',
             'kode' => 'UNG',
         ]);
@@ -109,6 +98,198 @@ class DatabaseSeeder extends Seeder
             'kode' => 'PNG',
             'kategori' => 'Pengeluaran',
             'deskripsi' => 'Deskripsi Pengeluaran',
+        ]);
+        Kelas::create([
+            'nama' => 'VII A',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'VII B',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'VII C',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'VII D',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'VII E',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 1,
+        ]);
+
+        Kelas::create([
+            'nama' => 'VII F',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'VII G',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'VII H',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'VII I',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'VII J',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'VII K',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '7',
+            'jurusan_id' => 2,
+        ]);
+
+
+        Kelas::create([
+            'nama' => 'VIII A',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'VIII B',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'VIII C',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'VIII D',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'VIII E',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 1,
+        ]);
+
+        Kelas::create([
+            'nama' => 'VIII F',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'VIII G',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'VIII H',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'VIII I',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'VIII J',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '8',
+            'jurusan_id' => 2,
+        ]);
+
+        Kelas::create([
+            'nama' => 'IX A',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'IX B',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'IX C',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'IX D',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 1,
+        ]);
+        Kelas::create([
+            'nama' => 'IX E',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 1,
+        ]);
+
+        Kelas::create([
+            'nama' => 'IX F',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'IX G',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'IX H',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'IX I',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 2,
+        ]);
+        Kelas::create([
+            'nama' => 'IX J',
+            'jenjang' => 'SMP/MTS',
+            'tingkat' => '9',
+            'jurusan_id' => 2,
         ]);
     }
 }

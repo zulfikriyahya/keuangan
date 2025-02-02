@@ -19,7 +19,10 @@ class Siswa extends Model
     protected $fillable = [
         'nama',
         'nisn',
+        'nik',
         'diterima_tanggal',
+        'mutasi_tanggal',
+        'do_tanggal',
         'lulus_tanggal',
         'kelas_id',
         'status',
@@ -39,6 +42,9 @@ class Siswa extends Model
     protected $casts = [
         'id' => 'integer',
         'diterima_tanggal' => 'date',
+        'mutasi_tanggal' => 'date',
+        'do_tanggal' => 'date',
+        'lulus_tanggal' => 'date',
         'kelas_id' => 'integer',
     ];
 

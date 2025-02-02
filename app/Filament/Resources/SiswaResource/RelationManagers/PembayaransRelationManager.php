@@ -59,7 +59,7 @@ class PembayaransRelationManager extends RelationManager
                                     $set('status', 'Terhutang');
                                 }
                             })
-                            ->live(),
+                            ->reactive(),
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->required()
@@ -80,8 +80,8 @@ class PembayaransRelationManager extends RelationManager
                                     }
                                 }
                             )
-                            ->reactive()
-                            ->live(),
+                            ->live()
+                            ->visible(fn($get) => $get('nominal') != null),
 
                         Forms\Components\FileUpload::make('kwitansi')
                             ->label('Kuitansi')
@@ -100,7 +100,8 @@ class PembayaransRelationManager extends RelationManager
                             ->columnSpan([
                                 'sm' => '100%',
                                 'xl' => 2,
-                            ]),
+                            ])
+                            ->visible(fn($get) => $get('status') != null),
                     ])
                     ->columns([
                         'sm' => '100%',
@@ -141,7 +142,6 @@ class PembayaransRelationManager extends RelationManager
                     ->label('Kuitansi'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->searchable()
                     ->sortable()
                     ->badge()
                     ->color(fn(string $state) => $state === 'Lunas' ? 'success' : 'gray')
@@ -150,11 +150,13 @@ class PembayaransRelationManager extends RelationManager
                     ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
+                    ->visible(fn(): string => Pembayaran::count() > 0)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Diperbarui')
                     ->dateTime()
                     ->sortable()
+                    ->visible(fn(): string => Pembayaran::count() > 0)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

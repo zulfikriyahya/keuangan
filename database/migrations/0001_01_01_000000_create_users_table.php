@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['super_admin', 'kurikulum', 'sarpras', 'humas', 'laboratorian', 'pustakawan', 'kesiswaan', 'bk', 'admin_web', 'admin_ppdb', 'admin_rapor', 'admin_surat', 'pimpinan', 'kepala_staf', 'bendahara', 'pimpinan_komite', 'bendahara_komite', 'wali_kelas', 'guru', 'staf', 'siswa', 'kepala_paud', 'kepala_tk', 'kepala_sd', 'kepala_smp', 'kepala_sma', 'kepala_jurusan', 'tamu'])->default('tamu');
             $table->rememberToken();
             $table->timestamps();
         });

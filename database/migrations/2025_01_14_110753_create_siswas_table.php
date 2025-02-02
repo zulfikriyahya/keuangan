@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('nisn')->unique();
+            $table->string('nik')->unique();
             $table->date('diterima_tanggal');
+            $table->date('mutasi_tanggal')->nullable();
+            $table->date('do_tanggal')->nullable();
             $table->date('lulus_tanggal')->nullable();
             $table->foreignId('kelas_id')->constrained('kelas')->cascadeOnDelete()->cascadeOnUpdate();
             $table->enum('status', ['Aktif', 'Nonaktif', 'Alumni', 'Mutasi', 'Drop Out']);

@@ -40,7 +40,7 @@ class KelasResource extends Resource
                                 'PAUD' => 'PAUD',
                                 'TK' => 'TK',
                                 'SD/MI' => 'SD/MI',
-                                'SMP/MTs' => 'SMP/MTs',
+                                'SMP/MTS' => 'SMP/MTs',
                                 'SMA/SMK/MA' => 'SMA/SMK/MA',
                             ]),
                         Forms\Components\Select::make('tingkat')

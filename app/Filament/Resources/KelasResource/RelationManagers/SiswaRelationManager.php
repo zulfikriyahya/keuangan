@@ -4,18 +4,25 @@ namespace App\Filament\Resources\KelasResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Kelas;
 use App\Models\Siswa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use App\Filament\Exports\SiswaExporter;
+use App\Filament\Imports\SiswaImporter;
 use Filament\Tables\Actions\BulkAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
+use IbrahimBougaoua\FilaProgress\Tables\Columns\ProgressBar;
 
 class SiswaRelationManager extends RelationManager
 {
@@ -42,6 +49,18 @@ class SiswaRelationManager extends RelationManager
                             ])
                             ->numeric()
                             ->required(),
+                        Forms\Components\TextInput::make('nik')
+                            ->label('NIK')
+                            ->maxLength(16)
+                            ->minLength(16)
+                            ->unique(Siswa::class, 'nik', ignoreRecord: true)
+                            ->validationMessages([
+                                'unique' => 'NIK ini sudah terdaftar. Silakan masukkan ulang NIK anda.',
+                                'min_digits' => 'Masukkan minimal 16 digit. Silakan masukkan ulang NIK anda.',
+                                'max_digits' => 'Masukkan maksimal 16 digit. Silakan masukkan ulang NIK anda.',
+                            ])
+                            ->numeric()
+                            ->required(),
                         Forms\Components\DatePicker::make('diterima_tanggal')
                             ->label('Tanggal Diterima')
                             ->required(),
@@ -51,8 +70,6 @@ class SiswaRelationManager extends RelationManager
                             ->preload(5)
                             ->searchable()
                             ->required(),
-                        Forms\Components\DatePicker::make('lulus_tanggal')
-                            ->label('Tanggal Kelulusan'),
                         Forms\Components\Select::make('jenis_kelamin')
                             ->label('Jenis Kelamin')
                             ->options([
@@ -84,7 +101,18 @@ class SiswaRelationManager extends RelationManager
                                 'Alumni' => 'Alumni',
                                 'Drop Out' => 'Drop Out',
                             ])
+                            ->reactive()
                             ->default('Aktif'),
+                        Forms\Components\DatePicker::make('mutasi_tanggal')
+                            ->label('Tanggal Mutasi Keluar')
+                            ->visible(fn($get) => $get('status') === 'Mutasi'),
+                        Forms\Components\DatePicker::make('do_tanggal')
+                            ->label('Tanggal Drop Out')
+                            ->visible(fn($get) => $get('status') === 'Drop Out'),
+                        Forms\Components\DatePicker::make('lulus_tanggal')
+                            ->label('Tanggal Kelulusan')
+                            ->visible(fn($get) => $get('status') === 'Alumni'),
+
                         Forms\Components\Textarea::make('alamat')
                             ->label('Alamat'),
                         Forms\Components\FileUpload::make('foto')
@@ -116,6 +144,19 @@ class SiswaRelationManager extends RelationManager
             ->recordTitleAttribute('nama')
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
+                ImportAction::make()
+                    ->label('Impor')
+                    ->icon('heroicon-m-cloud-arrow-down')
+                    ->color('info')
+                    ->importer(SiswaImporter::class)
+                    ->visible(fn(): string => Kelas::count() > 0),
+                ExportAction::make()
+                    ->label('Ekspor')
+                    ->icon('heroicon-m-cloud-arrow-up')
+                    ->color('success')
+                    ->exporter(SiswaExporter::class)
+                    ->chunkSize(250)
+                    ->visible(fn(): string => Siswa::count() > 0),
             ])
             ->columns([
                 Tables\Columns\ImageColumn::make('foto')
@@ -123,11 +164,15 @@ class SiswaRelationManager extends RelationManager
                     ->circular()
                     ->defaultImageUrl('/default/foto.png'),
                 Tables\Columns\TextColumn::make('nama')
-                    ->label('Nama Siswa')
+                    ->label('Nama Lengkap')
                     ->description(
                         fn(Siswa $record) => 'NISN: ' . $record->nisn ?? null
                     )
-                    ->searchable(Siswa::count() > 0),
+                    ->searchable(Siswa::count() > 10),
+
+                Tables\Columns\TextColumn::make('nik')
+                    ->label('NIK')
+                    ->searchable(Siswa::count() > 10),
                 Tables\Columns\TextColumn::make('diterima_tanggal')
                     ->date('d F Y')
                     ->label('Tanggal Diterima'),
@@ -139,9 +184,18 @@ class SiswaRelationManager extends RelationManager
                             $record->kelas->jurusan->nama,
                         ]);
                     }),
+                Tables\Columns\TextColumn::make('mutasi_tanggal')
+                    ->date('d F Y')
+                    ->label('Tanggal Mutasi Keluar')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('do_tanggal')
+                    ->date('d F Y')
+                    ->label('Tanggal Drop Out')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('lulus_tanggal')
-                    ->date('Y')
-                    ->label('Tahun Lulus'),
+                    ->date('d F Y')
+                    ->label('Tahun Lulus')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -180,6 +234,35 @@ class SiswaRelationManager extends RelationManager
                     ->label('Nomor Telepon')
                     ->visible(fn(): string => Siswa::count() > 0)
                     ->toggleable(isToggledHiddenByDefault: true),
+
+
+
+                ProgressBar::make('bar')
+                    ->label('Progress')
+                    ->getStateUsing(function ($record) {
+                        // Jumlah pembayaran per siswa
+                        $progress = $record->pembayaran()->sum('nominal'); // 100.000
+
+                        // Jumlah pembayaran yang harus dibayar
+                        $bulanDiterima = $record->diterima_tanggal;
+                        $total = 100000; //JenisPembayaran::where('jurusan', 'REG')->sum('nominal') * 2;
+
+
+                        return [
+                            'total' => $total,
+                            'progress' => $progress,
+                        ];
+                    }),
+                // ProgressBar::make('bar')
+                //     ->getStateUsing(function ($record) {
+                //         $total = $record->items()->count();
+                //         $progress = $record->countPaidItems();
+                //         return [
+                //             'total' => $total,
+                //             'progress' => $progress,
+                //         ];
+                //     })
+                //     ->hideProgressValue(),
             ])
             ->filters([
                 SelectFilter::make('Kelas')
@@ -201,10 +284,12 @@ class SiswaRelationManager extends RelationManager
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('Ubah Status')
+                        ->label('Set Status')
                         ->icon('heroicon-o-check-circle')
+                        ->color('primary')
                         ->requiresConfirmation()
                         ->form([
-                            Select::make('Status')
+                            Select::make('status')
                                 ->label('Status')
                                 ->options([
                                     'Aktif' => 'Aktif',
@@ -213,20 +298,50 @@ class SiswaRelationManager extends RelationManager
                                     'Mutasi' => 'Mutasi',
                                     'Drop Out' => 'Drop Out',
                                 ])
+                                ->reactive()
                                 ->required(),
+
+                            DatePicker::make('lulus_tanggal')
+                                ->label('Tanggal Kelulusan')
+                                ->maxDate(now())
+                                ->visible(fn($get) => $get('status') === 'Alumni'),
+                            DatePicker::make('mutasi_tanggal')
+                                ->label('Tanggal Mutasi Keluar')
+                                ->maxDate(now())
+                                ->visible(fn($get) => $get('status') === 'Mutasi'),
+                            DatePicker::make('do_tanggal')
+                                ->label('Tanggal Drop Out')
+                                ->maxDate(now())
+                                ->visible(fn($get) => $get('status') === 'Drop Out'),
                         ])
                         ->action(function (Collection $records, array $data) {
                             $records->each(function ($record) use ($data) {
-                                Siswa::where('id', $record->id)->update([
-                                    'status' => $data['Status'],
-                                ]);
+                                $updateData = [
+                                    'status' => $data['status'],
+                                ];
+                                // Tambahkan 'lulus_tanggal' hanya jika ada dalam $data
+                                if (array_key_exists('lulus_tanggal', $data)) {
+                                    $updateData['lulus_tanggal'] = $data['lulus_tanggal'];
+                                }
+                                // Tambahkan 'mutasi_tanggal' hanya jika ada dalam $data
+                                if (array_key_exists('mutasi_tanggal', $data)) {
+                                    $updateData['mutasi_tanggal'] = $data['mutasi_tanggal'];
+                                }
+                                // Tambahkan 'do_tanggal' hanya jika ada dalam $data
+                                if (array_key_exists('do_tanggal', $data)) {
+                                    $updateData['do_tanggal'] = $data['do_tanggal'];
+                                }
+                                Siswa::where('id', $record->id)->update($updateData);
                             });
                         }),
-                    BulkAction::make('Ubah Kelas')
+
+                    BulkAction::make('Set Kenaikan Kelas')
+                        ->label('Set Kenaikan Kelas')
                         ->icon('heroicon-o-building-storefront')
+                        ->color('success')
                         ->requiresConfirmation()
                         ->form([
-                            Select::make('Kelas')
+                            Select::make('kelas')
                                 ->label('Kelas')
                                 ->relationship('kelas', 'nama')
                                 ->required(),
@@ -234,10 +349,11 @@ class SiswaRelationManager extends RelationManager
                         ->action(function (Collection $records, array $data) {
                             $records->each(function ($record) use ($data) {
                                 Siswa::where('id', $record->id)->update([
-                                    'kelas_id' => $data['Kelas'],
+                                    'kelas_id' => $data['kelas'],
                                 ]);
                             });
                         }),
+
                 ]),
             ]);
     }

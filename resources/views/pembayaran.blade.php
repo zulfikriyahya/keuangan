@@ -23,8 +23,6 @@
 <br>
 <div>Nominal: Rp. {{ $record->nominal }}</div>
 <br>
-{{-- <div class="page-break"></div> --}}
-{{-- <br> --}}
 <div>Status Pembayaran: {{ $record->status }}</div>
 <br>
 <div>Deskripsi: {{ $record->deskripsi }}</div>
@@ -32,7 +30,9 @@
 <div>Tanggal Pembayaran:  {{ date("d ", strtotime($record->tanggal)) . $record->bulan->nama .' '. $record->tahun->nama }}</div>
 <br>
 @if ($record->kwitansi != null)
-    <div>Kuitansi: <img src={{ './storage/' . ($record->kwitansi) }} alt="Images" style="width: 50%; position: absolute;" ></div>    
-    @else
-    <div>Kuitansi: <img src="#" alt="Images" style="width: 50%; position: absolute;" ></div>    
+<div>Kuitansi: <img src={{ './storage/' . ($record->kwitansi) }} alt="Images" style="width: 50%; position: absolute;" ></div>    
+@else
+<div>Kuitansi: <img src="#" alt="Images" style="width: 50%; position: absolute;" ></div>    
 @endif
+{{-- <div class="page-break"></div> --}}
+{{-- <br> --}}

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('akuns', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('kode');
+            $table->string('kode')->unique();
             $table->enum('kategori', ['Pembayaran', 'Pemasukan', 'Pengeluaran']);
             $table->string('deskripsi')->nullable();
             $table->timestamps();
