@@ -64,7 +64,7 @@ class Siswa extends Model
         return $this->hasOneThrough(Jurusan::class, Kelas::class, 'id', 'id', 'kelas_id', 'jurusan_id');
     }
 
-    public function jenisPembayarans()
+    public function jenisPembayaran()
     {
         return $this->hasManyThrough(
             JenisPembayaran::class,

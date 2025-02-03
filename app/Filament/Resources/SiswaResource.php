@@ -246,12 +246,13 @@ class SiswaResource extends Resource
                         $lulusTanggal = Carbon::parse($record->lulus_tanggal);
                         $totalBulan = $diterimaTanggal->diffInMonths($lulusTanggal);
 
-                        // Jumlah pembayaran yang harus dibayar
-                        $nominalPembayaran = $record->jenisPembayarans()
-                            ->where('jurusan_id', $record->jurusan->id) //Perlu Perbaikan
-                            ->sum('nominal'); // Perlu Perbaikan
+                        /* Lebih Efektif Perhitungannya Pertahun. karena setiap siswa bisa saja berubah jurusan.
+                        Kalau ingin disekaliguskan. tolong pikirkan logika jika suatu saat siswa berpindah jurusan. */
 
-                        $totalYangHarusDibayar = $totalBulan * $nominalPembayaran;
+                        $nominalPembayaran = $record->kelas->jurusan->jenisPembayaran()->pluck('nominal')->all();
+                        // @dd($nominalPembayaran);
+
+                        $totalYangHarusDibayar = $totalBulan * $nominalPembayaran[0];
                         return [
                             'total' => $totalYangHarusDibayar,
                             'progress' => $progress,
