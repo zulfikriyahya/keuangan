@@ -52,13 +52,27 @@ class Siswa extends Model
     {
         return $this->hasMany(Pembayaran::class);
     }
-    public function jenisPembayaran(): HasMany
-    {
-        return $this->hasMany(JenisPembayaran::class);
-    }
 
     public function kelas(): BelongsTo
     {
         return $this->belongsTo(Kelas::class);
+    }
+
+
+    public function jurusan()
+    {
+        return $this->hasOneThrough(Jurusan::class, Kelas::class, 'id', 'id', 'kelas_id', 'jurusan_id');
+    }
+
+    public function jenisPembayarans()
+    {
+        return $this->hasManyThrough(
+            JenisPembayaran::class,
+            Jurusan::class,
+            'id',
+            'jurusan_id',
+            'jurusan_id',
+            'id'
+        );
     }
 }

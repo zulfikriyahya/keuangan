@@ -32,7 +32,7 @@ class SiswaImporter extends Importer
                 ->requiredMappingForNewRecordsOnly()
                 ->rules(['required', 'date']),
             // ImportColumn::make('mutasi_tanggal'),
-            // ImportColumn::make('lulus_tanggal'),
+            ImportColumn::make('lulus_tanggal'),
             ImportColumn::make('kelas')
                 ->requiredMappingForNewRecordsOnly()
                 ->relationship('kelas', 'nama')

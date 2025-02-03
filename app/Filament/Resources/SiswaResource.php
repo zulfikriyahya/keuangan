@@ -115,6 +115,9 @@ class SiswaResource extends Resource
                             ])
                             ->reactive()
                             ->default('Aktif'),
+                        // Forms\Components\DatePicker::make('lulus_tanggal')
+                        //     ->label('Perkiraan Tanggal Lulus')
+                        //     ->visible(fn($get) => $get('status') === 'Aktif'),
                         Forms\Components\DatePicker::make('mutasi_tanggal')
                             ->label('Tanggal Mutasi Keluar')
                             ->visible(fn($get) => $get('status') === 'Mutasi'),
@@ -233,20 +236,22 @@ class SiswaResource extends Resource
 
 
                 ProgressBar::make('bar')
-                    ->label('Progress')
+                    ->label('Progress Pembayaran')
                     ->getStateUsing(function ($record) {
                         // Jumlah pembayaran per siswa
-                        $progress = $record->pembayaran()->sum('nominal'); // 100.000
+                        $progress = $record->pembayaran()->sum('nominal');
 
-                        // Hitung total bulan antara diterima_tanggal dan lulus_tanggal
-                        $diterima_tanggal = Carbon::parse($record->diterima_tanggal);
-                        $lulus_tanggal = Carbon::parse($record->lulus_tanggal);
-                        $totalBulan = $diterima_tanggal->diffInMonths($lulus_tanggal);
+                        // Hitung total bulan antara diterimaTanggal dan lulus_tanggal
+                        $diterimaTanggal = Carbon::parse($record->diterima_tanggal);
+                        $lulusTanggal = Carbon::parse($record->lulus_tanggal);
+                        $totalBulan = $diterimaTanggal->diffInMonths($lulusTanggal);
 
                         // Jumlah pembayaran yang harus dibayar
-                        $nominalPembayaran = $record->pembayaran()->sum('nominal');
-                        $totalYangHarusDibayar = /*$totalBulan*/ 36 * $nominalPembayaran;
+                        $nominalPembayaran = $record->jenisPembayarans()
+                            ->where('jurusan_id', $record->jurusan->id) //Perlu Perbaikan
+                            ->sum('nominal'); // Perlu Perbaikan
 
+                        $totalYangHarusDibayar = $totalBulan * $nominalPembayaran;
                         return [
                             'total' => $totalYangHarusDibayar,
                             'progress' => $progress,
@@ -291,6 +296,10 @@ class SiswaResource extends Resource
                                 ->reactive()
                                 ->required(),
 
+                            DatePicker::make('lulus_tanggal')
+                                ->label('Perkiraan Tanggal Kelulusan')
+                                ->visible(fn($get) => $get('status') === 'Aktif')
+                                ->required(fn($get) => $get('status') === 'Aktif'),
                             DatePicker::make('lulus_tanggal')
                                 ->label('Tanggal Kelulusan')
                                 ->maxDate(now())
