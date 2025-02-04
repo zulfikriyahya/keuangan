@@ -7,6 +7,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
+use Illuminate\Support\HtmlString;
 use Filament\Widgets\AccountWidget;
 use Filament\Support\Enums\MaxWidth;
 use App\Filament\Widgets\SaldoOverview;
@@ -14,6 +15,7 @@ use App\Filament\Resources\UserResource;
 use App\Filament\Widgets\JurnalOverview;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
+use Devonab\FilamentEasyFooter\EasyFooterPlugin;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -32,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->sidebarFullyCollapsibleOnDesktop()
+            // ->sidebarFullyCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Cyan,
             ])
@@ -54,7 +56,35 @@ class AdminPanelProvider extends PanelProvider
                 SaldoOverview::class,
             ])
             ->plugins([
-                // \TomatoPHP\FilamentPWA\FilamentPWAPlugin::make()
+                // \TomatoPHP\FilamentPWA\FilamentPWAPlugin::make(),
+
+                EasyFooterPlugin::make()
+                    ->withFooterPosition('footer')
+                    ->withSentence(new HtmlString('
+                    <img src="/default/foto.png" alt="Logo Aplikasi" width="20" height="20"> MTs Negeri 1 Pandeglang'))
+                    // ->withGithub(showLogo: true, showUrl: true)
+                    ->withLoadTime('Halaman ini dimuat dalam')
+                    // ->withLogo('https://static.cdnlogo.com/logos/l/23/laravel.svg', 'https://laravel.com')
+                    ->withBorder()
+                    ->hiddenFromPagesEnabled()
+                    ->hiddenFromPages(['sample-page', 'another-page', 'admin/login', 'admin/forgot-password', 'admin/register']),
+
+                // FilamentShieldPlugin::make()
+                //     ->gridColumns([
+                //         'default' => 1,
+                //         'sm' => 2,
+                //         'lg' => 3
+                //     ])
+                //     ->sectionColumnSpan(1)
+                //     ->checkboxListColumns([
+                //         'default' => 1,
+                //         'sm' => 2,
+                //         'lg' => 4,
+                //     ])
+                //     ->resourceCheckboxListColumns([
+                //         'default' => 1,
+                //         'sm' => 2,
+                //     ]),
             ])
             ->userMenuItems([
                 MenuItem::make()

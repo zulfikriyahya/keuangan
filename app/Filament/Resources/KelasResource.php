@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Kelas;
+use App\Models\Siswa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
@@ -94,6 +95,21 @@ class KelasResource extends Resource
                 Tables\Columns\TextColumn::make('tingkat'),
                 Tables\Columns\TextColumn::make('jenjang'),
                 Tables\Columns\TextColumn::make('jurusan.nama'),
+                Tables\Columns\TextColumn::make('total_siswa')
+                    ->label('Total Siswa')
+                    ->badge()
+                    ->color('success')
+                    ->getStateUsing(fn($record): string => $record->siswa()->count() . " Orang"),
+                Tables\Columns\TextColumn::make('total_pria')
+                    ->label('Total Laki-Laki')
+                    ->badge()
+                    ->color('pria')
+                    ->getStateUsing(fn($record): string => $record->siswa()->where('jenis_kelamin', 'Laki-laki')->count() . " Siswa"),
+                Tables\Columns\TextColumn::make('total_wanita')
+                    ->label('Total Perempuan')
+                    ->badge()
+                    ->color('wanita')
+                    ->getStateUsing(fn($record): string => $record->siswa()->where('jenis_kelamin', 'Perempuan')->count() . " Siswi"),
             ])
             ->filters([
                 //

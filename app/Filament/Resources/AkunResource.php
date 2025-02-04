@@ -101,6 +101,8 @@ class AkunResource extends Resource
             ]);
     }
 
+
+    // Hanya berlaku jika database telah dibuat
     public static function getRelations(): array
     {
         $recordId = request()->route('record');

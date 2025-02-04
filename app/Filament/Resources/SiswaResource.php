@@ -194,6 +194,16 @@ class SiswaResource extends Resource
                     ->date('d F Y')
                     ->label('Tahun Lulus')
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('jenis_kelamin')
+                    ->visible(fn(): string => Siswa::count() > 0)
+                    ->label('Jenis Kelamin')
+                    ->badge()
+                    ->icon('heroicon-o-user-circle')
+                    ->color(fn($state): string => match ($state) {
+                        'Laki-laki' => 'pria',
+                        'Perempuan' => 'wanita'
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
@@ -205,21 +215,18 @@ class SiswaResource extends Resource
                         'Drop Out' => 'danger',
                     })
                     ->icon(fn(string $state): string => match ($state) {
-                        'Aktif' => 'heroicon-m-check-circle',
-                        'Nonaktif' => 'heroicon-m-x-circle',
-                        'Mutasi' => 'heroicon-m-arrows-right-left',
-                        'Alumni' => 'heroicon-m-academic-cap',
-                        'Drop Out' => 'heroicon-m-arrow-right-start-on-rectangle',
+                        'Aktif' => 'heroicon-o-check-circle',
+                        'Nonaktif' => 'heroicon-o-x-circle',
+                        'Mutasi' => 'heroicon-o-arrows-right-left',
+                        'Alumni' => 'heroicon-o-academic-cap',
+                        'Drop Out' => 'heroicon-o-arrow-right-start-on-rectangle',
                     }),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
                     ->visible(fn(): string => Siswa::count() > 0)
                     ->wrap()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('jenis_kelamin')
-                    ->visible(fn(): string => Siswa::count() > 0)
-                    ->label('Jenis Kelamin')
-                    ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('nama_ibu')
                     ->label('Nama Ibu')
                     ->visible(fn(): string => Siswa::count() > 0)
