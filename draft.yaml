@@ -1,0 +1,188 @@
+models:
+  Pimpinan:
+    nama: string
+    foto: string nullable
+    nip: string nullable
+    periode_awal: date nullable
+    periode_akhir: date nullable
+    status: enum:"Aktif","Nonaktif"
+    tte: string nullable
+    telepon: string
+    relationships:
+      hasMany: Instansi
+      # belongsTo:
+
+  Bendahara:
+    nama: string
+    foto: string nullable
+    nip: string nullable
+    periode_awal: date nullable
+    periode_akhir: date nullable
+    status: enum:"Aktif","Nonaktif"
+    tte: string nullable
+    telepon: string
+    relationships:
+      hasMany: Instansi
+      # belongsTo:
+
+  Instansi:
+    nama: string
+    npsn: string nullable
+    nss: string nullable
+    logo: string nullable
+    email: string nullable
+    telepon: string nullable
+    website: string nullable
+    alamat: string nullable
+    kode_pos: string nullable
+    pimpinan_id: id foreign:pimpinans
+    bendahara_id: id foreign:bendaharas
+    nama_bank: string nullable
+    nama_rekening: string nullable
+    nomor_rekening: string nullable
+    relationships:
+      # hasMany:
+      belongsTo: Pimpinan, Bendahara
+
+  Tahun:
+    nama: string
+    relationships:
+      hasMany: Periode
+      # belongsTo:
+
+  Bulan:
+    nama: string
+    relationships:
+      hasMany: Periode
+      # belongsTo:
+
+  Periode:
+    tahun_id: id foreign:tahuns
+    bulan_id: id foreign:bulans
+    relationships:
+      hasMany: Pembayaran, Pemasukan, Pengeluaran, Kas
+      belongsTo: Tahun, Bulan
+
+  Jurusan:
+    nama: string
+    kode: string
+    relationships:
+      hasMany: Kelas
+      # belongsTo:
+
+  Kelas:
+    nama: string
+    tingkat: enum:"PAUD","TK","1","2","3","4","5","6","7","8","9","10","11","12"
+    jenjang: enum:"PAUD","TK","SD","SMP","SMA"
+    jurusan_id: id foreign:jurusans
+    relationships:
+      hasMany: KelasTahun, Siswa
+      belongsTo: Jurusan
+
+  KelasTahun:
+    tahun_id: id foreign:tahuns
+    kelas_id: id foreign:kelas
+    relationships:
+      hasMany: Siswa
+      belongsTo: Tahun, Kelas
+
+  Siswa:
+    nama: string
+    diterima_tanggal: date
+    diterima_dikelas: id foreign:kelas
+    kelas_tahun_id: id foreign:kelas_tahuns
+    status: enum:"Aktif","Nonaktif"
+    foto: string nullable
+    alamat: string nullable
+    nama_ibu: string nullable
+    nama_ayah: string nullable
+    telepon: string nullable
+    relationships:
+      hasMany: Pembayaran
+      belongsTo: KelasTahun, Kelas
+
+  Akun:
+    nama: string
+    kode: string
+    deskripsi: string nullable
+    relationships:
+      hasMany: JenisPembayaran, JenisPemasukan, JenisPengeluaran
+      # belongsTo:
+
+  JenisPembayaran:
+    nama: string
+    akun_id: id foreign:akuns
+    kode: string
+    jurusan_id: id foreign:jurusans
+    deskripsi: string nullable
+    relationships:
+      hasMany: Pembayaran
+      belongsTo: Akun
+
+  JenisPemasukan:
+    nama: string
+    akun_id: id foreign:akuns
+    kode: string
+    deskripsi: string nullable
+    relationships:
+      hasMany: Pemasukan
+      belongsTo: Akun
+
+  JenisPengeluaran:
+    nama: string
+    akun_id: id foreign:akuns
+    kode: string
+    deskripsi: string nullable
+    relationships:
+      hasMany: Pengeluaran
+      belongsTo: Akun
+
+  Pembayaran:
+    nama: string
+    kode: string
+    tanggal: date
+    jenis_pembayaran_id: id foreign:jenis_pembayarans
+    deskripsi: string nullable
+    periode_id: id foreign:periodes
+    nominal: integer
+    kwitansi: string nullable
+    status: enum:"Lunas","Terhutang"
+    relationships:
+      hasMany: Kas
+      belongsTo: JenisPembayaran, Periode, Siswa
+
+  Pemasukan:
+    nama: string
+    kode: string
+    tanggal: date
+    periode_id: id foreign:periodes
+    nominal: integer
+    kwitansi: string nullable
+    jenis_pemasukan_id: id foreign:jenis_pemasukans
+    deskripsi: string nullable
+    relationships:
+      hasMany: Kas
+      belongsTo: Periode, JenisPemasukan
+
+  Pengeluaran:
+    nama: string
+    kode: string
+    tanggal: date
+    periode_id: id foreign:periodes
+    nominal: integer
+    kwitansi: string nullable
+    jenis_pengeluaran_id: id foreign:jenis_pengeluarans
+    deskripsi: string nullable
+    relationships:
+      hasMany: Kas
+      belongsTo: Periode, JenisPengeluaran
+
+  Kas:
+    nama: string
+    pembayaran_id: id foreign:pembayarans
+    pengeluaran_id: id foreign:pengeluarans
+    pemasukan_id: id foreign:pemasukans
+    saldo: integer
+    relationships:
+      #   hasMany:
+      belongsTo: Pembayaran, Pengeluaran, Pemasukan, Periode
